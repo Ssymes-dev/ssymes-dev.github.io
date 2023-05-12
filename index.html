@@ -7,51 +7,58 @@
     <title>Travel Advisory</title>
     <style>
            
-        .navbar{
+        .header{
+            display:flex;
             background-color: red;
+            height: 250px;
+        }
+        .headerimg{
+            order:2;
+            height:250px;
         }
 
         .sidebar{
-            display: flex;
             flex-direction: column;
+            height:1000px;
             background-color: yellow;
             flex-basis: 50px;
             width: 300px;
-            
+            grid-column-end:all
         }
 
         .alert{
             display: flex;
-            justify-content: flex-end;
-            flex-direction: row;
+            justify-content: center;
             background-color: black;
+            margin-left: 25%;
+            justify-content: space-around;
+            
             
         }
 
         .list{
-            display: flex;
-            flex-direction: row;
-            justify-content: flex-end;
+            display:flex;
+            justify-content: left;
             background-color: blue;
+            margin-left: 25%;
     
         }
-
-        .level{
-            display:inline;
-        }
-
     </style>
+   
 </head>
 <body>
-    <div class="navbar">
-    <p>nav</p>
+    <div class="header">
+        <img class="headerimg" src="Images/US-Travel-Advisory-Map.jpg" alt="color coded map">
+    <p>Travel Advisory</p>
 </div>
-<div class="sidebar">
+
+
+<nav>
     <p>side bar</p>
     <p>more info</p>    
     <p>list view</p>
     <p>level criteria</p>  
-</div>
+</nav>
     <div class="alert">   
     <img class="country" src="Images/USA.png" alt="single counrty img">
     <img class= "level" src="Images/level1.jpg" alt="warning level 1">
@@ -74,3 +81,14 @@
 </div>
 </body>
 </html>
+<!--todo
+fix stretched imgs in .alert
+color pallet
+design header
+find out where button goes...head, body?
+find new world map img
+find some caution icons
+research modern looking desings 
+**BREATH**
+...
+-->
