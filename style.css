@@ -13,9 +13,10 @@ body{
     background-size: cover;
 }
 header{
-    background-color:rgba(255, 255, 255, 0.651);
+    background-color:rgba(255, 255, 255, 0.65);
     text-align: center;
 }
+
 .navbar{
     display: flex;
     justify-content: space-around;
@@ -23,18 +24,52 @@ header{
     color:black;
     margin: 15px;
 }
+.dropdown{
+    position: relative;
+    display: inline-block;
+}
+.dropdown-content{
+    display: none;
+    position: absolute;
+    background-color: rgb(238, 181, 134);
+    min-width: 100px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+}
+.dropdown:hover .dropdown-content{
+    display: block;
+}
+.dropdown-content a{
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+.dropdown-content a:hover{
+    background-color: rgb(238, 181, 134);
+}
+.dropdown:hover .dropbtn{
+    background-color: rgb(238, 181, 134);
+}
+.dropbtn{
+    background-color: rgb(238, 181, 134);
+    color: black;
+    padding: 16px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+}
   section.result{
-    
-    flex-direction: row;
-    text-align: center;
-    background: rgba(253, 114, 0, 0.575);
+    display: flex;
+    max-height: 500px;
+    background: rgba(253, 114, 0, 0.65);
+    overflow: auto;
   }
   section.result img{
     max-width: 100px;
   }
 
 section.list{
-    background: rgb(253, 114, 0, 0.575);
+    background: rgb(253, 114, 0, 0.65);
     justify-content: center;
     flex-direction: row;
    }
