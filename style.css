@@ -5,63 +5,31 @@ html{
     box-sizing:inherit;
 }
 body{
-    background-image: url(
-        https://images.unsplash.com/photo-1524661135-423995f22d0b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1474&q=80);
+    background-image: url(Images/map.jpg);
     color: black;
     background-repeat: no-repeat;
     background-attachment:fixed;
     background-size: cover;
 }
 header{
-    background-color:rgba(255, 255, 255, 0.65);
+    background-color:rgba(255, 255, 255, 0.80);
     text-align: center;
 }
 
 .navbar{
     display: flex;
-    justify-content: space-around;
-    background-color: rgb(238, 181, 134);
-    color:black;
-    margin: 15px;
+    background-color: rgb(253, 114, 0, 0.80);
+    width: 40%;
+    margin:auto;
+    overflow: hidden; 
+    padding: 5% 10%;
+    border-radius: 20px;
 }
-.dropdown{
-    position: relative;
-    display: inline-block;
-}
-.dropdown-content{
-    display: none;
-    position: absolute;
-    background-color: rgb(238, 181, 134);
-    min-width: 100px;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-}
-.dropdown:hover .dropdown-content{
-    display: block;
-}
-.dropdown-content a{
-    color: black;
-    padding: 12px 16px;
-    text-decoration: none;
-    display: block;
-}
-.dropdown-content a:hover{
-    background-color: rgb(238, 181, 134);
-}
-.dropdown:hover .dropbtn{
-    background-color: rgb(238, 181, 134);
-}
-.dropbtn{
-    background-color: rgb(238, 181, 134);
-    color: black;
-    padding: 16px;
-    font-size: 16px;
-    border: none;
-    cursor: pointer;
-}
+
   section.result{
     display: flex;
     max-height: 500px;
-    background: rgba(253, 114, 0, 0.65);
+    background: rgba(255, 255, 255, 0.80);
     overflow: auto;
   }
   section.result img{
@@ -69,7 +37,7 @@ header{
   }
 
 section.list{
-    background: rgb(253, 114, 0, 0.65);
+    background: rgb(253, 114, 0, 0.80);
     justify-content: center;
     flex-direction: row;
    }
@@ -80,10 +48,11 @@ section.list{
 header,
 section,
 footer{
-    width: 60%;
+    width: 40%;
     margin: 15px auto;
     overflow: hidden; 
     padding: 5% 10%;
+    border-radius: 20px;
 }
 footer{
     text-align: center;
