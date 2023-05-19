@@ -5,18 +5,18 @@ html{
     box-sizing:inherit;
 }
 body{
-    background-image: url(Images/map.jpg);
+    background-color: #264653;
     color: black;
     background-repeat: no-repeat;
     background-attachment:fixed;
     background-size: cover;
 }
 header{
-    background-color:rgba(255, 255, 255, 0.80);
-    text-align: center;
+    background-color:#2a9d8f;
+    text-align:center;
 }
 
-.navbar{
+/* .navbar{
     display: flex;
     background-color: rgb(253, 114, 0, 0.80);
     width: 40%;
@@ -24,12 +24,12 @@ header{
     overflow: hidden; 
     padding: 5% 10%;
     border-radius: 20px;
-}
+} */
 
   section.result{
     display: flex;
     max-height: 500px;
-    background: rgba(255, 255, 255, 0.80);
+    background: #e9c46a;
     overflow: auto;
   }
   section.result img{
@@ -37,7 +37,7 @@ header{
   }
 
 section.list{
-    background: rgb(253, 114, 0, 0.80);
+    background: #f4a261;
     justify-content: center;
     flex-direction: row;
    }
@@ -56,4 +56,6 @@ footer{
 }
 footer{
     text-align: center;
+    color: #e76f51;
+    
 }
