@@ -10,21 +10,19 @@ body{
     background-repeat: no-repeat;
     background-attachment:fixed;
     background-size: cover;
-}
-header{
-    background-color:#2a9d8f;
-    text-align:center;
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }
 
-/* .navbar{
-    display: flex;
+header{
+    background-color:#2a9d8f; 
+}
+
+.navbar{
     background-color: rgb(253, 114, 0, 0.80);
-    width: 40%;
-    margin:auto;
-    overflow: hidden; 
-    padding: 5% 10%;
-    border-radius: 20px;
-} */
+    display: flex;
+    justify-content: space-between;
+    padding: 25px;
+}
 
   section.result{
     display: flex;
@@ -32,11 +30,12 @@ header{
     background: #e9c46a;
     overflow: auto;
   }
+ 
   section.result img{
     max-width: 100px;
   }
 
-section.list{
+/* section.list{
     background: #f4a261;
     justify-content: center;
     flex-direction: row;
@@ -44,7 +43,8 @@ section.list{
  
 .list{
     display: flex;
-}
+} */
+
 header,
 section,
 footer{
@@ -54,6 +54,7 @@ footer{
     padding: 5% 10%;
     border-radius: 20px;
 }
+
 footer{
     text-align: center;
     color: #e76f51;
