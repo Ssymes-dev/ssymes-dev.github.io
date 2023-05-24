@@ -1,9 +1,25 @@
+// populates dropdown list with country names from API
+let countries = "https://www.travel-advisory.info/api"
+
+fetch(countries)
+.then(response => response.json())
+.then(result => {
+    for (const choices in result.data) {
+        const countryName = result.data[choices].name;
+      
+        const choiceList = document.createElement('option');
+
+        choiceList.innerHTML =
+    `<li>${countryName}</li>`;
+document.getElementById('slctCountries').append(choiceList);
+}});
+
+// displays all information from API onclick
+function show(){
 const API_URL = 'https://www.travel-advisory.info/api';
 
 fetch(API_URL)
-
 .then(response => response.json())
-
 .then(result => {
     for (const list in result.data) {
         
@@ -27,21 +43,14 @@ fetch(API_URL)
         document.getElementById('country-list').append(countryList);
     }
 });
+}
 
-let countries = "https://www.travel-advisory.info/api"
+// create function to display chosen country
+function showOne(){
 
-fetch(countries)
-.then(response => response.json())
-.then(result => {
-    for (const choices in result.data) {
-        const countryName = result.data[choices].name;
-      
-        const choiceList = document.createElement('option');
+}
 
-        choiceList.innerHTML =
-    `<li>${countryName}</li>`;
-document.getElementById('slctCountries').append(choiceList);
-}});
+
 
 // //pop countries?
 
