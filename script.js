@@ -1,21 +1,36 @@
-// // populates dropdown list with country names from API
-// let countries = "https://www.travel-advisory.info/api"
+// two letter country codes (api)
+const choice = document.querySelector (select);
+console.log(choice);
+// const API = 'https://www.travel-advisory.info/api'
+// let feedback;
+// fetch(API)
+//     .then(response => response.json())
+//     .then(result => {
+//         for (const list in result.data) {
+//             const code = result.data[list].iso_alpha2;
 
-// fetch(countries)
-// .then(response => response.json())
-// .then(result => {
-//     for (const choices in result.data) {
-//         const countryName = result.data[choices].name;
-      
-//         const choiceList = document.createElement('option');
+//             const countryList = document.createElement('p');
+        
+//             countryList.innerHTML = 
+//                 `${code}`;
 
-//         choiceList.innerHTML =
-//     `<li>${countryName}</li>`;
-// document.getElementById('slctCountries').append(choiceList);
-// }});
+//     if (choice === API) {
+//         feedback = "Sucess";
+//     } else { 
+//         feedback = "fail"
+//     }
+//    const answer = document.createElement ('p')
+//    answer.innerHTML = feedback;
 
-// displays all information from API onclick
-function show(){
+// }
+//                     console.log(list);
+//         }
+//     )
+
+
+
+// displays all information from API onclick 
+function show() {
 const API_URL = 'https://www.travel-advisory.info/api';
 
     fetch(API_URL)
@@ -41,20 +56,11 @@ const API_URL = 'https://www.travel-advisory.info/api';
                     ${"From "+ source+" sources"} </li><br>`;
             document.getElementById('country-list').append(countryList);
         }
-     
     });
     }
 
-const countryChoice = document.getElementById('slctCountries')
-console.log('countryChoice', countryChoice)
 
 // create function to display choosen country
-function showOne(){
-
-}
-
-
-
 //display country based on dropdown
 //create a function that will take the country name and return the score and message
 //create a function that will take the score and message and return a color
