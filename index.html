@@ -8,7 +8,15 @@
     <link rel="stylesheet" href="style.css"/>
     <script src="script.js"></script> 
 </head>
-
+<!-- event listener experiment -->
+<style>
+    .hidden-content {
+    display: none;
+    }
+    .hidden-content.reveal-btn {
+    display: block;
+    }
+</style>
 <body>
     <nav class="navbar">
        <b>Home</b>
@@ -21,11 +29,24 @@
     </header>
     
 </body>
-<!-- add optgroups -->
-<section class="result">  
+
+<div class ="container">
+    <button class="reveal-btn">Reveal More</button>
+    <div class="hidden-content">
+        Lorem ipsum dolor sit amet. Ex odit quod At illo Quis qui officiis asperiores et velit harum et totam omnis sed accusamus 
+        dignissimos ut dignissimos esse? Et voluptate sint ea necessitatibus accusamus sed asperiores culpa id nihil perspiciatis
+        est saepe ipsa. Sit atque perspiciatis est omnis quas et asperiores quia ex quae autem? Sit nulla doloremque ut nisi sequi 
+        quo earum reiciendis eos consequatur alias est magni tenetur hic exercitationem beatae? Id quidem optio et voluptas dicta id 
+        mollitia eligendi est dicta quia hic perferendis perferendis nam error nostrum non optio perspiciatis? Et soluta dolorum qui minima 
+        exercitationem in impedit atque eum iste culpa.
+    </div>
+</div>
+
+<!-- <section class="result">  
     <div class="dropdown">    
         <lable> <b>Choose a Country:</b>
         <select name="slctCountries" id="slctCountries" class="dropdownCon"> 
+            <option selected = "Select a country"></option>
         <optgroup label="Africa">
             <option value="DZ">Algeria</option>
             <option value="AO">Angola</option>
@@ -72,7 +93,6 @@
             <option value="DK">Denmark</option>
             <option value="EE">Estonia</option>
         <optgroup label = "Australia">
-            <option value="">country</option>
             <option value="AS">American Samoa</option>
             <option value="AU">Australia</option>
             <option value="CK">Cook Islands</option>
@@ -112,266 +132,13 @@
             <option value="PE">Peru</option>
             <option value="SR">Suriname</option>
         </select>
-                <!-- <option class="list-items" value="AF">Afghanistan</option>
-                <option class="list-items" value="AX">Aland Islands</option>
-                <option class="list-items" value="AL">Albania</option>
-                <option class="list-items" value="DZ">Algeria</option>
-                <option class="list-items" value="AS">American Samoa</option>
-                <option class="list-items" value="AD">Andorra</option>
-                <option class="list-items" value="AO">Angola</option>
-                <option class="list-items" value="AI">Anguilla</option>
-                <option class="list-items" value="AQ">Antarctica</option>
-                <option class="list-items" value="AG">Antigua and Barbuda</option>
-                <option class="list-items" value="AR">Argentina</option>
-                <option class="list-items" value="AM">Armenia</option>
-                <option class="list-items" value="AW">Aruba</option>
-                <option class="list-items" value="AU">Australia</option>
-                <option class="list-items" value="AT">Austria</option>
-                <option class="list-items" value="AZ">Azerbaijan</option>
-                <option class="list-items" value="BS">Bahamas</option>
-                <option class="list-items" value="BH">Bahrain</option>
-                <option class="list-items" value="BD">Bangladesh</option>
-                <option class="list-items" value="BB">Barbados</option>
-                <option class="list-items" value="BY">Belarus</option>
-                <option class="list-items" value="BE">Belgium</option>
-                <option class="list-items" value="BZ">Belize</option>
-                <option class="list-items" value="BJ">Benin</option>
-                <option class="list-items" value="BM">Bermuda</option>
-                <option class="list-items" value="BT">Bhutan</option>
-                <option class="list-items" value="BO">Bolivia</option>
-                <option class="list-items" value="BQ">Bonaire, Sint Eustatius and Saba</option>
-                <option class="list-items" value="BA">Bosnia and Herzegovina</option>
-                <option class="list-items" value="BW">Botswana</option>
-                <option class="list-items" value="BV">Bouvet Island</option>
-                <option class="list-items" value="BR">Brazil</option>
-                <option class="list-items" value="IO">British Indian Ocean Territory</option>
-                <option class="list-items" value="BN">Brunei Darussalam</option>
-                <option class="list-items" value="BG">Bulgaria</option>
-                <option class="list-items" value="BF">Burkina Faso</option>
-                <option class="list-items" value="BI">Burundi</option>
-                <option class="list-items" value="KH">Cambodia</option>
-                <option class="list-items" value="CM">Cameroon</option>
-                <option class="list-items" value="CA">Canada</option>
-                <option class="list-items" value="CV">Cape Verde</option>
-                <option class="list-items" value="KY">Cayman Islands</option>
-                <option class="list-items" value="CF">Central African Republic</option>
-                <option class="list-items" value="TD">Chad</option>
-                <option class="list-items" value="CL">Chile</option>
-                <option class="list-items" value="CN">China</option>
-                <option class="list-items" value="CX">Christmas Island</option>
-                <option class="list-items" value="CC">Cocos (Keeling) Islands</option>
-                <option class="list-items" value="CO">Colombia</option>
-                <option class="list-items" value="KM">Comoros</option>
-                <option class="list-items" value="CG">Congo</option>
-                <option class="list-items" value="CD">Congo, Democratic Republic of the Congo</option>
-                <option class="list-items" value="CK">Cook Islands</option>
-                <option class="list-items" value="CR">Costa Rica</option>
-                <option class="list-items" value="CI">Cote D'Ivoire</option>
-                <option class="list-items" value="HR">Croatia</option>
-                <option class="list-items" value="CU">Cuba</option>
-                <option class="list-items" value="CW">Curacao</option>
-                <option class="list-items" value="CY">Cyprus</option>
-                <option class="list-items" value="CZ">Czech Republic</option>
-                <option class="list-items" value="DK">Denmark</option>
-                <option class="list-items" value="DJ">Djibouti</option>
-                <option class="list-items" value="DM">Dominica</option>
-                <option class="list-items" value="DO">Dominican Republic</option>
-                <option class="list-items" value="EC">Ecuador</option>
-                <option class="list-items" value="EG">Egypt</option>
-                <option class="list-items" value="SV">El Salvador</option>
-                <option class="list-items" value="GQ">Equatorial Guinea</option>
-                <option class="list-items" value="ER">Eritrea</option>
-                <option class="list-items" value="EE">Estonia</option>
-                <option class="list-items" value="ET">Ethiopia</option>
-                <option class="list-items" value="FK">Falkland Islands (Malvinas)</option>
-                <option class="list-items" value="FO">Faroe Islands</option>
-                <option class="list-items" value="FJ">Fiji</option>
-                <option class="list-items" value="FI">Finland</option>
-                <option class="list-items" value="FR">France</option>
-                <option class="list-items" value="GF">French Guiana</option>
-                <option class="list-items" value="PF">French Polynesia</option>
-                <option class="list-items" value="TF">French Southern Territories</option>
-                <option class="list-items" value="GA">Gabon</option>
-                <option class="list-items" value="GM">Gambia</option>
-                <option class="list-items" value="GE">Georgia</option>
-                <option class="list-items" value="DE">Germany</option>
-                <option class="list-items" value="GH">Ghana</option>
-                <option class="list-items" value="GI">Gibraltar</option>
-                <option class="list-items" value="GR">Greece</option>
-                <option class="list-items" value="GL">Greenland</option>
-                <option class="list-items" value="GD">Grenada</option>
-                <option class="list-items" value="GP">Guadeloupe</option>
-                <option class="list-items" value="GU">Guam</option>
-                <option class="list-items" value="GT">Guatemala</option>
-                <option class="list-items" value="GG">Guernsey</option>
-                <option class="list-items" value="GN">Guinea</option>
-                <option class="list-items" value="GW">Guinea-Bissau</option>
-                <option class="list-items" value="GY">Guyana</option>
-                <option class="list-items" value="HT">Haiti</option>
-                <option class="list-items" value="HM">Heard Island and Mcdonald Islands</option>
-                <option class="list-items" value="VA">Holy See (Vatican City State)</option>
-                <option class="list-items" value="HN">Honduras</option>
-                <option class="list-items" value="HK">Hong Kong</option>
-                <option class="list-items" value="HU">Hungary</option>
-                <option class="list-items" value="IS">Iceland</option>
-                <option class="list-items" value="IN">India</option>
-                <option class="list-items" value="ID">Indonesia</option>
-                <option class="list-items" value="IR">Iran, Islamic Republic of</option>
-                <option class="list-items" value="IQ">Iraq</option>
-                <option class="list-items" value="IE">Ireland</option>
-                <option class="list-items" value="IM">Isle of Man</option>
-                <option class="list-items" value="IL">Israel</option>
-                <option class="list-items" value="IT">Italy</option>
-                <option class="list-items" value="JM">Jamaica</option>
-                <option class="list-items" value="JP">Japan</option>
-                <option class="list-items" value="JE">Jersey</option>
-                <option class="list-items" value="JO">Jordan</option>
-                <option class="list-items" value="KZ">Kazakhstan</option>
-                <option class="list-items" value="KE">Kenya</option>
-                <option class="list-items" value="KI">Kiribati</option>
-                <option class="list-items" value="KP">Korea, Democratic People's Republic of</option>
-                <option class="list-items" value="KR">Korea, Republic of</option>
-                <option class="list-items" value="XK">Kosovo</option>
-                <option class="list-items" value="KW">Kuwait</option>
-                <option class="list-items" value="KG">Kyrgyzstan</option>
-                <option class="list-items" value="LA">Lao People's Democratic Republic</option>
-                <option class="list-items" value="LV">Latvia</option>
-                <option class="list-items" value="LB">Lebanon</option>
-                <option class="list-items" value="LS">Lesotho</option>
-                <option class="list-items" value="LR">Liberia</option>
-                <option class="list-items" value="LY">Libyan Arab Jamahiriya</option>
-                <option class="list-items" value="LI">Liechtenstein</option>
-                <option class="list-items" value="LT">Lithuania</option>
-                <option class="list-items" value="LU">Luxembourg</option>
-                <option class="list-items" value="MO">Macao</option>
-                <option class="list-items" value="MK">Macedonia, the Former Yugoslav Republic of</option>
-                <option class="list-items" value="MG">Madagascar</option>
-                <option class="list-items" value="MW">Malawi</option>
-                <option class="list-items" value="MY">Malaysia</option>
-                <option class="list-items" value="MV">Maldives</option>
-                <option class="list-items" value="ML">Mali</option>
-                <option class="list-items" value="MT">Malta</option>
-                <option class="list-items" value="MH">Marshall Islands</option>
-                <option class="list-items" value="MQ">Martinique</option>
-                <option class="list-items" value="MR">Mauritania</option>
-                <option class="list-items" value="MU">Mauritius</option>
-                <option class="list-items" value="YT">Mayotte</option>
-                <option class="list-items" value="MX">Mexico</option>
-                <option class="list-items" value="FM">Micronesia, Federated States of</option>
-                <option class="list-items" value="MD">Moldova, Republic of</option>
-                <option class="list-items" value="MC">Monaco</option>
-                <option class="list-items" value="MN">Mongolia</option>
-                <option class="list-items" value="ME">Montenegro</option>
-                <option class="list-items" value="MS">Montserrat</option>
-                <option class="list-items" value="MA">Morocco</option>
-                <option class="list-items" value="MZ">Mozambique</option>
-                <option class="list-items" value="MM">Myanmar</option>
-                <option class="list-items" value="NA">Namibia</option>
-                <option class="list-items" value="NR">Nauru</option>
-                <option class="list-items" value="NP">Nepal</option>
-                <option class="list-items" value="NL">Netherlands</option>
-                <option class="list-items" value="AN">Netherlands Antilles</option>
-                <option class="list-items" value="NC">New Caledonia</option>
-                <option class="list-items" value="NZ">New Zealand</option>
-                <option class="list-items" value="NI">Nicaragua</option>
-                <option class="list-items" value="NE">Niger</option>
-                <option class="list-items" value="NG">Nigeria</option>
-                <option class="list-items" value="NU">Niue</option>
-                <option class="list-items" value="NF">Norfolk Island</option>
-                <option class="list-items" value="MP">Northern Mariana Islands</option>
-                <option class="list-items" value="NO">Norway</option>
-                <option class="list-items" value="OM">Oman</option>
-                <option class="list-items" value="PK">Pakistan</option>
-                <option class="list-items" value="PW">Palau</option>
-                <option class="list-items" value="PS">Palestinian Territory, Occupied</option>
-                <option class="list-items" value="PA">Panama</option>
-                <option class="list-items" value="PG">Papua New Guinea</option>
-                <option class="list-items" value="PY">Paraguay</option>
-                <option class="list-items" value="PE">Peru</option>
-                <option class="list-items" value="PH">Philippines</option>
-                <option class="list-items" value="PN">Pitcairn</option>
-                <option class="list-items" value="PL">Poland</option>
-                <option class="list-items" value="PT">Portugal</option>
-                <option class="list-items" value="PR">Puerto Rico</option>
-                <option class="list-items" value="QA">Qatar</option>
-                <option class="list-items" value="RE">Reunion</option>
-                <option class="list-items" value="RO">Romania</option>
-                <option class="list-items" value="RU">Russian Federation</option>
-                <option class="list-items" value="RW">Rwanda</option>
-                <option class="list-items" value="BL">Saint Barthelemy</option>
-                <option class="list-items" value="SH">Saint Helena</option>
-                <option class="list-items" value="KN">Saint Kitts and Nevis</option>
-                <option class="list-items" value="LC">Saint Lucia</option>
-                <option class="list-items" value="MF">Saint Martin</option>
-                <option class="list-items" value="PM">Saint Pierre and Miquelon</option>
-                <option class="list-items" value="VC">Saint Vincent and the Grenadines</option>
-                <option class="list-items" value="WS">Samoa</option>
-                <option class="list-items" value="SM">San Marino</option>
-                <option class="list-items" value="ST">Sao Tome and Principe</option>
-                <option class="list-items" value="SA">Saudi Arabia</option>
-                <option class="list-items" value="SN">Senegal</option>
-                <option class="list-items" value="RS">Serbia</option>
-                <option class="list-items" value="CS">Serbia and Montenegro</option>
-                <option class="list-items" value="SC">Seychelles</option>
-                <option class="list-items" value="SL">Sierra Leone</option>
-                <option class="list-items" value="SG">Singapore</option>
-                <option class="list-items" value="SX">Sint Maarten</option>
-                <option class="list-items" value="SK">Slovakia</option>
-                <option class="list-items" value="SI">Slovenia</option>
-                <option class="list-items" value="SB">Solomon Islands</option>
-                <option class="list-items" value="SO">Somalia</option>
-                <option class="list-items" value="ZA">South Africa</option>
-                <option class="list-items" value="GS">South Georgia and the South Sandwich Islands</option>
-                <option class="list-items" value="SS">South Sudan</option>
-                <option class="list-items" value="ES">Spain</option>
-                <option class="list-items" value="LK">Sri Lanka</option>
-                <option class="list-items" value="SD">Sudan</option>
-                <option class="list-items" value="SR">Suriname</option>
-                <option class="list-items" value="SJ">Svalbard and Jan Mayen</option>
-                <option class="list-items" value="SZ">Swaziland</option>
-                <option class="list-items" value="SE">Sweden</option>
-                <option class="list-items" value="CH">Switzerland</option>
-                <option class="list-items" value="SY">Syrian Arab Republic</option>
-                <option class="list-items" value="TW">Taiwan, Province of China</option>
-                <option class="list-items" value="TJ">Tajikistan</option>
-                <option class="list-items" value="TZ">Tanzania, United Republic of</option>
-                <option class="list-items" value="TH">Thailand</option>
-                <option class="list-items" value="TL">Timor-Leste</option>
-                <option class="list-items" value="TG">Togo</option>
-                <option class="list-items" value="TK">Tokelau</option>
-                <option class="list-items" value="TO">Tonga</option>
-                <option class="list-items" value="TT">Trinidad and Tobago</option>
-                <option class="list-items" value="TN">Tunisia</option>
-                <option class="list-items" value="TR">Turkey</option>
-                <option class="list-items" value="TM">Turkmenistan</option>
-                <option class="list-items" value="TC">Turks and Caicos Islands</option>
-                <option class="list-items" value="TV">Tuvalu</option>
-                <option class="list-items" value="UG">Uganda</option>
-                <option class="list-items" value="UA">Ukraine</option>
-                <option class="list-items" value="AE">United Arab Emirates</option>
-                <option class="list-items" value="GB">United Kingdom</option>
-                <option class="list-items" value="US">United States</option>
-                <option class="list-items" value="UM">United States Minor Outlying Islands</option>
-                <option class="list-items" value="UY">Uruguay</option>
-                <option class="list-items" value="UZ">Uzbekistan</option>
-                <option class="list-items" value="VU">Vanuatu</option>
-                <option class="list-items" value="VE">Venezuela</option>
-                <option class="list-items" value="VN">Viet Nam</option>
-                <option class="list-items" value="VG">Virgin Islands, British</option>
-                <option class="list-items" value="VI">Virgin Islands, U.s.</option>
-                <option class="list-items" value="WF">Wallis and Futuna</option>
-                <option class="list-items" value="EH">Western Sahara</option>
-                <option class="list-items" value="YE">Yemen</option>
-                <option class="list-items" value="ZM">Zambia</option>
-                <option class="list-items" value="ZW">Zimbabwe</option> -->
-            
-        <button class="subButton" onclick="show()">Submit</button>
+        <button class="btn" onclick="show()">Submit</button>
     </div>
     <div id="country-list"></div>
 </section>
 
 <footer>
     <p>Source of data: <a href="https://www.travel-advisory.info">Travel-Advisory.info</a></p>
-</footer>
+</footer> -->
 </body>
 </html>
