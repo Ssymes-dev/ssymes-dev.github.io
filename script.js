@@ -28,6 +28,7 @@
 //     )
 
 // experimenting with adding event listener >> element.addEventListener("click", function);
+// this will evenually apply to API data
 const revealBtn = document.querySelector(".reveal-btn");
 const hiddenContent = document.querySelector(".hidden-content");
 
@@ -39,6 +40,20 @@ function revealContent() {
   }
 }
 revealBtn.addEventListener("click", revealContent);
+
+
+// *WIP* assigns input from dropdown to a variable
+
+var input = document.getElementById("slctCountries");
+
+ input.addEventListener('change', show (){
+    var countryValue = this.options[this.selectedIndex].value;
+    var countryText = this.options[this.selectedIndex].text;
+    window.location = locationValue;
+ });
+
+
+
 
 // displays all information from API onclick
 function show() {
