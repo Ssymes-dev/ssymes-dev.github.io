@@ -1,144 +1,153 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Travel Advisory</title>
-    <link rel="stylesheet" href="style.css"/>
-    <script src="script.js"></script> 
+    <link rel="stylesheet" href="style.css" />
+    <script src="script.js" defer></script>
 </head>
 <!-- event listener experiment -->
 <style>
     .hidden-content {
-    display: none;
+        display: none;
     }
+
     .hidden-content.reveal-btn {
-    display: block;
+        display: block;
     }
 </style>
+
 <body>
     <nav class="navbar">
-       <b>Home</b>
-       <b>Project Name</b>
+        <b>Home</b>
+        <b>Project Name</b>
     </nav>
 
     <header>
         <h1>Travel Advisory</h1>
         <p>Global Saftey Reports</p>
     </header>
-    
+
 </body>
 
-<div class ="container">
+<div class="container">
     <button class="reveal-btn">Reveal More</button>
     <div class="hidden-content">
-        Lorem ipsum dolor sit amet. Ex odit quod At illo Quis qui officiis asperiores et velit harum et totam omnis sed accusamus 
-        dignissimos ut dignissimos esse? Et voluptate sint ea necessitatibus accusamus sed asperiores culpa id nihil perspiciatis
-        est saepe ipsa. Sit atque perspiciatis est omnis quas et asperiores quia ex quae autem? Sit nulla doloremque ut nisi sequi 
-        quo earum reiciendis eos consequatur alias est magni tenetur hic exercitationem beatae? Id quidem optio et voluptas dicta id 
-        mollitia eligendi est dicta quia hic perferendis perferendis nam error nostrum non optio perspiciatis? Et soluta dolorum qui minima 
+        Lorem ipsum dolor sit amet. Ex odit quod At illo Quis qui officiis asperiores et velit harum et totam omnis sed
+        accusamus
+        dignissimos ut dignissimos esse? Et voluptate sint ea necessitatibus accusamus sed asperiores culpa id nihil
+        perspiciatis
+        est saepe ipsa. Sit atque perspiciatis est omnis quas et asperiores quia ex quae autem? Sit nulla doloremque ut
+        nisi sequi
+        quo earum reiciendis eos consequatur alias est magni tenetur hic exercitationem beatae? Id quidem optio et
+        voluptas dicta id
+        mollitia eligendi est dicta quia hic perferendis perferendis nam error nostrum non optio perspiciatis? Et soluta
+        dolorum qui minima
         exercitationem in impedit atque eum iste culpa.
     </div>
 </div>
 
-<!-- <section class="result">  
-    <div class="dropdown">    
+<section class="result">
+    <div class="dropdown">
         <lable> <b>Choose a Country:</b>
-        <select name="slctCountries" id="slctCountries" class="dropdownCon"> 
-            <option selected = "Select a country"></option>
-        <optgroup label="Africa">
-            <option value="DZ">Algeria</option>
-            <option value="AO">Angola</option>
-            <option value="BJ">Benin</option>
-            <option value="BW">Botswana</option>
-            <option value="BF">Burkina Faso</option>
-            <option value="BI">Burundi</option>
-            <option value="CM">Cameroon</option>
-            <option value="CV">Cape Verde</option>
-            <option value="CF">Central African Republic</option>
-            <option value="TD">Chad</option>
-            <option value="KM">Comoros</option>
-            <option value="CG">Congo</option>
-        <optgroup label = "Antartica">
-            <option value="AQ">Antarctica</option>
-            <option value="BV">Bouvet Island</option>
-            <option value="TF">French Southern Territories</option>
-            <option value="HM">Heard Island and Mcdonald Islands</option>
-            <option value="GS">South Georgia and the South Sandwich Islands</option>
-        <optgroup label = "Asia">
-            <option value="AF">Afghanistan</option>
-            <option value="AM">Armenia</option>
-            <option value="AZ">Azerbaijan</option>
-            <option value="BH">Bahrain</option>
-            <option value="BD">Bangladesh</option>
-            <option value="BT">Bhutan</option>
-            <option value="IO">British Indian Ocean Territory</option>
-            <option value="BN">Brunei Darussalam</option>
-            <option value="KH">Cambodia</option>
-            <option value="CN">China</option>
-            <option value="CX">Christmas Island</option>
-            <option value="CC">Cocos (Keeling) Islands</option>
-        <optgroup label ="Europe">
-            <option value="AX">Aland Islands</option>
-            <option value="AL">Albania</option>
-            <option value="AD">Andorra</option>
-            <option value="AT">Austria</option>
-            <option value="BY">Belarus</option>
-            <option value="BE">Belgium</option>
-            <option value="BA">Bosnia and Herzegovina</option>
-            <option value="BG">Bulgaria</option>
-            <option value="HR">Croatia</option>
-            <option value="CZ">Czech Republic</option>
-            <option value="DK">Denmark</option>
-            <option value="EE">Estonia</option>
-        <optgroup label = "Australia">
-            <option value="AS">American Samoa</option>
-            <option value="AU">Australia</option>
-            <option value="CK">Cook Islands</option>
-            <option value="FJ">Fiji</option>
-            <option value="PF">French Polynesia</option>
-            <option value="GU">Guam</option>
-            <option value="KI">Kiribati</option>
-            <option value="MH">Marshall Islands</option>
-            <option value="FM">Micronesia, Federated States of</option>
-            <option value="NR">Nauru</option>
-            <option value="NC">New Caledonia</option>
-            <option value="NZ">New Zealand</option>
-        <optgroup label = "North America">
-            <option value="AI">Anguilla</option>
-            <option value="AG">Antigua and Barbuda</option>
-            <option value="AW">Aruba</option>
-            <option value="BS">Bahamas</option>
-            <option value="BB">Barbados</option>
-            <option value="BZ">Belize</option>
-            <option value="BM">Bermuda</option>
-            <option value="BQ">Bonaire, Sint Eustatius and Saba</option>
-            <option value="CA">Canada</option>
-            <option value="KY">Cayman Islands</option>
-            <option value="CR">Costa Rica</option>
-            <option value="CU">Cuba</option>
-        <optgroup label = "South America">
-            <option value="AR">Argentina</option>
-            <option value="BO">Bolivia</option>
-            <option value="BR">Brazil</option>
-            <option value="CL">Chile</option>
-            <option value="CO">Colombia</option>
-            <option value="EC">Ecuador</option>
-            <option value="FK">Falkland Islands (Malvinas)</option>
-            <option value="GF">French Guiana</option>
-            <option value="GY">Guyana</option>
-            <option value="PY">Paraguay</option>
-            <option value="PE">Peru</option>
-            <option value="SR">Suriname</option>
-        </select>
-        <button class="btn" onclick="show()">Submit</button>
+            <select name="slctCountries" id="slctCountries" class="dropdownCon">
+                <option selected="Select a country"></option>
+                <optgroup label="Africa">
+                    <option value="DZ">Algeria</option>
+                    <option value="AO">Angola</option>
+                    <option value="BJ">Benin</option>
+                    <option value="BW">Botswana</option>
+                    <option value="BF">Burkina Faso</option>
+                    <option value="BI">Burundi</option>
+                    <option value="CM">Cameroon</option>
+                    <option value="CV">Cape Verde</option>
+                    <option value="CF">Central African Republic</option>
+                    <option value="TD">Chad</option>
+                    <option value="KM">Comoros</option>
+                    <option value="CG">Congo</option>
+                <optgroup label="Antartica">
+                    <option value="AQ">Antarctica</option>
+                    <option value="BV">Bouvet Island</option>
+                    <option value="TF">French Southern Territories</option>
+                    <option value="HM">Heard Island and Mcdonald Islands</option>
+                    <option value="GS">South Georgia and the South Sandwich Islands</option>
+                <optgroup label="Asia">
+                    <option value="AF">Afghanistan</option>
+                    <option value="AM">Armenia</option>
+                    <option value="AZ">Azerbaijan</option>
+                    <option value="BH">Bahrain</option>
+                    <option value="BD">Bangladesh</option>
+                    <option value="BT">Bhutan</option>
+                    <option value="IO">British Indian Ocean Territory</option>
+                    <option value="BN">Brunei Darussalam</option>
+                    <option value="KH">Cambodia</option>
+                    <option value="CN">China</option>
+                    <option value="CX">Christmas Island</option>
+                    <option value="CC">Cocos (Keeling) Islands</option>
+                <optgroup label="Europe">
+                    <option value="AX">Aland Islands</option>
+                    <option value="AL">Albania</option>
+                    <option value="AD">Andorra</option>
+                    <option value="AT">Austria</option>
+                    <option value="BY">Belarus</option>
+                    <option value="BE">Belgium</option>
+                    <option value="BA">Bosnia and Herzegovina</option>
+                    <option value="BG">Bulgaria</option>
+                    <option value="HR">Croatia</option>
+                    <option value="CZ">Czech Republic</option>
+                    <option value="DK">Denmark</option>
+                    <option value="EE">Estonia</option>
+                <optgroup label="Australia">
+                    <option value="AS">American Samoa</option>
+                    <option value="AU">Australia</option>
+                    <option value="CK">Cook Islands</option>
+                    <option value="FJ">Fiji</option>
+                    <option value="PF">French Polynesia</option>
+                    <option value="GU">Guam</option>
+                    <option value="KI">Kiribati</option>
+                    <option value="MH">Marshall Islands</option>
+                    <option value="FM">Micronesia, Federated States of</option>
+                    <option value="NR">Nauru</option>
+                    <option value="NC">New Caledonia</option>
+                    <option value="NZ">New Zealand</option>
+                <optgroup label="North America">
+                    <option value="AI">Anguilla</option>
+                    <option value="AG">Antigua and Barbuda</option>
+                    <option value="AW">Aruba</option>
+                    <option value="BS">Bahamas</option>
+                    <option value="BB">Barbados</option>
+                    <option value="BZ">Belize</option>
+                    <option value="BM">Bermuda</option>
+                    <option value="BQ">Bonaire, Sint Eustatius and Saba</option>
+                    <option value="CA">Canada</option>
+                    <option value="KY">Cayman Islands</option>
+                    <option value="CR">Costa Rica</option>
+                    <option value="CU">Cuba</option>
+                <optgroup label="South America">
+                    <option value="AR">Argentina</option>
+                    <option value="BO">Bolivia</option>
+                    <option value="BR">Brazil</option>
+                    <option value="CL">Chile</option>
+                    <option value="CO">Colombia</option>
+                    <option value="EC">Ecuador</option>
+                    <option value="FK">Falkland Islands (Malvinas)</option>
+                    <option value="GF">French Guiana</option>
+                    <option value="GY">Guyana</option>
+                    <option value="PY">Paraguay</option>
+                    <option value="PE">Peru</option>
+                    <option value="SR">Suriname</option>
+            </select>
+            <button class="btn" onclick="show()">Submit</button>
     </div>
     <div id="country-list"></div>
 </section>
 
 <footer>
     <p>Source of data: <a href="https://www.travel-advisory.info">Travel-Advisory.info</a></p>
-</footer> -->
+</footer>
 </body>
+
 </html>
