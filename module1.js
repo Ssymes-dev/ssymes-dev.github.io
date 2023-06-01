@@ -1,21 +1,22 @@
-// *WIP*
+// *WIP* module experement 
 
-class expression : const countryApi = class {
+class CountryApi {
     constructor(
     countryName,
     code,
-    counrtyScore,
+    countryScore,
     countryMessage,
     lastUpdated,
     source
-    ){
-        this.countryName =
-        this.code =
-        this.countryScore = 
-        this.countryMessage = 
-        this.lastUpdated = 
-        this.source = 
-    }
+    )
+    {
+        this.countryName = countryName;
+        this.code = code;
+        this.countryScore = countryScore; 
+        this.countryMessage = countryMessage;
+        this.lastUpdated = lastUpdated;
+        this.source = source;
+    }}
     
 show() {
     const API_URL = "https://www.travel-advisory.info/api";

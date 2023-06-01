@@ -41,27 +41,35 @@ function revealContent() {
 }
 revealBtn.addEventListener("click", revealContent);
 
+const dropdownMenu = document.getElementById("slctCountries");
+
+const submitButton = document.querySelector(".btn");
+
+submitButton.onclick = (e) => {
+  e.preventDefault();
+  show(dropdownMenu.value);
+  console.log(dropdownMenu.value);
+};
 
 // *WIP* assigns input from dropdown to a variable
 
-var input = document.getElementById("slctCountries");
-
- input.addEventListener('change', show (){
-    var countryValue = this.options[this.selectedIndex].value;
-    var countryText = this.options[this.selectedIndex].text;
-    window.location = locationValue;
- });
-
-
-
+// dropdownMenu.addEventListener('change', show ()){
+//     var countryValue = this.options[this.selectedIndex].value;
+//     var countryText = this.options[this.selectedIndex].text;
+//     window.location = locationValue;
+//  });
 
 // displays all information from API onclick
-function show() {
-  const API_URL = "https://www.travel-advisory.info/api";
+
+function show(countryCode) {
+  console.log("hello");
+  const API_URL = `https://www.travel-advisory.info/api?countrycode=${countryCode}`;
+  //   append country code
 
   fetch(API_URL)
     .then((response) => response.json())
     .then((result) => {
+      console.log(result.data);
       for (const list in result.data) {
         const countryName = result.data[list].name;
         const code = result.data[list].iso_alpha2;
