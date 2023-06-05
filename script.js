@@ -1,46 +1,4 @@
-// logs two letter country codes
-// const choice = document.getElementsByClassName ('dropdownCon')
-// console.log(choice);
-// const API = 'https://www.travel-advisory.info/api'
-// let feedback;
-// fetch(API)
-//     .then(response => response.json())
-//     .then(result => {
-//         for (const list in result.data) {
-//             const code = result.data[list].iso_alpha2;
-
-//             const countryList = document.createElement('p');
-
-//             countryList.innerHTML =
-//                 `${code}`;
-
-//     if (choice === API) {
-//         feedback = "Sucess";
-//     } else {
-//         feedback = "fail"
-//     }
-//    const answer = document.createElement ('p')
-//    answer.innerHTML = feedback;
-
-// }
-//                     console.log(list);
-//         }
-//     )
-
-// experimenting with adding event listener >> element.addEventListener("click", function);
-// this will evenually apply to API data
-const revealBtn = document.querySelector(".reveal-btn");
-const hiddenContent = document.querySelector(".hidden-content");
-
-function revealContent() {
-  if (hiddenContent.classList.contains("reveal-btn")) {
-    hiddenContent.classList.remove("reveal-btn");
-  } else {
-    hiddenContent.classList.add("reveal-btn");
-  }
-}
-revealBtn.addEventListener("click", revealContent);
-
+//shows selected country on page. does not clear choice before new choice is made.
 const dropdownMenu = document.getElementById("slctCountries");
 
 const submitButton = document.querySelector(".btn");
@@ -51,20 +9,10 @@ submitButton.onclick = (e) => {
   console.log(dropdownMenu.value);
 };
 
-// *WIP* assigns input from dropdown to a variable
-
-// dropdownMenu.addEventListener('change', show ()){
-//     var countryValue = this.options[this.selectedIndex].value;
-//     var countryText = this.options[this.selectedIndex].text;
-//     window.location = locationValue;
-//  });
-
 // displays all information from API onclick
-
 function show(countryCode) {
   console.log("hello");
   const API_URL = `https://www.travel-advisory.info/api?countrycode=${countryCode}`;
-  //   append country code
 
   fetch(API_URL)
     .then((response) => response.json())
@@ -91,9 +39,6 @@ function show(countryCode) {
     });
 }
 
-// // create function to display choosen country
-
-// //display country based on dropdown
 // //create a function that will take the country name and return the score and message
 // //create a function that will take the score and message and return a color
 // //associate counrty flag with country name

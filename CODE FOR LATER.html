@@ -1,0 +1,44 @@
+<!-- makes content hide/appear -->
+<div class="container">
+    <button class="reveal-btn">Reveal More</button>
+    <div class="hidden-content">
+        Lorem ipsum dolor sit amet. Ex odit quod At illo Quis qui officiis asperiores et velit harum et totam omnis sed
+        accusamus
+        dignissimos ut dignissimos esse? Et voluptate sint ea necessitatibus accusamus sed asperiores culpa id nihil
+        perspiciatis
+        est saepe ipsa. Sit atque perspiciatis est omnis quas et asperiores quia ex quae autem? Sit nulla doloremque ut
+        nisi sequi
+        quo earum reiciendis eos consequatur alias est magni tenetur hic exercitationem beatae? Id quidem optio et
+        voluptas dicta id
+        mollitia eligendi est dicta quia hic perferendis perferendis nam error nostrum non optio perspiciatis? Et soluta
+        dolorum qui minima
+        exercitationem in impedit atque eum iste culpa.
+    </div>
+</div>
+<button class="reveal-btn">Reveal More</button>
+<script>
+    const revealBtn = document.querySelector(".reveal-btn");
+    const hiddenContent = document.querySelector(".hidden-content");
+
+    function revealContent() {
+        if (hiddenContent.classList.contains("reveal-btn")) {
+            hiddenContent.classList.remove("reveal-btn");
+        } else {
+            hiddenContent.classList.add("reveal-btn");
+        }
+    }
+</script>
+<!-- END -->
+
+
+
+
+<!-- *WIP* assigns input from dropdown to a variable -->
+<script>
+    dropdownMenu.addEventListener('change', show()){
+        var countryValue = this.options[this.selectedIndex].value;
+        var countryText = this.options[this.selectedIndex].text;
+        window.location = locationValue;
+    });
+</script>
+<!-- END -->
