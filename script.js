@@ -12,12 +12,12 @@ submitButton.onclick = (e) => {
 function display(countryCode) {
   console.log("hello");
   const apiData = `https://www.travel-advisory.info/api?countrycode=${countryCode}`;
-
   fetch(apiData)
     .then((response) => response.json())
     .then((result) => {
       console.log(result.data);
-      const list = JSON.parse('{""}');
+
+      const list = JSON.parse([result.data]);
       const countryList = document.createElement("p");
 
       countryList.innerHTML = result.data[list].name;
