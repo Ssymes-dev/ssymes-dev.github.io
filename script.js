@@ -9,20 +9,22 @@ submitButton.onclick = (e) => {
   console.log(dropdownMenu.value);
 };
 
-async function display() {
-  let apiData;
-  const response = await fetch("https://www.travel-advisory.info", {
-    mode: "no-cors",
-    headers: {
-      "Acess-Control-Allow-Origin": "*",
-    },
-  });
+function display(countryCode) {
+  console.log("hello");
+  const apiData = `https://www.travel-advisory.info/api?countrycode=${countryCode}`;
 
-  apiData = await response.json();
-  console.log(apiData);
+  fetch(apiData)
+    .then((response) => response.json())
+    .then((result) => {
+      console.log(result.data);
+      const list = JSON.parse('{""}');
+      const countryList = document.createElement("p");
+
+      countryList.innerHTML = result.data[list].name;
+
+      document.getElementById("country-list").append(countryList);
+    });
 }
-display();
-
 // // *WIP* parse locally stored API
 
 // //create a function that will take the country name and return the score and message
