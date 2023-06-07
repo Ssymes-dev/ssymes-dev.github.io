@@ -5,26 +5,30 @@ const submitButton = document.querySelector(".btn");
 
 submitButton.onclick = (e) => {
   e.preventDefault();
-  display(dropdownMenu.value);
+  // display(dropdownMenu.value); how to pass variable now that function is gone
   console.log(dropdownMenu.value);
 };
 
-function display(countryCode) {
-  console.log("hello");
-  const apiData = `https://www.travel-advisory.info/api?countrycode=${countryCode}`;
-  fetch(apiData)
-    .then((response) => response.json())
-    .then((result) => {
-      console.log(result.data);
+const myList = document.querySelector("ul");
+const apiData = `https://www.travel-advisory.info/api`;
+fetch(apiData)
+  .then((response) => response.json())
+  .then((result) => {
+    console.log(result.data);
+    for (const country in result.data) {
+      const listItem = document.createElement("li");
+      listItem.appendChild(document.createElement("strong")).textContent =
+        result.data[country].name;
+      listItem.append` ${result.data[country].advisory.message}`;
+      listItem.appendChild(
+        document.createElement("strong")
+      ).textContent = `${result.data[country].advisory.sources_active} sources avaliable`;
+      myList.appendChild(listItem);
+    }
+  })
 
-      const list = JSON.parse([result.data]);
-      const countryList = document.createElement("p");
+  .catch(console.error);
 
-      countryList.innerHTML = result.data[list].name;
-
-      document.getElementById("country-list").append(countryList);
-    });
-}
 // // *WIP* parse locally stored API
 
 // //create a function that will take the country name and return the score and message
