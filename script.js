@@ -9,6 +9,11 @@ submitButton.onclick = (e) => {
   console.log(dropdownMenu.value);
 };
 
+function display() {
+  var choice = document.getElementById("country-list").value;
+  console.log(choice);
+}
+
 const myList = document.querySelector("ul");
 const apiData = `https://www.travel-advisory.info/api`;
 fetch(apiData)
