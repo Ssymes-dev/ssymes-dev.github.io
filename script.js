@@ -10,19 +10,8 @@ submitButton.onclick = (e) => {
   console.log(countryCode);
 };
 
-<<<<<<< HEAD
 let info = {};
 fetch(`https://www.travel-advisory.info/api`)
-=======
-function display() {
-  var choice = document.getElementById("country-list").value;
-  console.log(choice);
-}
-
-const myList = document.querySelector("ul");
-const apiData = `https://www.travel-advisory.info/api`;
-fetch(apiData)
->>>>>>> 6eca3e088665a601c00d48eecb6c2d375dd34138
   .then((response) => response.json())
   .then((result) => {
     info = result.data;
