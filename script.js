@@ -1,36 +1,30 @@
 //populate dropdown and log choice
 const dropdownMenu = document.getElementById("allCountries");
 
+let countryCode;
 const submitButton = document.querySelector(".btn");
-
-let { countryCode } = (submitButton.onclick = (e) => {
+submitButton.onclick = (e) => {
   e.preventDefault();
+  getObjectFromAPI(dropdownMenu.value);
   countryCode = dropdownMenu.value;
-  console.log(countryCode);
-});
-
-let { info } = fetch(`https://www.travel-advisory.info/api`)
-  .then((response) => response.json())
-  .then((result) => {
-    info = result.data;
-    display();
-    console.log(Object.keys(info));
-  });
+  console.log(dropdownMenu.value);
+};
 
 // create function to take in countryCode and manupulate info
-// to isolate one object in console
-function display(countryCode) {
-  for (const list in info) {
-    const countryMessage = info[list].advisory.message;
-    let result;
-    if ((countryCode = Object.keys(info))) {
-      result = "sucess";
-    } else {
-      result = "error";
-    }
-    console.log(countryMessage);
-  }
+let apiData;
+function getObjectFromAPI(countryCode) {
+  const apiUrl = `https://www.travel-advisory.info/api?countrycode=${countryCode}`;
+  fetch(apiUrl)
+    .then((response) => response.json())
+    .then((data) => {
+      apiData = data.data;
+      console.log(apiData);
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+    });
 }
+getObjectFromAPI("countryCode");
 
 // *phase 2*
 //create a function that will take the country name and return the score and message
