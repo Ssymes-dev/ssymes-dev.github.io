@@ -19,26 +19,32 @@ function getObjectFromAPI(countryCode) {
     .then((result) => {
       const data = result.data;
       console.log(data);
-      for (const list in data) {
-        const countryName = data[list].name;
-        const code = data[list].iso_alpha2;
-        const countryScore = data[list].advisory.score;
-        const countryMessage = data[list].advisory.message;
-        const lastUpdated = data[list].advisory.updated;
-        const source = data[list].advisory.sources_active;
+      const countryList = document.getElementById("country-list");
 
-        const countryList = document.createElement("p");
+      // Clears previous content
+      countryList.innerHTML = "";
 
-        document.getElementById("country-list").innerHTML = "";
+      for (const country in data) {
+        const listItem = document.createElement("p");
 
-        countryList.innerHTML = `<li>${countryName}:
-                    ${code} <br>
-                    ${countryMessage}<br>
-                    ${countryScore}<br>
-                    ${"Updated" + " " + lastUpdated}<br>
-                    ${"From " + source + " sources"} </li><br>`;
-        document.getElementById("country-list").appendChild(countryList);
+        // Create <h1> element for country name
+        const countryName = document.createElement("h1");
+        countryName.textContent = data[country].name;
+        listItem.appendChild(countryName);
+
+        // Append advisory message
+        listItem.append(`${data[country].advisory.message}`);
+
+        // Create <strong> element for number of sources available
+        const sources = document.createElement("strong");
+        sources.textContent = ` ${data[country].advisory.sources_active} sources available.`;
+        listItem.appendChild(sources);
+
+        countryList.appendChild(listItem);
       }
+    })
+    .catch((error) => {
+      console.error("Error:", error);
     });
 }
 
