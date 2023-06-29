@@ -8,6 +8,10 @@
     <title>Travel Advisory</title>
     <link rel="stylesheet" href="style.css" />
     <script src="script.js" defer></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 </head>
 
 <body>
@@ -21,22 +25,25 @@
         <p>Global Saftey Reports</p>
     </header>
 
-</body>
 
-<section class="result">
-    <div class="dropdown">
-        <lable> <b>Choose a Country:</b>
-            <select name="slctCountries" id="allCountries" class="dropdownCon"></select>
-            <button type="submit" class="btn">Submit</button>
-    </div>
-    <div>
-        <ul id="country-list"></ul>
-    </div>
-</section>
+    <main class="result">
+        <div class="dropdown">
+            <lable> <b>Choose a Country:</b>
+                <select name="slctCountries" id="allCountries" class="dropdownCon"></select>
+                <button type="submit" class="btn">Submit</button>
+        </div>
+        <div>
+            <ul id="country-list"></ul>
+        </div>
+    </main>
 
-<footer>
-    <p>Source of data: <a href="https://www.travel-advisory.info">Travel-Advisory.info</a></p>
-</footer>
+    <div id="map"></div>
+
+
+
+    <footer>
+        <p>Source of data: <a href="https://www.travel-advisory.info">Travel-Advisory.info</a></p>
+    </footer>
 </body>
 
 </html>
