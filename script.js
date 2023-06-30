@@ -3,7 +3,7 @@
 const dropdownMenu = document.getElementById("allCountries");
 const submitButton = document.querySelector(".btn");
 
-getCountries();
+getCountriesFromApi();
 submitButton.onclick = (e) => {
   e.preventDefault();
   const countryCode = dropdownMenu.value;
@@ -13,7 +13,7 @@ submitButton.onclick = (e) => {
 };
 
 // function to populate dropdown menu
-function getCountries() {
+function getCountriesFromApi() {
   const apiUrl = "https://www.travel-advisory.info/api";
   fetch(apiUrl)
     .then((response) => response.json())
@@ -57,16 +57,21 @@ function apiObject(countryCode) {
         // Append advisory message
         listItem.append(`${data[country].advisory.message}`);
 
-        // Create <strong> element for sources
-        const sources = document.createElement("strong");
-        sources.textContent = ` ${data[country].advisory.sources_active} sources available.`;
-        listItem.appendChild(sources);
+        // link sources
+        const linkElement = document.createElement("a");
+        const sourceText = document.createTextNode(
+          ` ${data[country].advisory.sources_active} sources available.`
+        );
+        console.log(sourceText);
+        const sourceLink = data[country].advisory.source;
+        console.log(sourceLink);
+        linkElement.title = ` ${data[country].advisory.sources_active} sources available.`;
+        linkElement.appendChild(sourceText);
+        linkElement.href = sourceLink;
+        listItem.appendChild(linkElement);
 
         countryList.appendChild(listItem);
       }
-    })
-    .catch((error) => {
-      console.error("Error:", error);
     });
 }
 

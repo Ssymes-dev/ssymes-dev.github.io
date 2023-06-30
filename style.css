@@ -70,9 +70,9 @@ main.result {
 }
 
 #map {
-    height: 180px;
+    height: 300px;
     width: 60%;
-    margin: 15px auto;
+    margin: auto;
 }
 
 main,
