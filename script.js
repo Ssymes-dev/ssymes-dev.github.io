@@ -57,14 +57,22 @@ function apiObject(countryCode) {
         // Append advisory message
         listItem.append(`${data[country].advisory.message}`);
 
+        const numSources = data[country].advisory.sources_active;
+        let numText;
+        if (numSources === 0) {
+          numText = "No sources available.";
+        } else if (numSources === 1) {
+          numText = "1 source available.";
+        } else {
+          numText = `${numSources} sources available.`;
+        }
+
         // link sources
         const linkElement = document.createElement("a");
         const sourceText = document.createTextNode(
           ` ${data[country].advisory.sources_active} sources available.`
         );
-        console.log(sourceText);
         const sourceLink = data[country].advisory.source;
-        console.log(sourceLink);
         linkElement.title = ` ${data[country].advisory.sources_active} sources available.`;
         linkElement.appendChild(sourceText);
         linkElement.href = sourceLink;
@@ -76,6 +84,17 @@ function apiObject(countryCode) {
 }
 
 // map
+const options = {
+  key: "9N1YXUo4GoPgLBOjB85IYsz5CwIUgzce",
+  // include other start-up parameters here
+};
+
+function windyLogic() {
+  console.log("windy sucess");
+  // windy logic here
+}
+
+windyInit(options, windyLogic);
 var map = L.map("map").setView([51.505, -0.09], 13);
 
 L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
