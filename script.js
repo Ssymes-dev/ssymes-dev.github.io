@@ -22,14 +22,11 @@ function getCountriesFromApi() {
 
       for (const list in data) {
         const countryName = data[list].name;
-        const option = document.createElement("option");
-        option.value = list;
-        option.textContent = countryName;
-        dropdownMenu.appendChild(option);
+        const choice = document.createElement("option");
+        choice.value = list;
+        choice.textContent = countryName;
+        dropdownMenu.appendChild(choice);
       }
-    })
-    .catch((error) => {
-      console.error("Error:", error);
     });
 }
 
@@ -69,11 +66,9 @@ function apiObject(countryCode) {
 
         // link sources
         const linkElement = document.createElement("a");
-        const sourceText = document.createTextNode(
-          ` ${data[country].advisory.sources_active} sources available.`
-        );
+        const sourceText = document.createTextNode(` ${numText}`);
         const sourceLink = data[country].advisory.source;
-        linkElement.title = ` ${data[country].advisory.sources_active} sources available.`;
+        linkElement.title = ` ${numText}`;
         linkElement.appendChild(sourceText);
         linkElement.href = sourceLink;
         listItem.appendChild(linkElement);

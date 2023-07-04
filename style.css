@@ -35,37 +35,26 @@ header {
     padding: 25px;
 }
 
-.dropdown {
+.container {
     display: flex;
     flex-direction: column;
     position: relative;
-    background-color: #e9c46a;
+    background-color: pink;
     border-radius: 20px;
     padding: 10px;
     max-width: fit-content;
 }
 
 .dropdownCon {
-    background-color: #e9c46a;
-    border-color: #e76f51;
-}
-
-.dropdown:hover .dropdownCon {
-    display: relative;
-    border-color: #264653;
-}
-
-.dropbtn {
-    margin: 15px;
-    display: flex;
-    max-width: fit-content;
+    background-color: green;
+    border-color: purple;
 }
 
 main.result {
     display: flex;
     flex-direction: column;
     max-height: 500px;
-    background: #e9c46a;
+    background: red;
     overflow: auto;
 }
 
