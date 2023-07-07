@@ -8,67 +8,16 @@ html {
     box-sizing: inherit;
 }
 
-body {
-    background-color: #93E9BE;
-    color: black;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    background-size: cover;
-    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-    margin: 0;
+#map {
+    height: 180px;
 }
 
-header {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    background-color: #2a9d8f;
-    width: 100%;
-    margin: 0 auto;
-    padding-left: 230px;
-}
-
-.navbar {
-    background-color: rgb(253, 114, 0, 0.80);
-    display: flex;
-    justify-content: space-between;
-    padding: 25px;
-}
-
-.container {
-    display: flex;
-    flex-direction: column;
-    position: relative;
-    background-color: pink;
-    border-radius: 20px;
-    padding: 10px;
-    max-width: 50%;
-    justify-content: center;
-    margin-right: auto;
-    margin-left: auto;
-}
-
-
-
-/* main.result {
-    display: flex;
-    flex-direction: column;
-    max-height: 500px;
-    background: red;
-    overflow: auto;
-} */
-
-main,
 footer {
     width: 60%;
     margin: 15px auto;
     overflow: hidden;
     padding: 5%;
     border-radius: 20px;
-}
-
-
-footer {
     text-align: center;
     color: #e76f51;
 }
