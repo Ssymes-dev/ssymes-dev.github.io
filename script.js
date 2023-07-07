@@ -78,6 +78,15 @@ function apiObject(countryCode) {
     });
 }
 
+// map
+// map
+var map = L.map("map").setView([51.505, -0.09], 13);
+
+L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+  maxZoom: 19,
+  attribution:
+    '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+}).addTo(map);
 // *phase 2*
 //create a function that will take the country name and return the score and message
 //create a function that will take the score and message and return a color
