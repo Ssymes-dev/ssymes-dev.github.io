@@ -46,30 +46,23 @@
             <p class="h6 text-secondary">Global Saftey Reports</p>
         </div>
     </header>
-
-    <div class="container">
-        <div class="row row-cols-auto">
-            <div class="col">
-                <div class="dropdown-menu d-flex align-items-center p-5 pt-2 mx-5 rounded-3 shadow overflow-hidden w-280px"
-                    data-bs-theme="light">
-                    <div class="card-body pt-5 my-5">
-                        <form class="p-2 mb-2 bg-body-tertiary text-dark border-bottom">
-                            <input type="search" class="form-control" autocomplete="true"
-                                placeholder="Type to filter...">
-                            <label><b>Choose a Country:</b></label>
-                            <select name="slctCountries" id="allCountries" class="dropdown"></select>
-                            <button type="button" class="btn btn-primary btn-outline-dark">Submit</button>
-                        </form>
-                        <ul class="list-unstyled mb-0" id="country-list"></ul>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <div>
         <div class="row">
-            <div class="col" id="map">
-
-            </div>
+            <div class="col"></div>
+            <form class=" col-4  rounded-3 shadow mb-5 p-4 pt-5 mb-4 bg-body-tertiary text-dark border-bottom">
+                <input type="search" class="form-control" autocomplete="true" placeholder="Type to filter...">
+                <label><b>Choose a Country:</b></label>
+                <select name="slctCountries" id="allCountries" class="dropdown mt-4"></select>
+                <button type="button" class="btn btn-primary btn-outline-dark">Submit</button>
+                <ul class="list-unstyled mb-0" id="country-list"></ul>
+            </form>
+            <div class="col"></div>
         </div>
+    </div>
+    <div class="row gy-5">
+        <div class="col"></div>
+        <div class="col-6 " id="map"></div>
+        <div class="col"></div>
     </div>
 
     <footer class=" fixed-bottom">
