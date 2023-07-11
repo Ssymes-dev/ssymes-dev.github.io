@@ -80,25 +80,49 @@ function apiObject(countryCode) {
 }
 
 // map
-// map
+// const options = {
+//   key: "9N1YXUo4GoPgLBOjB85IYsz5CwIUgzce",
+//   // include other start-up parameters here
+// };
+
+// function windyLogic() {
+//   console.log("windy sucess");
+//   // windy logic here
+// }
+
+// windyInit(options, windyLogic);
+// var map = L.map("map").setView([51.505, -0.09], 13);
+
+// L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+//   maxZoom: 19,
+//   attribution:
+//     '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+// }).addTo(map);
+
 const options = {
+  // Required: API key
   key: "9N1YXUo4GoPgLBOjB85IYsz5CwIUgzce",
-  // include other start-up parameters here
+
+  // Put additional console output
+  verbose: true,
+
+  // Optional: Initial state of the map
+  lat: 50.4,
+  lon: 14.3,
+  zoom: 5,
 };
 
-function windyLogic() {
-  console.log("windy sucess");
-  // windy logic here
-}
+// Initialize Windy API
+windyInit(options, (windyAPI) => {
+  // windyAPI is ready, and contain 'map', 'store',
+  // 'picker' and other usefull stuff
 
-windyInit(options, windyLogic);
-var map = L.map("map").setView([51.505, -0.09], 13);
+  const { map } = windyAPI;
+  // .map is instance of Leaflet map
 
-L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
-  maxZoom: 19,
-  attribution:
-    '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-}).addTo(map);
+  L.popup().setLatLng([50.4, 14.3]).setContent("Hello World").openOn(map);
+});
+windyInit(options);
 // *phase 2*
 //create a function that will take the country name and return the score and message
 //create a function that will take the score and message and return a color
