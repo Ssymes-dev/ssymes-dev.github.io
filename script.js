@@ -80,6 +80,18 @@ function apiObject(countryCode) {
 }
 
 // map
+// map
+const options = {
+  key: "9N1YXUo4GoPgLBOjB85IYsz5CwIUgzce",
+  // include other start-up parameters here
+};
+
+function windyLogic() {
+  console.log("windy sucess");
+  // windy logic here
+}
+
+windyInit(options, windyLogic);
 var map = L.map("map").setView([51.505, -0.09], 13);
 
 L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
@@ -87,31 +99,6 @@ L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
   attribution:
     '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
 }).addTo(map);
-// openweathermap layers
-// L.tileLayer(
-//   `https://tile.openweathermap.org/map/temp_new/{z}/{x}/{y}.png?appid=efa153cb7f3aabbfc22da92129ec3413`
-// ).addTo(map);
-// L.tileLayer(
-//   "https://tile.openweathermap.org/map/precipitation_new/{z}/{x}/{y}.png?appid=efa153cb7f3aabbfc22da92129ec3413"
-// ).addTo(map);
-
-// L.tileLayer(
-//   "https://tile.openweathermap.org/map/wind_new/{z}/{x}/{y}.png?appid=efa153cb7f3aabbfc22da92129ec3413"
-// ).addTo(map);
-function getWeatherForecast(countryCode) {
-  const weatherApi = `http://api.openweathermap.org/geo/1.0/direct?q=${countryCode}&appid=efa153cb7f3aabbfc22da92129ec3413`;
-
-  fetch(weatherApi)
-    .then((response) => response.json())
-    .then((data) => {
-      for (const weatherInfo in data) {
-        const countryName = data[weatherInfo].country;
-        const lat = data[weatherInfo].lat;
-        const lon = data[weatherInfo].lon;
-        console.log(countryName, lon, lat);
-      }
-    });
-}
 // *phase 2*
 //create a function that will take the country name and return the score and message
 //create a function that will take the score and message and return a color
