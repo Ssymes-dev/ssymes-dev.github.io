@@ -1,5 +1,3 @@
-//populate dropdown and log choice
-
 const dropdownMenu = document.getElementById("allCountries");
 const submitButton = document.querySelector(".btn");
 
@@ -13,14 +11,12 @@ submitButton.onclick = (e) => {
   console.log(countryCode);
 };
 
-// function to populate dropdown menu
+// Function to populate dropdown menu
 function getCountriesFromApi() {
   const apiUrl = "https://www.travel-advisory.info/api";
   fetch(apiUrl)
     .then((response) => response.json())
-    .then((result) => {
-      const data = result.data;
-
+    .then(({ data }) => {
       for (const list in data) {
         const countryName = data[list].name;
         const choice = document.createElement("option");
@@ -31,7 +27,7 @@ function getCountriesFromApi() {
     });
 }
 
-// create function to take in countryCode and manupulate info
+// Function to fetch country data and set map location
 function apiObject(countryCode) {
   const apiUrl = `https://www.travel-advisory.info/api?countrycode=${countryCode}`;
   fetch(apiUrl)
@@ -53,7 +49,7 @@ function apiObject(countryCode) {
         listItem.appendChild(countryName);
 
         // Append advisory message
-        listItem.append(`${data[country].advisory.message}`);
+        // listItem.append(`${data[country].advisory.message}`);
 
         const numSources = data[country].advisory.sources_active;
         let numText;
@@ -65,7 +61,7 @@ function apiObject(countryCode) {
           numText = `${numSources} sources available.`;
         }
 
-        // link sources
+        // Link sources
         const linkElement = document.createElement("a");
         const sourceText = document.createTextNode(` ${numText}`);
         const sourceLink = data[country].advisory.source;
@@ -76,54 +72,60 @@ function apiObject(countryCode) {
 
         countryList.appendChild(listItem);
       }
+
+      // Fetch latitude and longitude from OpenCage Geocoding API
+      const OPEN_CAGE_API_KEY = "0c9aade54fba4c8abfae724859a72795";
+      const geocodingApiUrl = `https://api.opencagedata.com/geocode/v1/json?q=${data[countryCode].name}&key=${OPEN_CAGE_API_KEY}`;
+      fetch(geocodingApiUrl)
+        .then((response) => response.json())
+        .then(({ results }) => {
+          const { lat, lng } = results[0].geometry;
+          setMapLocation(
+            lat,
+            lng,
+            data[countryCode].advisory.message,
+            data[countryCode].advisory.sources_active
+          );
+        });
     });
 }
 
-// map
-// const options = {
-//   key: "9N1YXUo4GoPgLBOjB85IYsz5CwIUgzce",
-//   // include other start-up parameters here
-// };
+// Function to set map location and create marker
+function setMapLocation(lat, lon, message, sources) {
+  const options = {
+    key: "9N1YXUo4GoPgLBOjB85IYsz5CwIUgzce",
+    verbose: true,
+    lat,
+    lon,
+    zoom: 4,
+  };
 
-// function windyLogic() {
-//   console.log("windy sucess");
-//   // windy logic here
-// }
+  // Initialize Windy API
+  windyInit(options, (windyAPI) => {
+    const { map } = windyAPI;
+    map.setView([lat, lon], options.zoom);
 
-// windyInit(options, windyLogic);
-// var map = L.map("map").setView([51.505, -0.09], 13);
+    // Create a marker with the advisory message and sources
+    const marker = L.marker([lat, lon]).addTo(map);
+    const content = `${message}<br>Sources: ${sources}`;
+    marker.bindPopup(content);
+    marker.openPopup();
+  });
+}
 
-// L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
-//   maxZoom: 19,
-//   attribution:
-//     '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-// }).addTo(map);
-
+// windy options
 const options = {
-  // Required: API key
   key: "9N1YXUo4GoPgLBOjB85IYsz5CwIUgzce",
-
-  // Put additional console output
   verbose: true,
-
-  // Optional: Initial state of the map
   lat: 50.4,
   lon: 14.3,
-  zoom: 5,
+  zoom: 0,
 };
 
 // Initialize Windy API
-windyInit(options, (windyAPI) => {
-  // windyAPI is ready, and contain 'map', 'store',
-  // 'picker' and other usefull stuff
-
-  const { map } = windyAPI;
-  // .map is instance of Leaflet map
-
-  L.popup().setLatLng([50.4, 14.3]).setContent("Hello World").openOn(map);
-});
 windyInit(options);
+
 // *phase 2*
-//create a function that will take the country name and return the score and message
-//create a function that will take the score and message and return a color
-//associate counrty flag with country name
+// Create a function that will take the country name and return the score and message
+// Create a function that will take the score and message and return a color
+// Associate country flag with country name
