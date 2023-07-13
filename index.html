@@ -47,22 +47,16 @@
     </header>
     <div>
         <div class="row mx-5">
-            <form class=" col-4  rounded-3 shadow mb-5 p-4 pt-5 mb-5 bg-body-tertiary text-dark border-bottom">
+            <form class=" col-3  rounded-3 shadow pt-5 mb-5 text-dark border-bottom">
                 <input type="search" class="form-control" autocomplete="true" placeholder="Type to filter...">
                 <label><b>Choose a Country:</b></label>
                 <select name="slctCountries" id="allCountries" class="dropdown mt-4"></select>
-                <button type="button" class="btn btn-primary btn-outline-dark">Submit</button>
+                <button type="button" class="btn btn-primary mt-2 btn-outline-dark">Submit</button>
                 <ul class="list-unstyled mb-0" id="country-list"></ul>
             </form>
-            <div class="col"></div>
-
+            <div class="col-9 mx-5" id="windy"></div>
         </div>
-        <div class="row gy-5">
-            <div class="col"></div>
-            <div class="col-6 mb-5" id="windy"></div>
 
-            <div class="col"></div>
-        </div>
 
         <footer class=" fixed-bottom">
             <p>Source of data: <a href="https://www.travel-advisory.info">Travel-Advisory.info</a></p>
