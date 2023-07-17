@@ -46,19 +46,22 @@
         </div>
     </header>
     <div>
-        <div class="row mx-5">
-            <form class=" col-3  rounded-3 shadow pt-5 mb-5 text-dark border-bottom">
-                <input type="search" class="form-control" autocomplete="true" placeholder="Type to filter...">
+        <div class="row d-flex ">
+            <form
+                class="d-flex flex-sm-column  mb-3 col-3 container h-25 rounded-3 shadow pt-2 text-dark border-bottom">
                 <label><b>Choose a Country:</b></label>
-                <select name="slctCountries" id="allCountries" class="dropdown mt-4"></select>
-                <button type="button" class="btn btn-primary mt-2 btn-outline-dark">Submit</button>
-                <ul class="list-unstyled mb-0" id="country-list"></ul>
+                <input type="search" class="form-control mb-2" autocomplete="true" placeholder="Type to filter...">
+                <select name="slctCountries" id="allCountries"
+                    class="dropdown dropdown-menu-right mb-2 w-100 mx-1"></select>
+                <button type="button" class="btn btn-primary border border-dark dropdown-toggle"
+                    data-toggle="dropdown">Submit</button>
+                <ol type="1|a|A|i|I" class="list-unstyled mt-5 text-center" id="country-list"></ol>
             </form>
-            <div class="col-9 mx-5" id="windy"></div>
+            <div class="col-9" id="windy"></div>
         </div>
 
 
-        <footer class=" fixed-bottom">
+        <footer>
             <p>Source of data: <a href="https://www.travel-advisory.info">Travel-Advisory.info</a></p>
         </footer>
 </body>

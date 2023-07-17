@@ -126,6 +126,5 @@ const options = {
 windyInit(options);
 
 // *phase 2*
-// Create a function that will take the country name and return the score and message
-// Create a function that will take the score and message and return a color
+// Create a function that will take the score and return a color
 // Associate country flag with country name
