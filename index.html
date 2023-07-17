@@ -17,18 +17,19 @@
 </head>
 
 <body>
-    <div class="row bg-primary p-3 text-start">
-        <div class="col p-2">
-            <b>Home</b>
+    <div class="containter-fluid">
+        <div class="row bg-primary p-3 text-start">
+            <div class="col mx-2 p-2">
+                <b>Home</b>
+            </div>
+            <div class="col p-2 text-end">
+                <b> TravelSage</b> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                    class="bi bi-airplane" viewBox="0 0 16 16">
+                    <path
+                        d="M6.428 1.151C6.708.591 7.213 0 8 0s1.292.592 1.572 1.151C9.861 1.73 10 2.431 10 3v3.691l5.17 2.585a1.5 1.5 0 0 1 .83 1.342V12a.5.5 0 0 1-.582.493l-5.507-.918-.375 2.253 1.318 1.318A.5.5 0 0 1 10.5 16h-5a.5.5 0 0 1-.354-.854l1.319-1.318-.376-2.253-5.507.918A.5.5 0 0 1 0 12v-1.382a1.5 1.5 0 0 1 .83-1.342L6 6.691V3c0-.568.14-1.271.428-1.849Zm.894.448C7.111 2.02 7 2.569 7 3v4a.5.5 0 0 1-.276.447l-5.448 2.724a.5.5 0 0 0-.276.447v.792l5.418-.903a.5.5 0 0 1 .575.41l.5 3a.5.5 0 0 1-.14.437L6.708 15h2.586l-.647-.646a.5.5 0 0 1-.14-.436l.5-3a.5.5 0 0 1 .576-.411L15 11.41v-.792a.5.5 0 0 0-.276-.447L9.276 7.447A.5.5 0 0 1 9 7V3c0-.432-.11-.979-.322-1.401C8.458 1.159 8.213 1 8 1c-.213 0-.458.158-.678.599Z" />
+                </svg>
+            </div>
         </div>
-        <div class="col p-2 text-end">
-            <b> TravelSage</b> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                class="bi bi-airplane" viewBox="0 0 16 16">
-                <path
-                    d="M6.428 1.151C6.708.591 7.213 0 8 0s1.292.592 1.572 1.151C9.861 1.73 10 2.431 10 3v3.691l5.17 2.585a1.5 1.5 0 0 1 .83 1.342V12a.5.5 0 0 1-.582.493l-5.507-.918-.375 2.253 1.318 1.318A.5.5 0 0 1 10.5 16h-5a.5.5 0 0 1-.354-.854l1.319-1.318-.376-2.253-5.507.918A.5.5 0 0 1 0 12v-1.382a1.5 1.5 0 0 1 .83-1.342L6 6.691V3c0-.568.14-1.271.428-1.849Zm.894.448C7.111 2.02 7 2.569 7 3v4a.5.5 0 0 1-.276.447l-5.448 2.724a.5.5 0 0 0-.276.447v.792l5.418-.903a.5.5 0 0 1 .575.41l.5 3a.5.5 0 0 1-.14.437L6.708 15h2.586l-.647-.646a.5.5 0 0 1-.14-.436l.5-3a.5.5 0 0 1 .576-.411L15 11.41v-.792a.5.5 0 0 0-.276-.447L9.276 7.447A.5.5 0 0 1 9 7V3c0-.432-.11-.979-.322-1.401C8.458 1.159 8.213 1 8 1c-.213 0-.458.158-.678.599Z" />
-            </svg>
-        </div>
-
     </div>
 
     <header>
@@ -40,30 +41,35 @@
         </script>
         <script type="text/javascript"
             src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
-        <div class="row mx-5">
-            <p class="h1 text-info">Travel Advisory</p>
+        <div class="container"></div>
+        <div class="row mx-5 my-5">
+            <div class="col"></div>
+            <p class="h1 text-info">TraveSage</p>
             <p class="h6 text-secondary">Global Saftey Reports</p>
         </div>
+        </div>
     </header>
-    <div>
-        <div class="row d-flex ">
-            <form
-                class="d-flex flex-sm-column  mb-3 col-3 container h-25 rounded-3 shadow pt-2 text-dark border-bottom">
+    <div class="container-fluid">
+        <div class="row d-flex mx-5 ">
+            <form class=" mb-3 col-3 col-xs-12 container-fluid h-25 rounded-3 shadow pt-2 text-dark border-bottom">
                 <label><b>Choose a Country:</b></label>
                 <input type="search" class="form-control mb-2" autocomplete="true" placeholder="Type to filter...">
-                <select name="slctCountries" id="allCountries"
-                    class="dropdown dropdown-menu-right mb-2 w-100 mx-1"></select>
+                <select name="slctCountries" id="allCountries" class="dropdown dropdown-menu-right mb-2 w-100 mx-1">
+                    <option value="" selected>Please select</option>
+                </select>
                 <button type="button" class="btn btn-primary border border-dark dropdown-toggle"
                     data-toggle="dropdown">Submit</button>
-                <ol type="1|a|A|i|I" class="list-unstyled mt-5 text-center" id="country-list"></ol>
+                <ol type="1|a|A|i|I" class="list-unstyled mt-5 text-center" id="country-list">
+                </ol>
             </form>
-            <div class="col-9" id="windy"></div>
+            <div class="d-flex col-9 mx-5 containter-fluid justify-center w-80" id="windy"></div>
         </div>
+    </div>
 
 
-        <footer>
-            <p>Source of data: <a href="https://www.travel-advisory.info">Travel-Advisory.info</a></p>
-        </footer>
+    <footer>
+        <p>Source of data: <a href="https://www.travel-advisory.info">Travel-Advisory.info</a></p>
+    </footer>
 </body>
 
 </html>
