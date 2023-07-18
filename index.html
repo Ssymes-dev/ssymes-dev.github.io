@@ -42,30 +42,36 @@
         <script type="text/javascript"
             src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
         <div class="container"></div>
-        <div class="row mx-5 my-5">
+        <div class="row m-4">
             <div class="col"></div>
-            <p class="h1 text-info">TraveSage</p>
-            <p class="h6 text-secondary">Global Saftey Reports</p>
+            <p class="h1 text-info">TravelSage</p>
+            <p class="h6 text-secondary">Global Safety Reports</p>
         </div>
         </div>
     </header>
-    <div class="container-fluid">
-        <div class="row d-flex mx-5 ">
-            <form class=" mb-3 col-3 col-xs-12 container-fluid h-25 rounded-3 shadow pt-2 text-dark border-bottom">
-                <label><b>Choose a Country:</b></label>
-                <input type="search" class="form-control mb-2" autocomplete="true" placeholder="Type to filter...">
-                <select name="slctCountries" id="allCountries" class="dropdown dropdown-menu-right mb-2 w-100 mx-1">
-                    <option value="" selected>Please select</option>
-                </select>
-                <button type="button" class="btn btn-primary border border-dark dropdown-toggle"
-                    data-toggle="dropdown">Submit</button>
-                <ol type="1|a|A|i|I" class="list-unstyled mt-5 text-center" id="country-list">
-                </ol>
-            </form>
-            <div class="d-flex col-9 mx-5 containter-fluid justify-center w-80" id="windy"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-3 w-auto p-3 m-4 h-25 rounded-3 shadow ">
+                <form class="text-dark">
+                    <label><b>Choose a Country:</b></label>
+                    <input type="search" class="form-control w-auto m-1" autocomplete="true"
+                        placeholder="Type to filter...">
+                    <select name="slctCountries" id="allCountries" class="dropdown w-sm-75 w-25 m-1">
+                        <option value="" selected>Please select</option>
+                    </select>
+                    <button type="button" class="btn btn-primary border border-dark dropdown-toggle m-1"
+                        data-toggle="dropdown">Submit</button>
+                    <ol type="|A|a" class="list-unstyled mt-5 text-center" id="country-list">
+                    </ol>
+                </form>
+            </div>
+            <div class="container-fluid">
+                <div class="row mx-3">
+                    <div class="col justify-center w-auto" id="windy"></div>
+                </div>
+            </div>
         </div>
     </div>
-
 
     <footer>
         <p>Source of data: <a href="https://www.travel-advisory.info">Travel-Advisory.info</a></p>
