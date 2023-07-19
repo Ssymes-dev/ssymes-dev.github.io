@@ -122,6 +122,13 @@ const options = {
   zoom: 0,
 };
 
+// google translate
+function googleTranslateElementInit() {
+  new google.translate.TranslateElement(
+    { pageLanguage: "en" },
+    "google_translate_element"
+  );
+}
 // Initialize Windy API
 windyInit(options);
 
