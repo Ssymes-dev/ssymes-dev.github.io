@@ -35,60 +35,63 @@ function apiObject(countryCode) {
     .then((result) => {
       const data = result.data;
       console.log(data);
-      const countryList = document.getElementById("country-list");
-
-      // Clear previous content
-      countryList.innerHTML = "";
-
-      for (const country in data) {
-        const listItem = document.createElement("p");
-
-        // Create countryName title
-        const countryName = document.createElement("h1");
-        countryName.textContent = data[country].name;
-        listItem.appendChild(countryName);
-
-        // Append advisory message
-        // listItem.append(`${data[country].advisory.message}`);
-
-        const numSources = data[country].advisory.sources_active;
-        let numText;
-        if (numSources === 0) {
-          numText = "No sources available.";
-        } else if (numSources === 1) {
-          numText = "1 source available.";
-        } else {
-          numText = `${numSources} sources available.`;
-        }
-
-        // Link sources
-        const linkElement = document.createElement("a");
-        const sourceText = document.createTextNode(` ${numText}`);
-        const sourceLink = data[country].advisory.source;
-        linkElement.title = ` ${numText}`;
-        linkElement.appendChild(sourceText);
-        linkElement.href = sourceLink;
-        listItem.appendChild(linkElement);
-
-        countryList.appendChild(listItem);
-      }
-
-      // Fetch latitude and longitude from OpenCage Geocoding API
-      const OPEN_CAGE_API_KEY = "0c9aade54fba4c8abfae724859a72795";
-      const geocodingApiUrl = `https://api.opencagedata.com/geocode/v1/json?q=${data[countryCode].name}&key=${OPEN_CAGE_API_KEY}`;
-      fetch(geocodingApiUrl)
-        .then((response) => response.json())
-        .then(({ results }) => {
-          const { lat, lng } = results[0].geometry;
-          setMapLocation(
-            lat,
-            lng,
-            data[countryCode].advisory.message,
-            data[countryCode].advisory.sources_active
-          );
-        });
+      return { data };
     });
 }
+
+const { data } = apiObject(countryCode);
+
+const countryList = document.getElementById("country-list");
+
+// Clear previous content
+countryList.innerHTML = "";
+function getCountryText() {
+  for (const country in data) {
+    const listItem = document.createElement("p");
+
+    // Create countryName title
+    const countryName = document.createElement("h1");
+    countryName.textContent = data[country].name;
+    listItem.appendChild(countryName);
+  }
+}
+
+function getLink() {
+  const numSources = data[country].advisory.sources_active;
+  let numText;
+  if (numSources === 0) {
+    numText = "No sources available.";
+  } else if (numSources === 1) {
+    numText = "1 source available.";
+  } else {
+    numText = `${numSources} sources available.`;
+  }
+
+  // Link sources
+  const linkElement = document.createElement("a");
+  const sourceText = document.createTextNode(` ${numText}`);
+  const sourceLink = data[country].advisory.source;
+  linkElement.title = ` ${numText}`;
+  linkElement.appendChild(sourceText);
+  linkElement.href = sourceLink;
+  listItem.appendChild(linkElement);
+
+  return countryList.appendChild(listItem);
+}
+// Fetch latitude and longitude from OpenCage Geocoding API
+const OPEN_CAGE_API_KEY = "0c9aade54fba4c8abfae724859a72795";
+const geocodingApiUrl = `https://api.opencagedata.com/geocode/v1/json?q=${data[countryCode].name}&key=${OPEN_CAGE_API_KEY}`;
+fetch(geocodingApiUrl)
+  .then((response) => response.json())
+  .then(({ results }) => {
+    const { lat, lng } = results[0].geometry;
+    setMapLocation(
+      lat,
+      lng,
+      data[countryCode].advisory.message,
+      data[countryCode].advisory.sources_active
+    );
+  });
 
 // Function to set map location and create marker
 function setMapLocation(lat, lon, message, sources) {
@@ -122,13 +125,6 @@ const options = {
   zoom: 0,
 };
 
-// google translate
-function googleTranslateElementInit() {
-  new google.translate.TranslateElement(
-    { pageLanguage: "en" },
-    "google_translate_element"
-  );
-}
 // Initialize Windy API
 windyInit(options);
 
