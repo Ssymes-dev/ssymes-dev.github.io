@@ -1,14 +1,38 @@
 const dropdownMenu = document.getElementById("allCountries");
 const submitButton = document.querySelector(".btn");
 
-getCountriesFromApi();
-submitButton.onclick = (e) => {
+submitButton.onclick = async (e) => {
   e.preventDefault();
   const countryCode = dropdownMenu.value;
-  apiObject(countryCode);
-  getWeatherForecast(countryCode);
+  const data = await apiObject(countryCode);
   dropdownMenu.selectedIndex = -1;
   console.log(countryCode);
+
+  const countryList = document.getElementById("country-list");
+  countryList.innerHTML = "";
+  getCountryText(data, countryList);
+  const advisoryObject = getLink(data[countryCode].advisory);
+  countryList.appendChild(advisoryObject);
+
+  // Fetch latitude and longitude from OpenCage Geocoding API
+  const OPEN_CAGE_API_KEY = "0c9aade54fba4c8abfae724859a72795";
+  const geocodingApiUrl = `https://api.opencagedata.com/geocode/v1/json?q=${data[countryCode].name}&key=${OPEN_CAGE_API_KEY}`;
+
+  // Fetch geocoding data
+  fetch(geocodingApiUrl)
+    .then((response) => response.json())
+    .then(({ results }) => {
+      if (results && results.length > 0) {
+        const { lat, lng } = results[0].geometry;
+        const content = `${data[countryCode].advisory.message}<br>Sources: ${data[countryCode].advisory.sources_active} ${advisoryObject.textContent}`;
+        setMapLocation(lat, lng, content, advisoryObject);
+      } else {
+        console.error("Geocoding API response is empty or invalid.");
+      }
+    })
+    .catch((error) => {
+      console.error("Error fetching geocoding data:", error);
+    });
 };
 
 // Function to populate dropdown menu
@@ -28,36 +52,32 @@ function getCountriesFromApi() {
 }
 
 // Function to fetch country data and set map location
-function apiObject(countryCode) {
+async function apiObject(countryCode) {
   const apiUrl = `https://www.travel-advisory.info/api?countrycode=${countryCode}`;
-  fetch(apiUrl)
-    .then((response) => response.json())
-    .then((result) => {
-      const data = result.data;
-      console.log(data);
-      return { data };
-    });
+  const response = await fetch(apiUrl);
+  const result = await response.json();
+  const data = result.data;
+  console.log(data);
+  return data;
 }
 
-const { data } = apiObject(countryCode);
-
-const countryList = document.getElementById("country-list");
-
-// Clear previous content
-countryList.innerHTML = "";
-function getCountryText() {
+// Function to create country name text
+function getCountryText(data, countryList) {
   for (const country in data) {
-    const listItem = document.createElement("p");
+    const countryElement = document.createElement("p");
 
     // Create countryName title
     const countryName = document.createElement("h1");
     countryName.textContent = data[country].name;
-    listItem.appendChild(countryName);
+    countryElement.appendChild(countryName);
+    countryList.appendChild(countryElement);
   }
 }
 
-function getLink() {
-  const numSources = data[country].advisory.sources_active;
+// Function to create the source link
+function getLink(advisory) {
+  const numberText = document.createElement("a");
+  const numSources = advisory.sources_active;
   let numText;
   if (numSources === 0) {
     numText = "No sources available.";
@@ -70,31 +90,17 @@ function getLink() {
   // Link sources
   const linkElement = document.createElement("a");
   const sourceText = document.createTextNode(` ${numText}`);
-  const sourceLink = data[country].advisory.source;
+  const sourceLink = advisory.source;
   linkElement.title = ` ${numText}`;
   linkElement.appendChild(sourceText);
   linkElement.href = sourceLink;
-  listItem.appendChild(linkElement);
+  const advisoryLink = numberText.appendChild(linkElement);
 
-  return countryList.appendChild(listItem);
+  return advisoryLink;
 }
-// Fetch latitude and longitude from OpenCage Geocoding API
-const OPEN_CAGE_API_KEY = "0c9aade54fba4c8abfae724859a72795";
-const geocodingApiUrl = `https://api.opencagedata.com/geocode/v1/json?q=${data[countryCode].name}&key=${OPEN_CAGE_API_KEY}`;
-fetch(geocodingApiUrl)
-  .then((response) => response.json())
-  .then(({ results }) => {
-    const { lat, lng } = results[0].geometry;
-    setMapLocation(
-      lat,
-      lng,
-      data[countryCode].advisory.message,
-      data[countryCode].advisory.sources_active
-    );
-  });
 
 // Function to set map location and create marker
-function setMapLocation(lat, lon, message, sources) {
+function setMapLocation(lat, lon, message, advisoryLink) {
   const options = {
     key: "9N1YXUo4GoPgLBOjB85IYsz5CwIUgzce",
     verbose: true,
@@ -110,7 +116,7 @@ function setMapLocation(lat, lon, message, sources) {
 
     // Create a marker with the advisory message and sources
     const marker = L.marker([lat, lon]).addTo(map);
-    const content = `${message}<br>Sources: ${sources}`;
+    const content = `${message}<br>Sources: ${advisoryLink}`;
     marker.bindPopup(content);
     marker.openPopup();
   });
@@ -128,6 +134,5 @@ const options = {
 // Initialize Windy API
 windyInit(options);
 
-// *phase 2*
-// Create a function that will take the score and return a color
-// Associate country flag with country name
+// Fetch countries data and populate dropdown menu on page load
+getCountriesFromApi();
