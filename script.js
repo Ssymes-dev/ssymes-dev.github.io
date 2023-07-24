@@ -17,8 +17,6 @@ submitButton.onclick = async (e) => {
   // Fetch latitude and longitude from OpenCage Geocoding API
   const OPEN_CAGE_API_KEY = "0c9aade54fba4c8abfae724859a72795";
   const geocodingApiUrl = `https://api.opencagedata.com/geocode/v1/json?q=${data[countryCode].name}&key=${OPEN_CAGE_API_KEY}`;
-
-  // Fetch geocoding data
   fetch(geocodingApiUrl)
     .then((response) => response.json())
     .then(({ results }) => {
@@ -99,9 +97,8 @@ function getLink(advisory) {
   return advisoryLink;
 }
 
-// Function to set map location and create marker
 function setMapLocation(lat, lon, message, advisoryLink) {
-  const options = {
+  const leafletOptions = {
     key: "9N1YXUo4GoPgLBOjB85IYsz5CwIUgzce",
     verbose: true,
     lat,
@@ -109,21 +106,17 @@ function setMapLocation(lat, lon, message, advisoryLink) {
     zoom: 4,
   };
 
-  // Initialize Windy API
-  windyInit(options, (windyAPI) => {
+  windyInit(windyOptions, (windyAPI) => {
     const { map } = windyAPI;
-    map.setView([lat, lon], options.zoom);
-
-    // Create a marker with the advisory message and sources
+    map.setView([lat, lon], leafletOptions.zoom);
     const marker = L.marker([lat, lon]).addTo(map);
-    const content = `${message}<br>Sources: ${advisoryLink}`;
+    const content = `${message} ${advisoryLink}`;
     marker.bindPopup(content);
     marker.openPopup();
   });
 }
 
-// windy options
-const options = {
+const windyOptions = {
   key: "9N1YXUo4GoPgLBOjB85IYsz5CwIUgzce",
   verbose: true,
   lat: 50.4,
@@ -131,8 +124,6 @@ const options = {
   zoom: 0,
 };
 
-// Initialize Windy API
-windyInit(options);
+windyInit(windyOptions);
 
-// Fetch countries data and populate dropdown menu on page load
 getCountriesFromApi();
