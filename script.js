@@ -1,36 +1,34 @@
 const dropdownMenu = document.getElementById("allCountries");
-const submitButton = document.querySelector(".btn");
-
 let map;
-submitButton.onclick = async (e) => {
-  e.preventDefault();
+
+// Add an event listener to the dropdown menu
+dropdownMenu.addEventListener("change", async () => {
   const countryCode = dropdownMenu.value;
-  const data = await apiObject(countryCode);
-  dropdownMenu.selectedIndex = -1;
-  console.log(countryCode);
+  if (countryCode !== "") {
+    const data = await apiObject(countryCode);
+    const countryList = document.getElementById("country-list");
+    countryList.innerHTML = "";
+    getCountryText(data, countryList);
+    const advisoryObject = getLink(data[countryCode].advisory);
+    countryList.appendChild(advisoryObject);
 
-  const countryList = document.getElementById("country-list");
-  countryList.innerHTML = "";
-  getCountryText(data, countryList);
-  const advisoryObject = getLink(data[countryCode].advisory);
-  countryList.appendChild(advisoryObject);
-
-  // Fetch latitude and longitude from OpenCage Geocoding API
-  const OPEN_CAGE_API_KEY = "0c9aade54fba4c8abfae724859a72795";
-  const geocodingApiUrl = `https://api.opencagedata.com/geocode/v1/json?q=${data[countryCode].name}&key=${OPEN_CAGE_API_KEY}`;
-  fetch(geocodingApiUrl)
-    .then((response) => response.json())
-    .then(({ results }) => {
-      if (results && results.length > 0) {
-        const { lat, lng } = results[0].geometry;
-        const bounds = results[0].bounds;
-        const content = `${data[countryCode].advisory.message}<br>Sources: ${data[countryCode].advisory.sources_active} ${advisoryObject.textContent}`;
-        setMapLocation(lat, lng, content, advisoryObject, bounds, map); // Ensure "map" is the Leaflet map object
-        console.log(results);
-        console.log(results[0].bounds);
-      }
-    });
-};
+    // Fetch latitude and longitude from OpenCage Geocoding API
+    const OPEN_CAGE_API_KEY = "0c9aade54fba4c8abfae724859a72795";
+    const geocodingApiUrl = `https://api.opencagedata.com/geocode/v1/json?q=${data[countryCode].name}&key=${OPEN_CAGE_API_KEY}`;
+    fetch(geocodingApiUrl)
+      .then((response) => response.json())
+      .then(({ results }) => {
+        if (results && results.length > 0) {
+          const { lat, lng } = results[0].geometry;
+          const bounds = results[0].bounds;
+          const content = `${data[countryCode].advisory.message}<br>Sources: ${data[countryCode].advisory.sources_active} ${advisoryObject.textContent}`;
+          setMapLocation(lat, lng, content, advisoryObject, bounds, map); // Ensure "map" is the Leaflet map object
+          console.log(results);
+          console.log(results[0].bounds);
+        }
+      });
+  }
+});
 
 // Function to populate dropdown menu
 function getCountriesFromApi() {
