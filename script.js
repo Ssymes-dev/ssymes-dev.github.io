@@ -22,7 +22,14 @@ dropdownMenu.addEventListener("change", async () => {
           const { lat, lng } = results[0].geometry;
           const bounds = results[0].bounds;
           const content = `${data[countryCode].advisory.message}<br>Sources: ${data[countryCode].advisory.sources_active} ${advisoryObject.textContent}`;
-          setMapLocation(lat, lng, content, advisoryObject, bounds, map); // Ensure "map" is the Leaflet map object
+          setMapLocation(
+            lat,
+            lng,
+            content,
+            advisoryObject,
+            bounds,
+            countryCode
+          ); // Pass the countryCode as a parameter
           console.log(results);
           console.log(results[0].bounds);
         }
@@ -110,7 +117,7 @@ function calculateAreaInSquareMeters(northEast, southWest) {
 }
 
 // Function to set map location and zoom
-function setMapLocation(lat, lon, message, advisoryLink, bounds) {
+function setMapLocation(lat, lon, message, advisoryLink, bounds, countryCode) {
   windyInit(initWindyOptions, (windyAPI) => {
     map = windyAPI.map;
 
@@ -145,25 +152,32 @@ function setMapLocation(lat, lon, message, advisoryLink, bounds) {
       // Define different zoom levels for extra-small, small, medium, large countries
       const extraSmallZoom = 11;
       const smallZoom = 7;
-      const mediumZoom = 3;
+      const mediumZoom = 5;
       const largeZoom = 3;
 
-      // Set the view to the calculated center and appropriate zoom level based on country size
-      switch (countrySize) {
-        case "large":
-          map.setView([lat, lon], largeZoom);
-          break;
-        case "medium":
+      // Handle zoom level exceptions based on countryCode
+      switch (countryCode) {
+        case "AG":
           map.setView([lat, lon], mediumZoom);
           break;
-        case "small":
-          map.setView([lat, lon], smallZoom);
-          break;
-        case "extra-small":
-          map.setView([lat, lon], extraSmallZoom);
-          break;
         default:
-          map.setView([lat, lon], map.getZoom());
+          switch (countrySize) {
+            case "large":
+              map.setView([lat, lon], largeZoom);
+              break;
+            case "medium":
+              map.setView([lat, lon], mediumZoom);
+              break;
+            case "small":
+              map.setView([lat, lon], smallZoom);
+              break;
+            case "extra-small":
+              map.setView([lat, lon], extraSmallZoom);
+              break;
+            default:
+              map.setView([lat, lon], map.getZoom());
+              break;
+          }
           break;
       }
     }
