@@ -1,84 +1,57 @@
-const dropdownMenu = document.getElementById("allCountries");
+const countryDropdown = document.getElementById("allCountries");
 let map;
 
-// Add an event listener to the dropdown menu
-dropdownMenu.addEventListener("change", async () => {
-  const countryCode = dropdownMenu.value;
-  if (countryCode !== "") {
-    const data = await apiObject(countryCode);
-    const countryList = document.getElementById("country-list");
-    countryList.innerHTML = "";
-    getCountryText(data, countryList);
-    const advisoryObject = getLink(data[countryCode].advisory);
-    countryList.appendChild(advisoryObject);
+const extraSmallCountries = [];
+const smallCountries = [];
+const mediumCountries = [];
+const largeCountries = [];
 
-    // Fetch latitude and longitude from OpenCage Geocoding API
-    const OPEN_CAGE_API_KEY = "0c9aade54fba4c8abfae724859a72795";
-    const geocodingApiUrl = `https://api.opencagedata.com/geocode/v1/json?q=${data[countryCode].name}&key=${OPEN_CAGE_API_KEY}`;
-    fetch(geocodingApiUrl)
-      .then((response) => response.json())
-      .then(({ results }) => {
-        if (results && results.length > 0) {
-          const { lat, lng } = results[0].geometry;
-          const bounds = results[0].bounds;
-          const content = `${data[countryCode].advisory.message}<br>Sources: ${data[countryCode].advisory.sources_active} ${advisoryObject.textContent}`;
-          setMapLocation(
-            lat,
-            lng,
-            content,
-            advisoryObject,
-            bounds,
-            countryCode
-          ); // Pass the countryCode as a parameter
-          console.log(results);
-          console.log(results[0].bounds);
-        }
-      });
-  }
-});
-
-// Function to populate dropdown menu
-function getCountriesFromApi() {
+function populateCountryDropdown() {
   const apiUrl = "https://www.travel-advisory.info/api";
   fetch(apiUrl)
     .then((response) => response.json())
     .then(({ data }) => {
-      for (const list in data) {
-        const countryName = data[list].name;
-        const choice = document.createElement("option");
-        choice.value = list;
-        choice.textContent = countryName;
-        dropdownMenu.appendChild(choice);
+      for (const countryCode in data) {
+        const countryName = data[countryCode].name;
+        const optionElement = document.createElement("option");
+        optionElement.value = countryCode;
+        optionElement.textContent = countryName;
+        countryDropdown.appendChild(optionElement);
       }
     });
 }
 
-// Function to fetch country data and set map location
-async function apiObject(countryCode) {
+async function fetchCountryData(countryCode) {
   const apiUrl = `https://www.travel-advisory.info/api?countrycode=${countryCode}`;
   const response = await fetch(apiUrl);
   const result = await response.json();
-  const data = result.data;
-  console.log(data);
-  return data;
+  const countryData = result.data;
+  console.log(countryData);
+  return countryData;
 }
 
-// Function to create country name text
-function getCountryText(data, countryList) {
-  for (const country in data) {
-    const countryElement = document.createElement("p");
-
-    // Create countryName title
+function displayCountryName(countryData, countryListElement) {
+  for (const countryCode in countryData) {
+    const countryNameElement = document.createElement("p");
     const countryName = document.createElement("h1");
-    countryName.textContent = data[country].name;
-    countryElement.appendChild(countryName);
-    countryList.appendChild(countryElement);
+    countryName.textContent = countryData[countryCode].name;
+    countryNameElement.appendChild(countryName);
+    countryListElement.appendChild(countryNameElement);
   }
 }
 
-// Function to create the source link
-function getLink(advisory) {
-  const numberText = document.createElement("a");
+function createSourcesText(numSources) {
+  if (numSources === 0) {
+    return "No sources available.";
+  } else if (numSources === 1) {
+    return "1 source available.";
+  } else {
+    return `${numSources} sources available.`;
+  }
+}
+
+function createAdvisoryLink(advisory) {
+  const advisoryLinkElement = document.createElement("a");
   const numSources = advisory.sources_active;
   let numText;
   if (numSources === 0) {
@@ -89,73 +62,61 @@ function getLink(advisory) {
     numText = `${numSources} sources available.`;
   }
 
-  // Link sources
-  const linkElement = document.createElement("a");
   const sourceText = document.createTextNode(` ${numText}`);
-  const sourceLink = advisory.source;
-  linkElement.title = ` ${numText}`;
-  linkElement.appendChild(sourceText);
-  linkElement.href = sourceLink;
-  const advisoryLink = numberText.appendChild(linkElement);
+  advisoryLinkElement.title = ` ${numText}`;
+  advisoryLinkElement.appendChild(sourceText);
+  advisoryLinkElement.href = advisory.source;
 
-  return advisoryLink;
+  return advisoryLinkElement;
 }
 
-// Define arrays for different country categories
-const extraSmallCountries = [];
-const smallCountries = [];
-const mediumCountries = [];
-const largeCountries = [];
+function generatePopupContent(countryData, countryCode) {
+  const advisory = countryData[countryCode].advisory;
+  const advisoryLink = createAdvisoryLink(advisory);
 
-// Function to calculate the area of a bounding box in square meters
-function calculateAreaInSquareMeters(northEast, southWest) {
+  const popupContent = `
+    <h1>${countryData[countryCode].name}</h1>
+    <p>${advisory.message}</p>
+    <p>Sources: ${advisoryLink.outerHTML}</p>
+  `;
+
+  return popupContent;
+}
+
+function calculateArea(northEast, southWest) {
   const latDiff = Math.abs(northEast.lat - southWest.lat);
   const lngDiff = Math.abs(northEast.lng - southWest.lng);
-  const areaInSquareMeters = (latDiff * lngDiff * 40008000) / 360;
+  const area = (latDiff * lngDiff * 40008000) / 360;
 
-  return areaInSquareMeters;
+  return area;
 }
 
-// Function to set map location and zoom
-function setMapLocation(lat, lon, message, advisoryLink, bounds, countryCode) {
+function setMapLocation(lat, lon, popupContent, bounds, countryCode) {
   windyInit(initWindyOptions, (windyAPI) => {
     map = windyAPI.map;
 
     if (bounds && bounds.northeast && bounds.southwest) {
-      const area = calculateAreaInSquareMeters(
-        bounds.northeast,
-        bounds.southwest
-      );
-      // Determine the size of the country based on its area
+      const area = calculateArea(bounds.northeast, bounds.southwest);
       let countrySize;
       if (area < 500000) {
         countrySize = "extra-small";
-        extraSmallCountries.push(message);
+        extraSmallCountries.push(popupContent);
       } else if (area <= 50000000) {
         countrySize = "small";
-        smallCountries.push(message);
+        smallCountries.push(popupContent);
       } else if (area <= 500000000) {
         countrySize = "medium";
-        mediumCountries.push(message);
+        mediumCountries.push(popupContent);
       } else {
         countrySize = "large";
-        largeCountries.push(message);
+        largeCountries.push(popupContent);
       }
 
-      // Log the country and its category
-      console.log(
-        `Country: ${message}, Area: ${area.toFixed(
-          2
-        )} square meters, Category: ${countrySize}`
-      );
-
-      // Define different zoom levels for extra-small, small, medium, large countries
       const extraSmallZoom = 11;
       const smallZoom = 7;
       const mediumZoom = 5;
       const largeZoom = 3;
 
-      // Handle zoom level exceptions based on countryCode
       switch (countryCode) {
         case "AG":
           map.setView([lat, lon], mediumZoom);
@@ -183,8 +144,7 @@ function setMapLocation(lat, lon, message, advisoryLink, bounds, countryCode) {
     }
 
     const marker = L.marker([lat, lon]).addTo(map);
-    const content = `${message} ${advisoryLink}`;
-    marker.bindPopup(content);
+    marker.bindPopup(popupContent);
     marker.openPopup();
   });
 }
@@ -199,4 +159,27 @@ const initWindyOptions = {
 
 windyInit(initWindyOptions);
 
-getCountriesFromApi();
+countryDropdown.addEventListener("change", async () => {
+  const countryCode = countryDropdown.value;
+  if (countryCode !== "") {
+    const countryData = await fetchCountryData(countryCode);
+    const countryListElement = document.getElementById("country-list");
+    countryListElement.innerHTML = "";
+    displayCountryName(countryData, countryListElement);
+
+    const OPEN_CAGE_API_KEY = "0c9aade54fba4c8abfae724859a72795";
+    const geocodingApiUrl = `https://api.opencagedata.com/geocode/v1/json?q=${countryData[countryCode].name}&key=${OPEN_CAGE_API_KEY}`;
+    fetch(geocodingApiUrl)
+      .then((response) => response.json())
+      .then(({ results }) => {
+        if (results && results.length > 0) {
+          const { lat, lng } = results[0].geometry;
+          const bounds = results[0].bounds;
+          const popupContent = generatePopupContent(countryData, countryCode);
+          setMapLocation(lat, lng, popupContent, bounds, countryCode);
+        }
+      });
+  }
+});
+
+populateCountryDropdown();
