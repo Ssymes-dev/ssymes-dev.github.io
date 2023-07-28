@@ -40,27 +40,10 @@ function displayCountryName(countryData, countryListElement) {
   }
 }
 
-function createSourcesText(numSources) {
-  if (numSources === 0) {
-    return "No sources available.";
-  } else if (numSources === 1) {
-    return "1 source available.";
-  } else {
-    return `${numSources} sources available.`;
-  }
-}
-
 function createAdvisoryLink(advisory) {
   const advisoryLinkElement = document.createElement("a");
   const numSources = advisory.sources_active;
-  let numText;
-  if (numSources === 0) {
-    numText = "No sources available.";
-  } else if (numSources === 1) {
-    numText = "1 source available.";
-  } else {
-    numText = `${numSources} sources available.`;
-  }
+  const numText = createSourcesText(numSources);
 
   const sourceText = document.createTextNode(` ${numText}`);
   advisoryLinkElement.title = ` ${numText}`;
@@ -70,6 +53,15 @@ function createAdvisoryLink(advisory) {
   return advisoryLinkElement;
 }
 
+function createSourcesText(numSources) {
+  if (numSources === 0) {
+    return "No sources available.";
+  } else if (numSources === 1) {
+    return "1 source available.";
+  } else {
+    return `${numSources} sources available.`;
+  }
+}
 function generatePopupContent(countryData, countryCode) {
   const advisory = countryData[countryCode].advisory;
   const advisoryLink = createAdvisoryLink(advisory);
@@ -93,60 +85,57 @@ function calculateArea(northEast, southWest) {
 
 function setMapLocation(lat, lon, popupContent, bounds, countryCode) {
   windyInit(initWindyOptions, (windyAPI) => {
-    map = windyAPI.map;
+    const map = windyAPI.map;
 
     if (bounds && bounds.northeast && bounds.southwest) {
       const area = calculateArea(bounds.northeast, bounds.southwest);
-      let countrySize;
-      if (area < 500000) {
-        countrySize = "extra-small";
-        extraSmallCountries.push(popupContent);
-      } else if (area <= 50000000) {
-        countrySize = "small";
-        smallCountries.push(popupContent);
-      } else if (area <= 500000000) {
-        countrySize = "medium";
-        mediumCountries.push(popupContent);
-      } else {
-        countrySize = "large";
-        largeCountries.push(popupContent);
-      }
+      const countrySize = getCountrySize(area);
 
-      const extraSmallZoom = 11;
-      const smallZoom = 7;
-      const mediumZoom = 5;
-      const largeZoom = 3;
+      const zoomLevel = getZoomLevel(countryCode, countrySize);
 
-      switch (countryCode) {
-        case "AG":
-          map.setView([lat, lon], mediumZoom);
-          break;
-        default:
-          switch (countrySize) {
-            case "large":
-              map.setView([lat, lon], largeZoom);
-              break;
-            case "medium":
-              map.setView([lat, lon], mediumZoom);
-              break;
-            case "small":
-              map.setView([lat, lon], smallZoom);
-              break;
-            case "extra-small":
-              map.setView([lat, lon], extraSmallZoom);
-              break;
-            default:
-              map.setView([lat, lon], map.getZoom());
-              break;
-          }
-          break;
-      }
+      map.setView([lat, lon], zoomLevel);
     }
 
-    const marker = L.marker([lat, lon]).addTo(map);
-    marker.bindPopup(popupContent);
-    marker.openPopup();
+    addMarker(map, lat, lon, popupContent);
   });
+}
+
+function getCountrySize(area) {
+  if (area < 500000) {
+    return "extra-small";
+  } else if (area <= 50000000) {
+    return "small";
+  } else if (area <= 500000000) {
+    return "medium";
+  } else {
+    return "large";
+  }
+}
+
+function getZoomLevel(countryCode, countrySize) {
+  switch (countryCode) {
+    case "AG":
+      return 5; // Medium zoom level for AG
+    default:
+      switch (countrySize) {
+        case "large":
+          return 3;
+        case "medium":
+          return 5;
+        case "small":
+          return 7;
+        case "extra-small":
+          return 11;
+        default:
+          return 10; // Default zoom level
+      }
+  }
+}
+
+function addMarker(map, lat, lon, popupContent) {
+  const marker = L.marker([lat, lon]).addTo(map);
+  marker.bindPopup(popupContent);
+  marker.openPopup();
 }
 
 const initWindyOptions = {
