@@ -1,24 +1,30 @@
 const countryDropdown = document.getElementById("allCountries");
 let map;
 
-const extraSmallCountries = [];
-const smallCountries = [];
-const mediumCountries = [];
-const largeCountries = [];
-
 function populateCountryDropdown() {
   const apiUrl = "https://www.travel-advisory.info/api";
   fetch(apiUrl)
     .then((response) => response.json())
     .then(({ data }) => {
-      for (const countryCode in data) {
-        const countryName = data[countryCode].name;
-        const optionElement = document.createElement("option");
-        optionElement.value = countryCode;
-        optionElement.textContent = countryName;
-        countryDropdown.appendChild(optionElement);
-      }
+      const sortedCountryOptions = SortCountryOptions(data);
+      appendDropdownOptions(sortedCountryOptions);
     });
+}
+function SortCountryOptions(data) {
+  const countryOptions = Object.keys(data).map((countryCode) => ({
+    code: countryCode,
+    name: data[countryCode].name,
+  }));
+  return countryOptions.sort((a, b) => a.name.localeCompare(b.name));
+}
+
+function appendDropdownOptions(countryOptions) {
+  for (const countryOption of countryOptions) {
+    const optionElement = document.createElement("option");
+    optionElement.value = countryOption.code;
+    optionElement.textContent = countryOption.name;
+    countryDropdown.appendChild(optionElement);
+  }
 }
 
 async function fetchCountryData(countryCode) {
@@ -74,62 +80,26 @@ function generatePopupContent(countryData, countryCode) {
 
   return popupContent;
 }
-
-function calculateArea(northEast, southWest) {
-  const latDiff = Math.abs(northEast.lat - southWest.lat);
-  const lngDiff = Math.abs(northEast.lng - southWest.lng);
-  const area = (latDiff * lngDiff * 40008000) / 360;
-
-  return area;
-}
-
-function setMapLocation(lat, lon, popupContent, bounds, countryCode) {
+function setMapLocation(lat, lon, popupContent, bounds) {
   windyInit(initWindyOptions, (windyAPI) => {
     const map = windyAPI.map;
 
     if (bounds && bounds.northeast && bounds.southwest) {
-      const area = calculateArea(bounds.northeast, bounds.southwest);
-      const countrySize = getCountrySize(area);
+      const southWestLatLng = L.latLng(
+        bounds.southwest.lat,
+        bounds.southwest.lng
+      );
+      const northEastLatLng = L.latLng(
+        bounds.northeast.lat,
+        bounds.northeast.lng
+      );
+      const boundingBox = L.latLngBounds(southWestLatLng, northEastLatLng);
 
-      const zoomLevel = getZoomLevel(countryCode, countrySize);
+      map.fitBounds(boundingBox);
 
-      map.setView([lat, lon], zoomLevel);
+      addMarker(map, lat, lon, popupContent);
     }
-
-    addMarker(map, lat, lon, popupContent);
   });
-}
-
-function getCountrySize(area) {
-  if (area < 500000) {
-    return "extra-small";
-  } else if (area <= 50000000) {
-    return "small";
-  } else if (area <= 500000000) {
-    return "medium";
-  } else {
-    return "large";
-  }
-}
-
-function getZoomLevel(countryCode, countrySize) {
-  switch (countryCode) {
-    case "AG":
-      return 5; // Medium zoom level for AG
-    default:
-      switch (countrySize) {
-        case "large":
-          return 3;
-        case "medium":
-          return 5;
-        case "small":
-          return 7;
-        case "extra-small":
-          return 11;
-        default:
-          return 10; // Default zoom level
-      }
-  }
 }
 
 function addMarker(map, lat, lon, popupContent) {
@@ -148,14 +118,13 @@ const initWindyOptions = {
 
 windyInit(initWindyOptions);
 
-countryDropdown.addEventListener("change", async () => {
+function updateCountryList(countryData) {
+  const countryListElement = document.getElementById("country-list");
+  countryListElement.innerHTML = "";
+  displayCountryName(countryData, countryListElement);
+
   const countryCode = countryDropdown.value;
   if (countryCode !== "") {
-    const countryData = await fetchCountryData(countryCode);
-    const countryListElement = document.getElementById("country-list");
-    countryListElement.innerHTML = "";
-    displayCountryName(countryData, countryListElement);
-
     const OPEN_CAGE_API_KEY = "0c9aade54fba4c8abfae724859a72795";
     const geocodingApiUrl = `https://api.opencagedata.com/geocode/v1/json?q=${countryData[countryCode].name}&key=${OPEN_CAGE_API_KEY}`;
     fetch(geocodingApiUrl)
@@ -168,6 +137,14 @@ countryDropdown.addEventListener("change", async () => {
           setMapLocation(lat, lng, popupContent, bounds, countryCode);
         }
       });
+  }
+}
+
+countryDropdown.addEventListener("change", async () => {
+  const countryCode = countryDropdown.value;
+  if (countryCode !== "") {
+    const countryData = await fetchCountryData(countryCode);
+    updateCountryList(countryData);
   }
 });
 
