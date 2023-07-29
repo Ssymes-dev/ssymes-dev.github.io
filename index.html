@@ -53,11 +53,13 @@
             <div class="col-3 d-flex justify-center w-auto m-4 h-25">
                 <form class="text-dark justify-center">
                     <label><b>Choose a Country:</b></label>
-                    <input type="search" class="form-control w-auto m-1" autocomplete="true"
-                        placeholder="Type to filter...">
-                    <select name="slctCountries" id="allCountries" class="dropdown w-sm-75 w-25 m-1">
-                        <option value="" selected>Please select</option>
-                    </select>
+                    <div class="dropdown">
+                        <input type="search" class="form-control w-auto m-1" autocomplete="off"
+                            placeholder="Type to filter..." id="countrySearchInput" data-bs-toggle="dropdown">
+                        <ul class="dropdown-menu w-sm-75 w-25 m-1" id="allCountries"
+                            aria-labelledby="dropdownMenuButton">
+                        </ul>
+                    </div>
                     <ol class="list-unstyled mt-5 text-center" id="country-list">
                     </ol>
                 </form>
@@ -69,6 +71,7 @@
             </div>
         </div>
     </div>
+
 
     <footer>
         <p>Source of data: <a href="https://www.travel-advisory.info">Travel-Advisory.info</a></p>
