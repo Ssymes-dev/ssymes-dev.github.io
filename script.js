@@ -3,6 +3,7 @@ const countryDropdown = document.getElementById("allCountries");
 const countrySearchInput = document.getElementById("countrySearchInput");
 let allCountryOptions = [];
 let countryDataCache = null;
+let windyAPI;
 
 // Initialization
 const initWindyOptions = {
@@ -14,6 +15,56 @@ const initWindyOptions = {
 };
 
 windyInit(initWindyOptions);
+
+// Event listener for the country dropdown options
+countryDropdown.parentElement.addEventListener("click", async (event) => {
+  const selectedCountryName = event.target.textContent;
+  const selectedCountryCode = event.target.getAttribute("data-country-code");
+  countrySearchInput.value = selectedCountryName;
+  countrySearchInput.setAttribute("data-selected-code", selectedCountryCode);
+
+  const selectedOption = allCountryOptions.find(
+    (option) => option.code === selectedCountryCode
+  );
+  if (selectedOption) {
+    countryDropdown.value = selectedOption.code;
+    const countryData = await getCachedCountryData(selectedOption.code);
+    updateCountryList(countryData[0]); // Use countryData[0] to access the first item
+  }
+});
+
+// Event listener for the search input
+countrySearchInput.addEventListener("input", async () => {
+  const searchTerm = countrySearchInput.value.trim().toLowerCase();
+  const filteredOptions = allCountryOptions.filter(
+    (option) =>
+      option.name.toLowerCase().includes(searchTerm) ||
+      option.code.toLowerCase().includes(searchTerm)
+  );
+
+  appendDropdownOptions(filteredOptions);
+
+  // If there's only one matching option, automatically select it and update the country list
+  if (filteredOptions.length === 1) {
+    const selectedCountryData = filteredOptions[0];
+    countryDropdown.value = selectedCountryData.code;
+    const countryData = await getCachedCountryData(selectedCountryData.code);
+    updateCountryList(countryData);
+  }
+});
+
+// Function to fetch country data
+async function fetchCountryData() {
+  const apiUrl = "https://www.travel-advisory.info/api";
+  try {
+    const response = await fetch(apiUrl);
+    const { data } = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error fetching country data:", error);
+    return null;
+  }
+}
 
 // Helper function to sort country options
 function sortCountryOptions(data) {
@@ -64,10 +115,10 @@ function generatePopupContent(countryData, countryCode) {
   const advisoryLink = createAdvisoryLink(advisory);
 
   const popupContent = `
-    <h1>${countryData[countryCode].name}</h1>
-    <p>${advisory.message}</p>
-    <p>Sources: ${advisoryLink.outerHTML}</p>
-  `;
+     <h1>${countryData[countryCode].name}</h1>
+     <p>${advisory.message}</p>
+     <p>Sources: ${advisoryLink.outerHTML}</p>
+   `;
 
   return popupContent;
 }
@@ -106,37 +157,15 @@ function addMarker(map, lat, lon, popupContent) {
 
 // Function to populate the country dropdown
 function populateCountryDropdown() {
-  const apiUrl = "https://www.travel-advisory.info/api";
-  fetch(apiUrl)
-    .then((response) => response.json())
-    .then(({ data }) => {
+  fetchCountryData()
+    .then((data) => {
       const sortedCountryOptions = sortCountryOptions(data);
       allCountryOptions = sortedCountryOptions; // Assign the sorted options to the variable
       appendDropdownOptions(sortedCountryOptions);
-
-      // Add event listener to the dropdown options
-      const dropdownOptions = document.querySelectorAll(".dropdown-item");
-      dropdownOptions.forEach((option) => {
-        option.addEventListener("click", () => {
-          const selectedCountryName = option.textContent;
-          const selectedCountryCode = option.getAttribute("data-country-code");
-          countrySearchInput.value = selectedCountryName;
-          countrySearchInput.setAttribute(
-            "data-selected-code",
-            selectedCountryCode
-          );
-
-          const selectedOption = sortedCountryOptions.find(
-            (option) => option.code === selectedCountryCode
-          );
-          if (selectedOption) {
-            countryDropdown.value = selectedOption.code;
-            getCachedCountryData(selectedOption.code).then((countryData) => {
-              updateCountryList(countryData);
-            });
-          }
-        });
-      });
+      addEventListenersToOptions();
+    })
+    .catch((error) => {
+      console.error("Error fetching country data:", error);
     });
 }
 
@@ -154,6 +183,32 @@ function appendDropdownOptions(countryOptions) {
     optionElement.innerHTML = `<a class="dropdown-item" href="#" data-country-code="${option.code}">${option.name}</a>`;
     countryDropdown.appendChild(optionElement);
   }
+}
+
+// Function to add event listeners to dropdown options
+function addEventListenersToOptions() {
+  const dropdownOptions = document.querySelectorAll(".dropdown-item");
+  dropdownOptions.forEach((option) => {
+    option.addEventListener("click", () => {
+      const selectedCountryName = option.textContent;
+      const selectedCountryCode = option.getAttribute("data-country-code");
+      countrySearchInput.value = selectedCountryName;
+      countrySearchInput.setAttribute(
+        "data-selected-code",
+        selectedCountryCode
+      );
+
+      const selectedOption = allCountryOptions.find(
+        (option) => option.code === selectedCountryCode
+      );
+      if (selectedOption) {
+        countryDropdown.value = selectedOption.code;
+        getCachedCountryData(selectedOption.code).then((countryData) => {
+          updateCountryList(countryData);
+        });
+      }
+    });
+  });
 }
 
 // Function to get country data from the cache
@@ -217,52 +272,13 @@ function updateCountryList(countryData) {
   }
 }
 
-// Event listener for the country dropdown options
-countryDropdown.parentElement.addEventListener("click", async (event) => {
-  if (event.target.classList.contains("dropdown-item")) {
-    const selectedCountryName = event.target.textContent;
-    const selectedCountryCode = event.target.getAttribute("data-country-code");
-    countrySearchInput.value = selectedCountryName;
-    countrySearchInput.setAttribute("data-selected-code", selectedCountryCode);
+// Initial population of the country dropdown and Windy API initialization
+populateCountryDropdown();
 
-    const selectedOption = allCountryOptions.find(
-      (option) => option.code === selectedCountryCode
-    );
-    if (selectedOption) {
-      countryDropdown.value = selectedOption.code;
-      const countryData = await getCachedCountryData(selectedOption.code);
-      updateCountryList(countryData[0]); // Use countryData[0] to access the first item
-    }
-  }
-});
-
-// Event listener for the search input
-countrySearchInput.addEventListener("input", async () => {
-  const searchTerm = countrySearchInput.value.trim().toLowerCase();
-  const filteredOptions = allCountryOptions.filter(
-    (option) =>
-      option.name.toLowerCase().includes(searchTerm) ||
-      option.code.toLowerCase().includes(searchTerm)
-  );
-
-  appendDropdownOptions(filteredOptions);
-
-  // If there's only one matching option, automatically select it and update the country list
-  if (filteredOptions.length === 1) {
-    const selectedCountryData = filteredOptions[0];
-    countryDropdown.value = selectedCountryData.code;
-    const countryData = await getCachedCountryData(selectedCountryData.code);
-    updateCountryList(countryData);
-  }
-});
-
-let windyAPI;
 function initWindy() {
   windyInit(initWindyOptions, (api) => {
     windyAPI = api; // Store the initialized API object in the global variable
   });
 }
 
-// Initial population of the country dropdown
-populateCountryDropdown();
 initWindy();
