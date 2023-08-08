@@ -18,18 +18,20 @@ windyInit(initWindyOptions);
 
 // Event listener for the country dropdown options
 countryDropdown.parentElement.addEventListener("click", async (event) => {
-  const selectedCountryName = event.target.textContent;
-  const selectedCountryCode = event.target.getAttribute("data-country-code");
-  countrySearchInput.value = selectedCountryName;
-  countrySearchInput.setAttribute("data-selected-code", selectedCountryCode);
+  if (event.target.classList.contains("dropdown-item")) {
+    const selectedCountryName = event.target.textContent;
+    const selectedCountryCode = event.target.getAttribute("data-country-code");
+    countrySearchInput.value = selectedCountryName;
+    countrySearchInput.setAttribute("data-selected-code", selectedCountryCode);
 
-  const selectedOption = allCountryOptions.find(
-    (option) => option.code === selectedCountryCode
-  );
-  if (selectedOption) {
-    countryDropdown.value = selectedOption.code;
-    const countryData = await getCachedCountryData(selectedOption.code);
-    updateCountryList(countryData[0]); // Use countryData[0] to access the first item
+    const selectedOption = allCountryOptions.find(
+      (option) => option.code === selectedCountryCode
+    );
+    if (selectedOption) {
+      countryDropdown.value = selectedOption.code;
+      const countryData = await getCachedCountryData(selectedOption.code);
+      displayCountryDetails(countryData[0]); // Use countryData[0] to access the first item
+    }
   }
 });
 
@@ -52,7 +54,6 @@ countrySearchInput.addEventListener("input", async () => {
     updateCountryList(countryData);
   }
 });
-
 // Function to fetch country data
 async function fetchCountryData() {
   const apiUrl = "https://www.travel-advisory.info/api";
@@ -64,20 +65,6 @@ async function fetchCountryData() {
     console.error("Error fetching country data:", error);
     return null;
   }
-}
-
-// Helper function to sort country options
-function sortCountryOptions(data) {
-  const countryOptions = Object.keys(data).map((countryCode) => ({
-    code: countryCode,
-    name: data[countryCode].name,
-  }));
-  return countryOptions.sort((a, b) => a.name.localeCompare(b.name));
-}
-
-// Helper function to clear the country list element
-function clearCountryList(countryListElement) {
-  countryListElement.innerHTML = "";
 }
 
 // Helper function to create an advisory link
@@ -114,13 +101,99 @@ function generatePopupContent(countryData, countryCode) {
   const advisory = countryData[countryCode].advisory;
   const advisoryLink = createAdvisoryLink(advisory);
 
+  const countryName = countryData[countryCode].name;
+  const advisoryMessage = advisory.message;
+  const sourcesHTML = advisoryLink.outerHTML;
+
   const popupContent = `
-     <h1>${countryData[countryCode].name}</h1>
-     <p>${advisory.message}</p>
-     <p>Sources: ${advisoryLink.outerHTML}</p>
-   `;
+    <h1>${countryName}</h1>
+    <p>${advisoryMessage}</p>
+    <p>Sources: ${sourcesHTML}</p>
+  `;
 
   return popupContent;
+}
+
+// Function to populate the country dropdown
+async function populateCountryDropdown() {
+  try {
+    const data = await fetchCountryData();
+    const sortedCountryOptions = sortCountryOptions(data);
+    allCountryOptions = sortedCountryOptions;
+    appendDropdownOptions(sortedCountryOptions);
+    addEventListenersToOptions();
+  } catch (error) {
+    console.error("Error fetching country data:", error);
+  }
+}
+
+// Function to append dropdown options
+function appendDropdownOptions(countryOptions) {
+  countryDropdown.innerHTML = "";
+  const placeholderOption = document.createElement("li");
+  placeholderOption.innerHTML =
+    '<a class="dropdown-item" href="#" data-country-code="">Type to filter...</a>';
+  countryDropdown.appendChild(placeholderOption);
+
+  for (const option of countryOptions) {
+    const optionElement = document.createElement("li");
+    optionElement.innerHTML = `<a class="dropdown-item" href="#" data-country-code="${option.code}">${option.name}</a>`;
+    countryDropdown.appendChild(optionElement);
+  }
+}
+
+// Function to get country data from the cache
+async function getCachedCountryData(countryCode) {
+  if (countryDataCache !== null) {
+    return countryDataCache[countryCode];
+  }
+
+  try {
+    const data = await fetchCountryData();
+    countryDataCache = data;
+    return countryDataCache[countryCode];
+  } catch (error) {
+    console.error("Error fetching country data:", error);
+    throw error;
+  }
+}
+
+// Function to display country details
+async function displayCountryDetails(countryData) {
+  const countryListElement = document.getElementById("country-list");
+  const countryCode = countryDropdown.value;
+
+  clearCountryList(countryListElement);
+
+  for (const code in countryData) {
+    const countryNameElement = document.createElement("p");
+    const countryName = document.createElement("h1");
+    countryName.textContent = countryData[code].name;
+    countryNameElement.appendChild(countryName);
+    countryListElement.appendChild(countryNameElement);
+  }
+
+  if (countryCode !== "") {
+    try {
+      await updateMapWithGeocoding(countryData, countryCode);
+    } catch (error) {
+      console.error("Error updating map with geocoding:", error);
+    }
+  }
+}
+
+// Helper function to sort country options
+function sortCountryOptions(data) {
+  const countryOptions = Object.keys(data).map((countryCode) => ({
+    code: countryCode,
+    name: data[countryCode].name,
+  }));
+  return countryOptions.sort((a, b) => a.name.localeCompare(b.name));
+}
+
+// Helper function to clear the country list element
+function clearCountryList(countryListElement) {
+  countryListElement.innerHTML = "";
 }
 
 function setMapLocation(lat, lon, popupContent, bounds) {
@@ -155,41 +228,11 @@ function addMarker(map, lat, lon, popupContent) {
   marker.openPopup();
 }
 
-// Function to populate the country dropdown
-function populateCountryDropdown() {
-  fetchCountryData()
-    .then((data) => {
-      const sortedCountryOptions = sortCountryOptions(data);
-      allCountryOptions = sortedCountryOptions; // Assign the sorted options to the variable
-      appendDropdownOptions(sortedCountryOptions);
-      addEventListenersToOptions();
-    })
-    .catch((error) => {
-      console.error("Error fetching country data:", error);
-    });
-}
-
-// Function to append dropdown options
-function appendDropdownOptions(countryOptions) {
-  countryDropdown.innerHTML = ""; // Clear existing options
-  // Add the "Type to filter..." option to the dropdown
-  const placeholderOption = document.createElement("li");
-  placeholderOption.innerHTML =
-    '<a class="dropdown-item" href="#" data-country-code="">Type to filter...</a>';
-  countryDropdown.appendChild(placeholderOption);
-
-  for (const option of countryOptions) {
-    const optionElement = document.createElement("li");
-    optionElement.innerHTML = `<a class="dropdown-item" href="#" data-country-code="${option.code}">${option.name}</a>`;
-    countryDropdown.appendChild(optionElement);
-  }
-}
-
 // Function to add event listeners to dropdown options
 function addEventListenersToOptions() {
   const dropdownOptions = document.querySelectorAll(".dropdown-item");
   dropdownOptions.forEach((option) => {
-    option.addEventListener("click", () => {
+    option.addEventListener("click", async () => {
       const selectedCountryName = option.textContent;
       const selectedCountryCode = option.getAttribute("data-country-code");
       countrySearchInput.value = selectedCountryName;
@@ -199,76 +242,40 @@ function addEventListenersToOptions() {
       );
 
       const selectedOption = allCountryOptions.find(
-        (option) => option.code === selectedCountryCode
+        (countryOption) => countryOption.code === selectedCountryCode
       );
       if (selectedOption) {
         countryDropdown.value = selectedOption.code;
-        getCachedCountryData(selectedOption.code).then((countryData) => {
-          updateCountryList(countryData);
-        });
+        const countryData = await getCachedCountryData(selectedOption.code);
+        displayCountryDetails(countryData[0]); // Use countryData[0] to access the first item
       }
     });
   });
 }
 
-// Function to get country data from the cache
-function getCachedCountryData(countryCode) {
-  return new Promise((resolve, reject) => {
-    if (countryDataCache !== null) {
-      // If data is already in the cache, resolve with the cached data
-      resolve(countryDataCache[countryCode]);
-    } else {
-      // If cache is empty, fetch data from API and populate the cache
-      const apiUrl = "https://www.travel-advisory.info/api";
-      fetch(apiUrl)
-        .then((response) => response.json())
-        .then(({ data }) => {
-          countryDataCache = data;
-          resolve(countryDataCache[countryCode]);
-        })
-        .catch((error) => {
-          reject(error);
-        });
-    }
-  });
-}
-
-// Function to display country name
-function displayCountryName(countryData, countryListElement) {
-  for (const countryCode in countryData) {
-    const countryNameElement = document.createElement("p");
-    const countryName = document.createElement("h1");
-    countryName.textContent = countryData[countryCode].name;
-    countryNameElement.appendChild(countryName);
-    countryListElement.appendChild(countryNameElement);
-  }
-}
-
-function updateCountryList(countryData) {
-  const countryListElement = document.getElementById("country-list");
-  clearCountryList(countryListElement);
-  displayCountryName(countryData, countryListElement);
-
-  const countryCode = countryDropdown.value;
-  if (countryCode !== "") {
+// Function to update the map with geocoding data
+async function updateMapWithGeocoding(countryData, countryCode) {
+  try {
     const OPEN_CAGE_API_KEY = "0c9aade54fba4c8abfae724859a72795";
     const selectedCountryData = allCountryOptions.find(
       (option) => option.code === countryCode
     );
     const geocodingApiUrl = `https://api.opencagedata.com/geocode/v1/json?q=${selectedCountryData.name}&key=${OPEN_CAGE_API_KEY}`;
-    fetch(geocodingApiUrl)
-      .then((response) => response.json())
-      .then(({ results }) => {
-        if (results && results.length > 0) {
-          const { lat, lng } = results[0].geometry;
-          const bounds = results[0].bounds;
-          const popupContent = generatePopupContent(
-            countryData,
-            selectedCountryData.code
-          );
-          setMapLocation(lat, lng, popupContent, bounds);
-        }
-      });
+
+    const response = await fetch(geocodingApiUrl);
+    const { results } = await response.json();
+
+    if (results && results.length > 0) {
+      const { lat, lng } = results[0].geometry;
+      const bounds = results[0].bounds;
+      const popupContent = generatePopupContent(
+        countryData,
+        selectedCountryData.code
+      );
+      setMapLocation(lat, lng, popupContent, bounds);
+    }
+  } catch (error) {
+    console.error("Error updating map with geocoding:", error);
   }
 }
 
