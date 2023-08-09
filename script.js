@@ -209,6 +209,7 @@ function generatePopupContent(travelCountryCode) {
       <div>
         <h2>${selectedCountryData.name}</h2>
         <p class="advisory-message">Advisory: ${advisory.message}</p>
+
         <a href="${
           advisory.source
         }" target="_blank" rel="noopener noreferrer">Sources: ${createSourcesText(
