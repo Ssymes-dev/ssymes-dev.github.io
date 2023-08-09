@@ -12,6 +12,12 @@ html {
     font-size: medium;
 }
 
+.clearfix::after {
+    display: block;
+    content: "";
+    clear: both;
+}
+
 #windy {
     width: 1000px;
     height: 500px;
