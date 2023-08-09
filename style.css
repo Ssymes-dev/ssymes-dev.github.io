@@ -8,6 +8,10 @@ html {
     box-sizing: inherit;
 }
 
+.advisory-message {
+    font-size: medium;
+}
+
 #windy {
     width: 1000px;
     height: 500px;
