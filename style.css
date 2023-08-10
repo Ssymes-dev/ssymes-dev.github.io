@@ -8,14 +8,9 @@ html {
     box-sizing: inherit;
 }
 
-#style {
-    font-size: medium;
-}
 
-.clearfix::after {
-    display: block;
-    content: "";
-    clear: both;
+.advisory-message {
+    font-size: medium;
 }
 
 #windy {
