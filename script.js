@@ -8,7 +8,7 @@ let windyAPI;
 // Initialization
 const initWindyOptions = {
   key: "9N1YXUo4GoPgLBOjB85IYsz5CwIUgzce",
-  verbose: true,
+  verbose: false,
   lat: 50.4,
   lon: 14.3,
   zoom: 0,
@@ -211,7 +211,7 @@ function generatePopupContent(travelCountryCode) {
       : [advisory.sources_active];
 
     const popupContent = `
-      <div>
+      <div class="leaflet-popup-content" id="popupContent">
         <h2>${selectedCountryData.name}</h2>
         <p class="advisory-message">Advisory: ${advisory.message}</p>
 

@@ -2,11 +2,12 @@ html {
     box-sizing: border-box;
 }
 
+/* 
 *,
 *:before,
 *after {
     box-sizing: inherit;
-}
+} */
 
 
 .advisory-message {
@@ -16,6 +17,18 @@ html {
 #allCountries {
     width: max-content;
     max-height: 600px;
+
+}
+
+#windy .leaflet-popup-content-wrapper {
+    width: 90%;
+    max-width: fit-content;
+
+}
+
+#popupContent {
+    margin: 0%;
+    justify-content: center;
 
 }
 

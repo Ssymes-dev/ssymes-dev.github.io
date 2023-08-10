@@ -31,25 +31,12 @@
             <div class="col text-end mx-5 my-2">
                 <b>socials icons</b>
 
-                <button type="button" class="btn btn-secondary" data-bs-toggle="modal"
-                    data-bs-target="#aboutProjectModal">
-                    Learn More
-                </button>
+
             </div>
         </div>
         </div>
     </header>
 
-
-    <header class="container">
-        <div class="row">
-            <div class="col">
-
-
-            </div>
-        </div>
-
-    </header>
     <div class="container">
         <div class="row justify-center">
             <div class="col-3 d-flex justify-center w-auto m-4 h-25">
@@ -68,7 +55,9 @@
             </div>
             <div class="container-fluid">
                 <div class="row mx-3">
-                    <div class="col justify-center w-auto" id="windy"></div>
+                    <div class="col justify-center w-auto" id="windy">
+                        <canvas width=200 height=200 style=width:100px;height:100px>
+                    </div>
                     <style>
                         .progress-bar {
                             overflow: visible;
@@ -85,14 +74,18 @@
         <div class="container">
             <div class="row">
                 <div class="col">
-
-                    <div class="col text-right">
-                        <p>Source of data: <a href="https://www.travel-advisory.info">Travel-Advisory.info</a></p>
-                    </div>
-                </div>
-                <div class="col">
                     <div class="col text-dark" id="google_translate_element"></div>
                 </div>
+                <div class="col">
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                        data-bs-target="#aboutProjectModal">
+                        Learn More
+                    </button>
+                </div>
+                <div class="col">
+                    <a href="https://www.travel-advisory.info">Source of data</a>
+                </div>
+
             </div>
     </footer>
 
