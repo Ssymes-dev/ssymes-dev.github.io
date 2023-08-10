@@ -43,7 +43,12 @@ countryDropdown.parentElement.addEventListener("click", async (event) => {
     }
   }
 });
-
+function googleTranslateElementInit() {
+  new google.translate.TranslateElement(
+    { pageLanguage: "en" },
+    "google_translate_element"
+  );
+}
 // Event listener for the search input
 countrySearchInput.addEventListener("input", async () => {
   const searchTerm = countrySearchInput.value.trim().toLowerCase();
@@ -276,7 +281,7 @@ async function displayCountryDetails(travelData) {
     }
   }
 }
-// Helper function to sort country options
+// Helper function to alphabetize country options
 function alphabetizeCountries(travelData) {
   const countryOptions = Object.keys(travelData).map((travelCountryCode) => ({
     code: travelCountryCode,
@@ -290,14 +295,14 @@ function clearSearchInput() {
   countrySearchInput.value = "";
 }
 
-// Initial population of the country dropdown and Windy API initialization
-populateCountryDropdown();
-
 function initWindy() {
   windyInit(initWindyOptions, (api) => {
     windyAPI = api; // Store the initialized API object in the global variable
   });
 }
+
+// Initial population of the country dropdown and Windy API initialization
+populateCountryDropdown();
 
 initWindy();
 
