@@ -16,6 +16,11 @@ const initWindyOptions = {
 
 windyInit(initWindyOptions);
 
+$(document).ready(function () {
+  $("#aboutLink").click(function () {
+    $("#aboutProjectModal").modal("show");
+  });
+});
 // Event listener for the country dropdown options
 countryDropdown.parentElement.addEventListener("click", async (event) => {
   if (event.target.classList.contains("dropdown-item")) {

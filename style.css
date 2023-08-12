@@ -20,6 +20,14 @@ html {
 
 }
 
+#icons {
+    padding: 5px;
+    text-decoration: none;
+
+}
+
+
+
 #windy .leaflet-popup-content-wrapper {
     width: 90%;
     max-width: fit-content;
