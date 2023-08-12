@@ -13,21 +13,21 @@ The TravelSage Web Application harmoniously integrates the following APIs, libra
 
 ### APIs:
 
-- **Windy API**: Delivering global weather data with precision and accuracy.
-- **OpenCage API**: Translating coordinates seamlessly into meaningful locations with geocoding expertise.
-- **travel-advisory.info API**: Infusing each country's advisory with a safety rating for your informed journey.
+- **Windy API**: Integration with the Windy API for real-time weather information.
+- **OpenCage API**:  Utilization of the OpenCage Data API for geocoding.
+- **travel-advisory.info API**: Integration for travel advisory data.
 
 ### Libraries and Technologies:
 
-- **Leaflet Library**: Weaving interactive maps into the fabric of your experience.
-- **Web Fundamentals**: Crafting a foundation with HTML, CSS, and JavaScript.
-- **Responsive Design**: Adapting gracefully through the Bootstrap framework.
-- **User Interaction**: Seamlessly engaging users via integrated jQuery capabilities.
-- **Live Data Integration**: Infusing real-time information with seamless API incorporation.
+- **Leaflet Library**: Incorporation of the Leaflet JavaScript library for interactive maps.
+- **Web Fundamentals**: Crafted using HTML, CSS, and JavaScript.
+- **Responsive Design**: Adapts elegantly with the assistance of the Bootstrap framework.
+- **User Interaction**: Seamlessly engages users with integrated jQuery functionality.
+- **Live Data Integration**: Real-time data is incorporated through external APIs.
 
 ## Contributions
 
-Your insights are invaluable in refining the TravelSage Web Application. Share your thoughts to enhance the user experience and functionality – your feedback drives continuous improvement.
+Your feedback is welcome! Feel free to share your thoughts and suggestions as they are greatly appreciated.
 
 ## License
 
