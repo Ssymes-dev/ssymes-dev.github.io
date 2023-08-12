@@ -9,10 +9,6 @@ TravelSage combines data from travel-advisory.info with Windy's weather insights
 
 ## API Integrations and Technologies
 
-TravelSage combines the following APIs, libraries, and technologies:
-
-## API Integrations and Technologies
-
 The TravelSage Web Application harmoniously integrates the following APIs, libraries, and technologies:
 
 ### APIs:
