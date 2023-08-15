@@ -21,6 +21,7 @@ $(document).ready(function () {
     $("#aboutProjectModal").modal("show");
   });
 });
+
 // Event listener for the country dropdown options
 countryDropdown.parentElement.addEventListener("click", async (event) => {
   if (event.target.classList.contains("dropdown-item")) {
@@ -32,9 +33,7 @@ countryDropdown.parentElement.addEventListener("click", async (event) => {
         "data-selected-code",
         selectedTravelCountryCode
       );
-
-      // Clear the search input field
-      clearSearchInput();
+      countrySearchInput.value = "";
 
       const selectedOption = allCountryOptions.find(
         ({ code }) => code === selectedTravelCountryCode
@@ -48,30 +47,34 @@ countryDropdown.parentElement.addEventListener("click", async (event) => {
     }
   }
 });
+
+// Event listener for the search input
+countrySearchInput.addEventListener("input", async () => {
+  const searchTerm = countrySearchInput.value.trim().toLowerCase();
+  // Filter options based on the search term
+  const filteredOptions = allCountryOptions.filter(
+    (option) =>
+      option.name.toLowerCase().includes(searchTerm) ||
+      option.code.toLowerCase().includes(searchTerm)
+  );
+  appendDropdownOptions(filteredOptions);
+});
+
+// Event listener for the search input click
+countrySearchInput.addEventListener("click", async () => {
+  allCountryOptions.length = 0;
+  // If the search input is empty, populate the country dropdown
+  if (countrySearchInput.value.trim() === "") {
+    await populateCountryDropdown();
+  }
+});
+
 function googleTranslateElementInit() {
   new google.translate.TranslateElement(
     { pageLanguage: "en" },
     "google_translate_element"
   );
 }
-// Event listener for the search input
-countrySearchInput.addEventListener("input", async () => {
-  const searchTerm = countrySearchInput.value.trim().toLowerCase();
-  const filteredOptions = allCountryOptions.filter(
-    (option) =>
-      option.name.toLowerCase().includes(searchTerm) ||
-      option.code.toLowerCase().includes(searchTerm)
-  );
-
-  appendDropdownOptions(filteredOptions);
-
-  if (filteredOptions.length === 1) {
-    const selectedCountryData = filteredOptions[0];
-    countryDropdown.value = selectedCountryData.code;
-    const travelData = await getCachedCountryData(selectedCountryData.code);
-    updateCountryList(travelData);
-  }
-});
 
 // Function to fetch country data
 async function fetchCountryData() {
@@ -90,27 +93,28 @@ async function fetchCountryData() {
 async function populateCountryDropdown() {
   try {
     const travelData = await fetchCountryData();
-    const sortedCountryOptions = alphabetizeCountries(travelData);
-    allCountryOptions = sortedCountryOptions;
-    appendDropdownOptions(sortedCountryOptions);
+    allCountryOptions = alphabetizeCountries(travelData);
+    appendDropdownOptions(allCountryOptions);
   } catch (error) {
     console.error("Error fetching country data:", error);
   }
 }
 
 // Function to append dropdown options
-function appendDropdownOptions(countryOptions) {
+function appendDropdownOptions(travelData) {
   countryDropdown.innerHTML = "";
   const placeholderOption = document.createElement("li");
   placeholderOption.innerHTML =
     '<a class="dropdown-item" href="#" data-country-code="">Type to filter...</a>';
   countryDropdown.appendChild(placeholderOption);
 
-  for (const option of countryOptions) {
+  for (const option of travelData) {
     const optionElement = document.createElement("li");
     optionElement.innerHTML = `<a class="dropdown-item" href="#" data-country-code="${option.code}">${option.name}</a>`;
     countryDropdown.appendChild(optionElement);
   }
+  // Log the updated allCountryOptions array
+  console.log("Updated allCountryOptions:", allCountryOptions);
 }
 
 // Function to get country data from the cache
@@ -293,11 +297,6 @@ function alphabetizeCountries(travelData) {
     name: travelData[travelCountryCode].name,
   }));
   return countryOptions.sort((a, b) => a.name.localeCompare(b.name));
-}
-
-// Function to clear the search input
-function clearSearchInput() {
-  countrySearchInput.value = "";
 }
 
 function initWindy() {
