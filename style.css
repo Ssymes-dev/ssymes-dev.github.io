@@ -1,15 +1,3 @@
-html {
-    box-sizing: border-box;
-}
-
-/* 
-*,
-*:before,
-*after {
-    box-sizing: inherit;
-} */
-
-
 .advisory-message {
     font-size: medium;
 }
@@ -26,7 +14,9 @@ html {
 
 }
 
-
+#menu {
+    max-height: fit-content;
+}
 
 #windy .leaflet-popup-content-wrapper {
     width: 90%;

@@ -105,7 +105,7 @@ function appendDropdownOptions(travelData) {
   countryDropdown.innerHTML = "";
   const placeholderOption = document.createElement("li");
   placeholderOption.innerHTML =
-    '<a class="dropdown-item" href="#" data-country-code="">Type to filter...</a>';
+    '<a class="dropdown-item disabled" href="#" data-country-code="">Type to filter...</a>';
   countryDropdown.appendChild(placeholderOption);
 
   for (const option of travelData) {
