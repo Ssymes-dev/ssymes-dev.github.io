@@ -9,14 +9,8 @@
 }
 
 #icons {
-    display: flex;
-    inline-size: auto;
+    margin: 10px;
     padding: 5px;
-    text-decoration: none;
-    float: right;
-    align-items: center;
-    width: 42px;
-    height: 42px;
 }
 
 #menu {
@@ -55,23 +49,47 @@
 
 .topnav a {
     float: left;
+    border-radius: 10%;
     color: #f2f2f2;
     text-align: center;
-    padding: 14px 16px;
     text-decoration: none;
     font-size: 17px;
+
 }
 
 .topnav a:hover {
     background-color: #ddd;
+    border-radius: 10%;
     color: black;
-}
-
-.topnav a.active {
-    background-color: #04AA6D;
-    color: white;
 }
 
 .topnav-right {
     float: right;
+}
+
+.headernav {
+    overflow: hidden;
+}
+
+.headernav-right {
+    float: right;
+}
+
+.headernav a {
+    float: right;
+    border-radius: 10%;
+    color: #f2f2f2;
+    text-align: center;
+    text-decoration: none;
+    font-size: 17px;
+}
+
+.headernav a:hover {
+    background-color: #ddd;
+    border-radius: 10%;
+    color: black;
+}
+
+.headernav p {
+    float: left;
 }

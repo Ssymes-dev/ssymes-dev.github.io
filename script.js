@@ -6,13 +6,13 @@ let countryDataCache = null;
 let windyAPI;
 
 // Initialization
-// const initWindyOptions = {
-//   key: "9N1YXUo4GoPgLBOjB85IYsz5CwIUgzce",
-//   verbose: false,
-//   lat: 50.4,
-//   lon: 14.3,
-//   zoom: 0,
-// };
+const initWindyOptions = {
+  key: "9N1YXUo4GoPgLBOjB85IYsz5CwIUgzce",
+  verbose: false,
+  lat: 50.4,
+  lon: 14.3,
+  zoom: 0,
+};
 
 windyInit(initWindyOptions);
 
