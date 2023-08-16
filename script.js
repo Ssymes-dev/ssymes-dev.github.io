@@ -6,13 +6,13 @@ let countryDataCache = null;
 let windyAPI;
 
 // Initialization
-const initWindyOptions = {
-  key: "9N1YXUo4GoPgLBOjB85IYsz5CwIUgzce",
-  verbose: false,
-  lat: 50.4,
-  lon: 14.3,
-  zoom: 0,
-};
+// const initWindyOptions = {
+//   key: "9N1YXUo4GoPgLBOjB85IYsz5CwIUgzce",
+//   verbose: false,
+//   lat: 50.4,
+//   lon: 14.3,
+//   zoom: 0,
+// };
 
 windyInit(initWindyOptions);
 
@@ -71,7 +71,10 @@ countrySearchInput.addEventListener("click", async () => {
 
 function googleTranslateElementInit() {
   new google.translate.TranslateElement(
-    { pageLanguage: "en" },
+    {
+      pageLanguage: "en",
+      layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+    },
     "google_translate_element"
   );
 }
@@ -174,8 +177,12 @@ function addMarker(map, lat, lon, popupContent) {
   });
 
   const marker = L.marker([lat, lon]).addTo(map);
-  marker.bindPopup(popupContent);
-  marker.openPopup();
+  const popup = L.popup({
+    maxWidth: 275,
+    maxHeight: 275,
+  }).setContent(popupContent); // Set the content of the popup
+
+  marker.bindPopup(popup).openPopup();
 }
 
 // Function to add event listeners to dropdown options
@@ -221,7 +228,7 @@ function generatePopupContent(travelCountryCode) {
 
     const popupContent = `
       <div class="leaflet-popup-content" id="popupContent">
-        <h2>${selectedCountryData.name}</h2>
+        <h3>${selectedCountryData.name}</h3>
         <p class="advisory-message">Advisory: ${advisory.message}</p>
 
         <a href="${
