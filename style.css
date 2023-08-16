@@ -9,9 +9,14 @@
 }
 
 #icons {
+    display: flex;
+    inline-size: auto;
     padding: 5px;
     text-decoration: none;
-
+    float: right;
+    align-items: center;
+    width: 42px;
+    height: 42px;
 }
 
 #menu {
@@ -21,13 +26,15 @@
 #windy .leaflet-popup-content-wrapper {
     width: 90%;
     max-width: fit-content;
+}
 
+.topnav button.split {
+    float: right;
 }
 
 #popupContent {
     margin: 0%;
     justify-content: center;
-
 }
 
 #windy {
@@ -36,14 +43,4 @@
     font-family: Arial, Helvetica, sans-serif;
     font-size: 14px;
     color: #323232;
-}
-
-footer {
-    width: 60%;
-    margin: 15px auto;
-    overflow: hidden;
-    padding: 5%;
-    border-radius: 20px;
-    text-align: center;
-    color: #e76f51;
 }
