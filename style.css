@@ -4,28 +4,31 @@
 
 #allCountries {
     width: max-content;
-    max-height: 400px;
+    max-height: 600px;
 
 }
 
 #icons {
-    padding: 5px;
+
     margin-top: 10px;
 }
 
 #menu {
     max-height: fit-content;
-
 }
 
 #windy #logo-wrapper {
     top: initial;
-    bottom: 65px;
+
+}
+
+#windy #logo-wrapper #logo {
+    left: 80px;
 }
 
 #windy {
     width: 1000px;
-    height: 500px;
+    height: 600px;
     font-family: Arial, Helvetica, sans-serif;
     font-size: 14px;
     color: #323232;
@@ -71,12 +74,16 @@
     text-align: center;
     text-decoration: none;
     font-size: 17px;
+    margin-top: 10px;
+    padding: 5px;
 }
 
 .headernav a:hover {
     background-color: #ddd;
     border-radius: 10%;
     color: black;
+    margin-top: 10px;
+    padding: 5px;
 }
 
 .headernav p {

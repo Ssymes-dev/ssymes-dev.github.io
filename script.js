@@ -29,6 +29,7 @@ countryDropdown.parentElement.addEventListener("click", async (event) => {
       event.target.getAttribute("data-country-code");
     if (selectedTravelCountryCode) {
       countrySearchInput.value = event.target.textContent;
+      console.log("countrySearchInput.value", countrySearchInput.value);
       countrySearchInput.setAttribute(
         "data-selected-code",
         selectedTravelCountryCode
@@ -62,22 +63,27 @@ countrySearchInput.addEventListener("input", async () => {
 
 // Event listener for the search input click
 countrySearchInput.addEventListener("click", async () => {
-  allCountryOptions.length = 0;
+  countrySearchInput.value = "";
+  allCountryOptions = [];
   // If the search input is empty, populate the country dropdown
   if (countrySearchInput.value.trim() === "") {
+    console.log(
+      "countrySearchInput.value.trim",
+      countrySearchInput.value.trim()
+    );
     await populateCountryDropdown();
   }
 });
 
-function googleTranslateElementInit() {
-  new google.translate.TranslateElement(
-    {
-      pageLanguage: "en",
-      layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
-    },
-    "google_translate_element"
-  );
-}
+// function googleTranslateElementInit() {
+//   new google.translate.TranslateElement(
+//     {
+//       pageLanguage: "en",
+//       layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+//     },
+//     "google_translate_element"
+//   );
+// }
 
 // Function to fetch country data
 async function fetchCountryData() {
@@ -178,8 +184,8 @@ function addMarker(map, lat, lon, popupContent) {
 
   const marker = L.marker([lat, lon]).addTo(map);
   const popup = L.popup({
-    maxWidth: 275,
-    maxHeight: 275,
+    // maxWidth: 275,
+    // maxHeight: 275,
   }).setContent(popupContent);
 
   marker.bindPopup(popup).openPopup();
@@ -227,8 +233,7 @@ function generatePopupContent(travelCountryCode) {
       : [advisory.sources_active];
 
     const popupContent = `
-      <div class="leaflet-popup-content" id="popupContent">
-        <h3>${selectedCountryData.name}</h3>
+        <h5>${selectedCountryData.name}</h5>
         <p class="advisory-message">Advisory: ${advisory.message}</p>
 
         <a href="${
@@ -236,7 +241,7 @@ function generatePopupContent(travelCountryCode) {
         }" target="_blank" rel="noopener noreferrer">Sources: ${createSourcesText(
       sourcesActive
     )}</a>
-      </div>
+
     `;
 
     console.log("Popup Content:", popupContent);
