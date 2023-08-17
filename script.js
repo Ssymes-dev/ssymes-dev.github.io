@@ -180,7 +180,7 @@ function addMarker(map, lat, lon, popupContent) {
   const popup = L.popup({
     maxWidth: 275,
     maxHeight: 275,
-  }).setContent(popupContent); // Set the content of the popup
+  }).setContent(popupContent);
 
   marker.bindPopup(popup).openPopup();
 }
