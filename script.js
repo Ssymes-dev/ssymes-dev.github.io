@@ -14,13 +14,6 @@ const initWindyOptions = {
   zoom: 0,
 };
 
-// Initialize Windy API with provided options
-console.log("Initializing Windy API...");
-windyInit(initWindyOptions, (api) => {
-  windyAPI = api; // Store the initialized API object in the global variable
-  console.log("Windy API initialized:", windyAPI);
-});
-
 $(document).ready(function () {
   // Show the 'About' modal when the link is clicked
   $("#aboutLink").click(function () {
@@ -51,15 +44,14 @@ countryDropdown.parentElement.addEventListener("click", async (event) => {
       if (selectedOption) {
         // Update dropdown value, fetch and display country details, update map
         countryDropdown.value = selectedOption.code;
-        const travelData = await getCachedCountryData(selectedOption.code);
-        displayCountryDetails(travelData);
+        await getCachedCountryData(selectedOption.code);
         await updateMapWithGeocoding(selectedOption.code);
       }
     }
   }
 });
 
-// Event listener for the search input
+// Event listener for the search input (typing)
 countrySearchInput.addEventListener("input", async () => {
   const searchTerm = countrySearchInput.value.trim().toLowerCase();
   // Filter options based on the search term
@@ -72,20 +64,18 @@ countrySearchInput.addEventListener("input", async () => {
   console.log("Filtered options based on search:", filteredOptions);
 });
 
-// Event listener for the search input click
+// Event listener for clicking the the search input
 countrySearchInput.addEventListener("click", async () => {
-  filteredOptions = [];
-  console.log("Cleared filteredOptions array");
-
   // If the search input is empty, populate the country dropdown
   if (countrySearchInput.value.trim() === "") {
+    //.trim ignores spaces
     console.log("Populating country dropdown...");
     appendDropdownOptions(allCountryOptions); //await populateCountryDropdown(); was causing the menu to load previous search after second click
   }
   console.log("Populated country dropdown");
 });
 
-// Function to fetch country data
+// Function to fetch country data from travel advisory api and store it locally
 async function fetchCountryData() {
   const apiUrl = "https://www.travel-advisory.info/api";
   try {
@@ -103,7 +93,6 @@ async function populateCountryDropdown() {
   try {
     const travelData = await fetchCountryData();
     allCountryOptions = alphabetizeCountries(travelData);
-    appendDropdownOptions(allCountryOptions);
     console.log(
       "Populated allCountryOptions with travel data:",
       allCountryOptions
@@ -232,9 +221,7 @@ function addEventListenersToOptions() {
         // Display country details and update the map
         if (selectedOption) {
           countryDropdown.value = selectedOption.code;
-          const travelData = await getCachedCountryData(selectedOption.code);
-          displayCountryDetails(travelData);
-
+          await getCachedCountryData(selectedOption.code);
           // Log the selected country's details
           console.log("Selected Country Details:", travelData);
         }
@@ -309,29 +296,6 @@ async function updateMapWithGeocoding(travelCountryCode) {
     }
   } catch (error) {
     console.error("Error updating map with geocoding:", error);
-  }
-}
-
-// Function to display country details on the page
-async function displayCountryDetails(travelData) {
-  const countryListElement = document.getElementById("country-list");
-  const travelCountryCode = countryDropdown.value;
-  const selectedCountryData = travelData[travelCountryCode];
-  if (selectedCountryData) {
-    const countryNameElement = document.createElement("p");
-    const countryName = document.createElement("h1");
-    countryName.textContent = selectedCountryData.name;
-    countryNameElement.appendChild(countryName);
-    countryListElement.appendChild(countryNameElement);
-
-    if (travelCountryCode !== "") {
-      try {
-        // Update the map with geocoding data
-        await updateMapWithGeocoding(travelCountryCode);
-      } catch (error) {
-        console.error("Error updating map with geocoding:", error);
-      }
-    }
   }
 }
 
