@@ -4,13 +4,7 @@
 
 #allCountries {
     width: max-content;
-    max-height: 600px;
-
-}
-
-#icons {
-
-    margin-top: 10px;
+    max-height: 38rem
 }
 
 #menu {
@@ -23,14 +17,14 @@
 }
 
 #windy #logo-wrapper #logo {
-    left: 80px;
+    left: 5rem;
 }
 
 #windy {
-    width: 1000px;
-    height: 600px;
+    width: 62.5rem;
+    height: 38rem;
     font-family: Arial, Helvetica, sans-serif;
-    font-size: 14px;
+    font-size: 1rem;
     color: #323232;
 }
 
@@ -45,7 +39,7 @@
     color: #f2f2f2;
     text-align: center;
     text-decoration: none;
-    font-size: 17px;
+    font-size: 1rem;
 
 }
 
@@ -67,23 +61,22 @@
     float: right;
 }
 
-.headernav a {
+.headernav img {
     float: right;
     border-radius: 10%;
     color: #f2f2f2;
-    text-align: center;
     text-decoration: none;
-    font-size: 17px;
-    margin-top: 10px;
-    padding: 5px;
+    font-size: 1rem;
+    padding: .5rem;
+    margin: 2rem;
+    height: 2rem;
+    padding: 5px
 }
 
-.headernav a:hover {
+.headernav img:hover {
     background-color: #ddd;
     border-radius: 10%;
     color: black;
-    margin-top: 10px;
-    padding: 5px;
 }
 
 .headernav p {
