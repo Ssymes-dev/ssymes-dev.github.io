@@ -1,6 +1,6 @@
 // Global variables
 const countryDropdown = document.getElementById("allCountries");
-const countrySearchInput = document.getElementById("countrySearchInput");
+const search = document.getElementById("countrySearchInput");
 let allCountryOptions = []; // To store the list of all country options
 let countryDataCache = null; // To cache fetched country data
 let windyAPI; // Windy API object for map interaction
@@ -25,16 +25,13 @@ $(document).ready(function () {
 countryDropdown.parentElement.addEventListener("click", async (event) => {
   if (event.target.classList.contains("dropdown-item")) {
     const selectedTravelCountryCode =
-      event.target.getAttribute("data-country-code");
+      event.target.getAttribute("dropdown-options");
     if (selectedTravelCountryCode) {
       // Set the search input value and selected code attribute
-      countrySearchInput.value = event.target.textContent;
-      console.log("Set search input value:", countrySearchInput.value);
-      countrySearchInput.setAttribute(
-        "data-selected-code",
-        selectedTravelCountryCode
-      );
-      countrySearchInput.value = ""; // Reset search input value
+      search.value = event.target.textContent;
+      console.log("Set search input value:", search.value);
+      search.setAttribute("menu-selected-option", selectedTravelCountryCode);
+      search.value = ""; // Reset search input value
 
       // Find the selected option based on the country code
       const selectedOption = allCountryOptions.find(
@@ -52,8 +49,8 @@ countryDropdown.parentElement.addEventListener("click", async (event) => {
 });
 
 // Event listener for the search input (typing)
-countrySearchInput.addEventListener("input", async () => {
-  const searchTerm = countrySearchInput.value.trim().toLowerCase();
+search.addEventListener("input", async () => {
+  const searchTerm = search.value.trim().toLowerCase();
   // Filter options based on the search term
   const filteredOptions = allCountryOptions.filter(
     (option) =>
@@ -65,9 +62,9 @@ countrySearchInput.addEventListener("input", async () => {
 });
 
 // Event listener for clicking the the search input
-countrySearchInput.addEventListener("click", async () => {
+search.addEventListener("click", async () => {
   // If the search input is empty, populate the country dropdown
-  if (countrySearchInput.value.trim() === "") {
+  if (search.value.trim() === "") {
     //.trim ignores spaces
     console.log("Populating country dropdown...");
     appendDropdownOptions(allCountryOptions); //await populateCountryDropdown(); was causing the menu to load previous search after second click
@@ -107,12 +104,12 @@ function appendDropdownOptions(travelData) {
   countryDropdown.innerHTML = "";
   const placeholderOption = document.createElement("li");
   placeholderOption.innerHTML =
-    '<a class="dropdown-item disabled" href="#" data-country-code="">Type to filter...</a>';
+    '<a class="dropdown-item disabled" href="#" dropdown-options="">Select a Country...</a>';
   countryDropdown.appendChild(placeholderOption);
 
   for (const option of travelData) {
     const optionElement = document.createElement("li");
-    optionElement.innerHTML = `<a class="dropdown-item" href="#" data-country-code="${option.code}">${option.name}</a>`;
+    optionElement.innerHTML = `<a class="dropdown-item" href="#" dropdown-options="${option.code}">${option.name}</a>`;
     countryDropdown.appendChild(optionElement);
   }
   // Log the updated allCountryOptions array
@@ -199,32 +196,31 @@ function addMarker(map, lat, lon, popupContent) {
 // Function to add event listeners to dropdown options
 function addEventListenersToOptions() {
   const dropdownOptions = document.querySelectorAll(".dropdown-item");
+
   dropdownOptions.forEach((option) => {
-    // Add a click event listener to each dropdown option
     option.addEventListener("click", async () => {
-      const selectedTravelCountryCode =
-        option.getAttribute("data-country-code");
+      try {
+        const selectedDropdownOption = option.getAttribute("data-country-code");
 
-      // Check if a country code is available
-      if (selectedTravelCountryCode) {
-        countrySearchInput.value = option.textContent;
-        countrySearchInput.setAttribute(
-          "data-selected-code",
-          selectedTravelCountryCode
-        );
+        if (selectedDropdownOption) {
+          countrySearchInput.value = option.textContent;
+          countrySearchInput.setAttribute(
+            "menu-selected-option",
+            selectedDropdownOption
+          );
 
-        // Find the selected country option
-        const selectedOption = allCountryOptions.find(
-          ({ code }) => code === selectedTravelCountryCode
-        );
+          const selectedOption = allCountryOptions.find(
+            ({ code }) => code === selectedDropdownOption
+          );
 
-        // Display country details and update the map
-        if (selectedOption) {
-          countryDropdown.value = selectedOption.code;
-          await getCachedCountryData(selectedOption.code);
-          // Log the selected country's details
-          console.log("Selected Country Details:", travelData);
+          if (selectedOption) {
+            countryDropdown.value = selectedOption.code;
+            // Display country details and update the map
+            await displayCountryDetails(selectedOption.code);
+          }
         }
+      } catch (error) {
+        console.error("Error handling dropdown option click:", error);
       }
     });
   });
@@ -232,31 +228,17 @@ function addEventListenersToOptions() {
 
 // Helper function to generate popup content
 function generatePopupContent(travelCountryCode) {
-  // Check if country data cache is available
-  if (!countryDataCache) {
-    return "";
-  }
-
   // Retrieve selected country's data from cache
   const selectedCountryData = countryDataCache[travelCountryCode];
+
   if (selectedCountryData) {
     const advisory = selectedCountryData.advisory;
 
-    // Handle sources_active as an array or single source
-    const sourcesActive = Array.isArray(advisory.sources_active)
-      ? advisory.sources_active
-      : [advisory.sources_active];
-
     // Construct popup content
     const popupContent = `
-        <h5>${selectedCountryData.name}</h5>
-        <p class="advisory-message">Advisory: ${advisory.message}</p>
-
-        <a href="${
-          advisory.source
-        }" target="_blank" rel="noopener noreferrer">Sources: ${createSourcesText(
-      sourcesActive
-    )}</a>
+      <h5>${selectedCountryData.name}</h5>
+      <p class="advisory-message">Advisory: ${advisory.message}</p>
+      <a href="${advisory.source}" target="_blank" rel="noopener noreferrer">Source: ${advisory.sources_active}</a>
     `;
 
     // Log the generated popup content
@@ -266,12 +248,6 @@ function generatePopupContent(travelCountryCode) {
   } else {
     return "";
   }
-}
-
-// Function to create sources text
-function createSourcesText(sources) {
-  // Combine sources with commas and return
-  return sources.join(", ");
 }
 
 // Function to update the map with geocoding data
