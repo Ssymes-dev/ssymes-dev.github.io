@@ -80,7 +80,7 @@ countrySearchInput.addEventListener("click", async () => {
   // If the search input is empty, populate the country dropdown
   if (countrySearchInput.value.trim() === "") {
     console.log("Populating country dropdown...");
-    await populateCountryDropdown();
+    appendDropdownOptions(allCountryOptions); //await populateCountryDropdown(); was causing the menu to load previous search after second click
   }
   console.log("Populated country dropdown");
 });
