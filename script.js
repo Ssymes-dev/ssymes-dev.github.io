@@ -1,17 +1,18 @@
 // Global variables
 const countryDropdown = document.getElementById("allCountries");
 const search = document.getElementById("countrySearchInput");
-let allCountryOptions = []; // To store the list of all country options
-let countryDataCache = null; // To cache fetched country data
+let countryArray = []; // To store the list of all country
+let allTravelData = null; // To cache fetched country data
 let windyAPI; // Windy API object for map interaction
+let geocodingDataCache = {};
 
 // Initialization
 const initWindyOptions = {
   key: "9N1YXUo4GoPgLBOjB85IYsz5CwIUgzce",
   verbose: false,
   lat: 50.4,
-  lon: 14.3,
-  zoom: 0,
+  lng: 14.3,
+  zoom: 6,
 };
 
 $(document).ready(function () {
@@ -34,25 +35,27 @@ countryDropdown.parentElement.addEventListener("click", async (event) => {
       search.value = ""; // Reset search input value
 
       // Find the selected option based on the country code
-      const selectedOption = allCountryOptions.find(
+      const selectedOption = countryArray.find(
         ({ code }) => code === selectedTravelCountryCode
       );
 
       if (selectedOption) {
         // Update dropdown value, fetch and display country details, update map
         countryDropdown.value = selectedOption.code;
-        await getCachedCountryData(selectedOption.code);
+
+        await getAllTravelData(selectedOption.code);
         await updateMapWithGeocoding(selectedOption.code);
+
+        setMapLocation(selectedOption.code);
       }
     }
   }
 });
 
-// Event listener for the search input (typing)
 search.addEventListener("input", async () => {
   const searchTerm = search.value.trim().toLowerCase();
   // Filter options based on the search term
-  const filteredOptions = allCountryOptions.filter(
+  const filteredOptions = countryArray.filter(
     (option) =>
       option.name.toLowerCase().includes(searchTerm) ||
       option.code.toLowerCase().includes(searchTerm)
@@ -65,9 +68,8 @@ search.addEventListener("input", async () => {
 search.addEventListener("click", async () => {
   // If the search input is empty, populate the country dropdown
   if (search.value.trim() === "") {
-    //.trim ignores spaces
     console.log("Populating country dropdown...");
-    appendDropdownOptions(allCountryOptions); //await populateCountryDropdown(); was causing the menu to load previous search after second click
+    appendDropdownOptions(countryArray);
   }
   console.log("Populated country dropdown");
 });
@@ -89,11 +91,11 @@ async function fetchCountryData() {
 async function populateCountryDropdown() {
   try {
     const travelData = await fetchCountryData();
-    allCountryOptions = alphabetizeCountries(travelData);
-    console.log(
-      "Populated allCountryOptions with travel data:",
-      allCountryOptions
-    );
+    countryArray = alphabetizeCountries(travelData);
+    console.log("Populated countryArray with travel data:", countryArray);
+
+    // Call the function to append dropdown options
+    appendDropdownOptions(countryArray);
   } catch (error) {
     console.error("Error fetching country data:", error);
   }
@@ -112,29 +114,28 @@ function appendDropdownOptions(travelData) {
     optionElement.innerHTML = `<a class="dropdown-item" href="#" dropdown-options="${option.code}">${option.name}</a>`;
     countryDropdown.appendChild(optionElement);
   }
-  // Log the updated allCountryOptions array
-  console.log("Updated allCountryOptions:", allCountryOptions);
+  // Log the updated countryArray array
+  console.log("Updated countryArray:", countryArray);
 }
 
 // Function to get country data from the cache
-async function getCachedCountryData(travelCountryCode) {
-  if (countryDataCache !== null) {
-    return countryDataCache[travelCountryCode];
+async function getAllTravelData(travelCountryCode) {
+  if (allTravelData !== null) {
+    return allTravelData[travelCountryCode];
   }
 
   try {
     const travelData = await fetchCountryData();
-    countryDataCache = travelData;
-    console.log("Cached country data in countryDataCache:", countryDataCache);
-    return countryDataCache[travelCountryCode];
+    allTravelData = travelData;
+    console.log("Cached country data in allTravelData:", allTravelData);
+    return allTravelData[travelCountryCode];
   } catch (error) {
     console.error("Error fetching country data:", error);
     throw error;
   }
 }
 
-// Function to set map location and add a marker with popup
-function setMapLocation(lat, lon, popupContent, bounds) {
+async function setMapLocation(travelCountryCode) {
   // Check if the Windy API is initialized
   if (!windyAPI) {
     console.error("Windy API not initialized!");
@@ -144,7 +145,15 @@ function setMapLocation(lat, lon, popupContent, bounds) {
   // Get the Windy map instance
   const map = windyAPI.map;
 
-  // Check if bounds information is provided
+  // Fetch the geocoding data using the cached Promise
+  const geocodingData = await updateMapWithGeocoding(travelCountryCode);
+
+  if (!geocodingData) {
+    return; // Exit if geocoding data is not available
+  }
+
+  const { bounds } = geocodingData;
+
   if (bounds && bounds.northeast && bounds.southwest) {
     // Extract coordinates from bounds information
     const southWestLatLng = L.latLng(
@@ -162,15 +171,24 @@ function setMapLocation(lat, lon, popupContent, bounds) {
     // Fit the map to the bounding box
     map.fitBounds(boundingBox);
 
+    // Get the center of the bounding box
+    const centerLat = (bounds.northeast.lat + bounds.southwest.lat) / 2;
+    const centerLng = (bounds.northeast.lng + bounds.southwest.lng) / 2;
+
     // Call the addMarker function to add a marker with popup
-    addMarker(map, lat, lon, popupContent);
+    addMarker(
+      map,
+      centerLat,
+      centerLng,
+      generatePopupContent(travelCountryCode)
+    );
   } else {
     console.error("Bounds information not provided!");
   }
 }
 
 // Helper function to add a marker with a popup, removing existing marker if it exists
-function addMarker(map, lat, lon, popupContent) {
+function addMarker(map, lat, lng, popupContent) {
   if (!map) {
     console.error("Map not provided!");
     return;
@@ -184,7 +202,7 @@ function addMarker(map, lat, lon, popupContent) {
   });
 
   // Add a new marker to the map
-  const marker = L.marker([lat, lon]).addTo(map);
+  const marker = L.marker([lat, lng]).addTo(map);
 
   // Create a popup for the marker
   const popup = L.popup().setContent(popupContent);
@@ -209,7 +227,7 @@ function addEventListenersToOptions() {
             selectedDropdownOption
           );
 
-          const selectedOption = allCountryOptions.find(
+          const selectedOption = countryArray.find(
             ({ code }) => code === selectedDropdownOption
           );
 
@@ -229,14 +247,14 @@ function addEventListenersToOptions() {
 // Helper function to generate popup content
 function generatePopupContent(travelCountryCode) {
   // Retrieve selected country's data from cache
-  const selectedCountryData = countryDataCache[travelCountryCode];
+  const country = allTravelData[travelCountryCode];
 
-  if (selectedCountryData) {
-    const advisory = selectedCountryData.advisory;
+  if (country) {
+    const advisory = country.advisory;
 
     // Construct popup content
     const popupContent = `
-      <h5>${selectedCountryData.name}</h5>
+      <h5>${country.name}</h5>
       <p class="advisory-message">Advisory: ${advisory.message}</p>
       <a href="${advisory.source}" target="_blank" rel="noopener noreferrer">Source: ${advisory.sources_active}</a>
     `;
@@ -250,29 +268,45 @@ function generatePopupContent(travelCountryCode) {
   }
 }
 
-// Function to update the map with geocoding data
-async function updateMapWithGeocoding(travelCountryCode) {
+// Function to fetch geocoding data from the API
+async function fetchGeocodingData(travelCountryCode) {
   try {
     const OPEN_CAGE_API_KEY = "0c9aade54fba4c8abfae724859a72795";
-    const selectedTravelOption = allCountryOptions.find(
+    const selectedCountryOption = countryArray.find(
       (option) => option.code === travelCountryCode
     );
-    const geocodingApiUrl = `https://api.opencagedata.com/geocode/v1/json?q=${selectedTravelOption.name}&key=${OPEN_CAGE_API_KEY}`;
+    const geocodingApiUrl = `https://api.opencagedata.com/geocode/v1/json?q=${selectedCountryOption.name}&key=${OPEN_CAGE_API_KEY}`;
 
-    // Fetch geocoding data from the API
+    console.log("Fetching geocoding data from API...");
     const response = await fetch(geocodingApiUrl);
     const { results } = await response.json();
 
     if (results && results.length > 0) {
-      const { lat, lng } = results[0].geometry;
-      const bounds = results[0].bounds;
-
-      // Set the map location with the generated popup content
-      setMapLocation(lat, lng, generatePopupContent(travelCountryCode), bounds);
+      // Cache the geocoding data
+      geocodingDataCache[travelCountryCode] = results[0];
+      console.log(
+        "Geocoding data cached:",
+        geocodingDataCache[travelCountryCode]
+      );
+      return results[0];
+    } else {
+      console.error("No geocoding data found!");
+      return null;
     }
   } catch (error) {
-    console.error("Error updating map with geocoding:", error);
+    console.error("Error fetching geocoding data:", error);
+    return null;
   }
+}
+// Function to update the map with geocoding data
+async function updateMapWithGeocoding(travelCountryCode) {
+  // Check if geocoding data is already cached
+  if (geocodingDataCache[travelCountryCode]) {
+    return geocodingDataCache[travelCountryCode];
+  }
+
+  // Fetch geocoding data from the API and return it
+  return await fetchGeocodingData(travelCountryCode);
 }
 
 // Helper function to alphabetize country options
