@@ -42,7 +42,7 @@ countryDropdown.parentElement.addEventListener("click", async (event) => {
         // Update dropdown value, fetch and display country details, update map
         countryDropdown.value = selectedOption.code;
         await getAllTravelData(selectedOption.code);
-        await updateMapWithGeocoding(selectedOption.code);
+        await getBounds(selectedOption.code);
       }
     }
   }
@@ -142,8 +142,12 @@ function setMapLocation(lat, lng, popupContent) {
   // Get the Windy map instance
   const map = windyAPI.map;
 
+  console.log("Setting map location to:", lat, lng);
+
   // Center the map on the marker's position
   map.setView([lat, lng], map.getZoom());
+
+  console.log("Map centered at:", lat, lng);
 
   // Call the addMarker function to add a marker with popup
   addMarker(map, lat, lng, popupContent);
@@ -230,8 +234,7 @@ function generatePopupContent(travelCountryCode) {
   }
 }
 
-// Function to update the map with geocoding data
-async function updateMapWithGeocoding(travelCountryCode) {
+async function getBounds(travelCountryCode) {
   try {
     const OPEN_CAGE_API_KEY = "0c9aade54fba4c8abfae724859a72795";
     const selectedTravelOption = countryArray.find(
@@ -239,6 +242,7 @@ async function updateMapWithGeocoding(travelCountryCode) {
     );
     const geocodingApiUrl = `https://api.opencagedata.com/geocode/v1/json?q=${selectedTravelOption.name}&key=${OPEN_CAGE_API_KEY}`;
 
+    console.log("Fetching geocoding data from API...");
     // Fetch geocoding data from the API
     const response = await fetch(geocodingApiUrl);
     const { results } = await response.json();
@@ -246,6 +250,10 @@ async function updateMapWithGeocoding(travelCountryCode) {
     if (results && results.length > 0) {
       const { lat, lng } = results[0].geometry;
       const bounds = results[0].bounds;
+
+      console.log("Geocoding results:", results);
+      console.log("Location coordinates:", lat, lng);
+      console.log("Bounding box:", bounds);
 
       // Set the map location with the generated popup content
       setMapLocation(lat, lng, generatePopupContent(travelCountryCode), bounds);
