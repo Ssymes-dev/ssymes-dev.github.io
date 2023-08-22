@@ -132,7 +132,7 @@ async function getAllTravelData(travelCountryCode) {
 
 // Function to set map location and add a marker with popup
 
-function setMapLocation(lat, lng, popupContent) {
+function setMapLocation(lat, lng, popupContent, bounds) {
   // Check if the Windy API is initialized
   if (!windyAPI) {
     console.error("Windy API not initialized!");
@@ -144,13 +144,41 @@ function setMapLocation(lat, lng, popupContent) {
 
   console.log("Setting map location to:", lat, lng);
 
-  // Center the map on the marker's position
-  map.setView([lat, lng], map.getZoom());
+  if (bounds && bounds.northeast && bounds.southwest) {
+    // Extract coordinates from bounds information
+    const southWestLatLng = L.latLng(
+      bounds.southwest.lat,
+      bounds.southwest.lng
+    );
+    const northEastLatLng = L.latLng(
+      bounds.northeast.lat,
+      bounds.northeast.lng
+    );
 
-  console.log("Map centered at:", lat, lng);
+    // Create a bounding box using the extracted coordinates
+    const boundingBox = L.latLngBounds(southWestLatLng, northEastLatLng);
 
-  // Call the addMarker function to add a marker with popup
-  addMarker(map, lat, lng, popupContent);
+    console.log("Fitting map to bounding box:", boundingBox);
+
+    // Fit the map to the bounding box
+    map.fitBounds(boundingBox);
+
+    console.log("Map fitted to bounding box");
+
+    // Call the addMarker function to add a marker with popup
+    addMarker(map, lat, lng, popupContent);
+  } else {
+    console.error("Bounds information not provided!");
+    // Center the map on the marker's position
+    map.setView([lat, lng], map.getZoom());
+
+    console.log("Map centered at:", lat, lng);
+
+    // Call the addMarker function to add a marker with popup
+    addMarker(map, lat, lng, popupContent);
+  }
+
+  console.log("Map location set:", lat, lng);
 }
 
 // Helper function to add a marker with a popup, removing existing marker if it exists
