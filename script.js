@@ -266,29 +266,16 @@ async function getBounds(travelCountryCode, map) {
 
         const bounds = results[0].bounds;
 
-        if (bounds && bounds.northeast && bounds.southwest) {
-          // Calculate the area of the bounding box
-          const boundingBoxArea = Math.abs(
-            (bounds.northeast.lat - bounds.southwest.lat) *
-              (bounds.northeast.lng - bounds.southwest.lng)
-          );
+        //adjusted zoom level based on bounding box area
+        const adjustedZoom = calculateAdjustedZoom(bounds);
 
-          //adjusted zoom level based on bounding box area
-          const adjustedZoom = calculateAdjustedZoom(bounds);
-
-          // Set the adjusted zoom level if it's different from the default zoom
-          if (adjustedZoom !== defaultZoom) {
-            map.setView([lat, lng], adjustedZoom);
-          }
+        // Set the adjusted zoom level if it's different from the default zoom
+        if (adjustedZoom !== defaultZoom) {
+          map.setView([lat, lng], adjustedZoom);
         }
-
-        setMapLocation(
-          lat,
-          lng,
-          generatePopupContent(travelCountryCode),
-          bounds
-        );
       }
+
+      setMapLocation(lat, lng, generatePopupContent(travelCountryCode), bounds);
     }
   } catch (error) {
     console.error("Error updating map with geocoding:", error);
