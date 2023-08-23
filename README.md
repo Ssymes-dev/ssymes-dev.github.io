@@ -1,6 +1,6 @@
 # TravelSage Web Application
 
-Welcome to TravelSage – your trusted travel companion. Immerse yourself in real-time travel advisories curated by www.travel-advisory.info. Each country's safety is rated on a scale of 1 to 5, offering insights for informed travel choices.
+Welcome to TravelSage – your trusted travel companion. Immerse yourself in real-time travel advisories curated by www.travel-advisory.info. Each country's safety is rated on a scale of 1 to 5, offering insights for informed travel choices. TravelSage is avaliable at https://ssymes-dev.github.io
 
 With a fusion of design and data, TravelSage simplifies travel planning. Whether it's leisure travel or a crucial mission, the app transforms complex considerations into simple decisions.
 
