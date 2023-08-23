@@ -8,7 +8,7 @@ let windyAPI; // Windy API object for map interaction
 // Initialization
 const initWindyOptions = {
   key: "9N1YXUo4GoPgLBOjB85IYsz5CwIUgzce",
-  verbose: true,
+  verbose: false,
   lat: 50.4,
   lng: 14.3,
   zoom: 5,
@@ -274,7 +274,7 @@ async function getBounds(travelCountryCode, map) {
           );
 
           //adjusted zoom level based on bounding box area
-          const adjustedZoom = calculateAdjustedZoom(boundingBoxArea);
+          const adjustedZoom = calculateAdjustedZoom(bounds);
 
           // Set the adjusted zoom level if it's different from the default zoom
           if (adjustedZoom !== defaultZoom) {
@@ -298,25 +298,24 @@ async function getBounds(travelCountryCode, map) {
 // Logic to determine the adjusted zoom level
 function calculateAdjustedZoom(boundingBoxArea) {
   console.log("Bounding Box Area:", boundingBoxArea);
-  if (boundingBoxArea > 1000) {
-    console.log("Reducing zoom level due to larger area");
+  if (boundingBoxArea > 10000) {
+    console.log("boundingBoxArea > 10000");
     return 3;
   }
-  // If the bounding box area is larger, reduce the zoom level
+
   if (boundingBoxArea > 200) {
-    console.log("Reducing zoom level due to larger area");
+    console.log("boundingBoxArea > 7000");
     return 5;
   }
 
-  // If the bounding box area is smaller, increase the zoom level
   if (boundingBoxArea < 1) {
-    console.log("Increasing zoom level due to smaller area");
+    console.log("boundingBoxArea < 1");
     return 8;
   }
 
   // Default case: no adjustment needed
   console.log("Using default zoom level");
-  return 6;
+  return 4;
 }
 
 // Helper function to alphabetize country options
