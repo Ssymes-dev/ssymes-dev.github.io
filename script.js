@@ -7,8 +7,8 @@ let windyAPI; // Windy API object for map interaction
 
 // Initialization
 const initWindyOptions = {
-  key: "9N1YXUo4GoPgLBOjB85IYsz5CwIUgzce",
-  verbose: false,
+  key: "dIc1mbmTjkv4PqyrVeIIsWHy3EZbU5Nl",
+  verbose: true,
   lat: 50.4,
   lng: 14.3,
   zoom: 5,
