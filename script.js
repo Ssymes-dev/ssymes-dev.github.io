@@ -8,10 +8,10 @@ let windyAPI; // Windy API object for map interaction
 // Initialization
 const initWindyOptions = {
   key: "9N1YXUo4GoPgLBOjB85IYsz5CwIUgzce",
-  verbose: false,
+  verbose: true,
   lat: 50.4,
   lng: 14.3,
-  zoom: 0,
+  zoom: 5,
 };
 
 $(document).ready(function () {
@@ -42,7 +42,8 @@ countryDropdown.parentElement.addEventListener("click", async (event) => {
         // Update dropdown value, fetch and display country details, update map
         countryDropdown.value = selectedOption.code;
         await getAllTravelData(selectedOption.code);
-        await getBounds(selectedOption.code);
+        // Pass windyAPI.map as the second argument to getBounds
+        await getBounds(selectedOption.code, windyAPI.map);
       }
     }
   }
@@ -132,7 +133,7 @@ async function getAllTravelData(travelCountryCode) {
 
 // Function to set map location and add a marker with popup
 
-function setMapLocation(lat, lng, popupContent, bounds) {
+function setMapLocation(lat, lng, popupContent) {
   // Check if the Windy API is initialized
   if (!windyAPI) {
     console.error("Windy API not initialized!");
@@ -142,41 +143,8 @@ function setMapLocation(lat, lng, popupContent, bounds) {
   // Get the Windy map instance
   const map = windyAPI.map;
 
-  console.log("Setting map location to:", lat, lng);
-
-  if (bounds && bounds.northeast && bounds.southwest) {
-    // Extract coordinates from bounds information
-    const southWestLatLng = L.latLng(
-      bounds.southwest.lat,
-      bounds.southwest.lng
-    );
-    const northEastLatLng = L.latLng(
-      bounds.northeast.lat,
-      bounds.northeast.lng
-    );
-
-    // Create a bounding box using the extracted coordinates
-    const boundingBox = L.latLngBounds(southWestLatLng, northEastLatLng);
-
-    console.log("Fitting map to bounding box:", boundingBox);
-
-    // Fit the map to the bounding box
-    map.fitBounds(boundingBox);
-
-    console.log("Map fitted to bounding box");
-
-    // Call the addMarker function to add a marker with popup
-    addMarker(map, lat, lng, popupContent);
-  } else {
-    console.error("Bounds information not provided!");
-    // Center the map on the marker's position
-    map.setView([lat, lng], map.getZoom());
-
-    console.log("Map centered at:", lat, lng);
-
-    // Call the addMarker function to add a marker with popup
-    addMarker(map, lat, lng, popupContent);
-  }
+  // Call the addMarker function to add a marker with popup
+  addMarker(map, lat, lng, popupContent);
 
   console.log("Map location set:", lat, lng);
 }
@@ -262,13 +230,15 @@ function generatePopupContent(travelCountryCode) {
   }
 }
 
-async function getBounds(travelCountryCode) {
+async function getBounds(travelCountryCode, map) {
   try {
     const OPEN_CAGE_API_KEY = "0c9aade54fba4c8abfae724859a72795";
     const selectedTravelOption = countryArray.find(
       (option) => option.code === travelCountryCode
     );
-    const geocodingApiUrl = `https://api.opencagedata.com/geocode/v1/json?q=${selectedTravelOption.name}&key=${OPEN_CAGE_API_KEY}`;
+    const geocodingApiUrl = `https://api.opencagedata.com/geocode/v1/json?q=${encodeURIComponent(
+      selectedTravelOption.name
+    )}&key=${OPEN_CAGE_API_KEY}`;
 
     console.log("Fetching geocoding data from API...");
     // Fetch geocoding data from the API
@@ -280,15 +250,73 @@ async function getBounds(travelCountryCode) {
       const bounds = results[0].bounds;
 
       console.log("Geocoding results:", results);
-      console.log("Location coordinates:", lat, lng);
+      console.log("Marker coordinates:", lat, lng);
       console.log("Bounding box:", bounds);
 
-      // Set the map location with the generated popup content
-      setMapLocation(lat, lng, generatePopupContent(travelCountryCode), bounds);
+      const defaultZoom = 4;
+
+      if (results && results.length > 0) {
+        const { lat, lng } = results[0].geometry;
+
+        console.log("Geocoding results:", results);
+        console.log("Marker coordinates:", lat, lng);
+
+        // Center the map on the marker's coordinates and set a default zoom level
+        map.setView([lat, lng], defaultZoom);
+
+        const bounds = results[0].bounds;
+
+        if (bounds && bounds.northeast && bounds.southwest) {
+          // Calculate the area of the bounding box
+          const boundingBoxArea = Math.abs(
+            (bounds.northeast.lat - bounds.southwest.lat) *
+              (bounds.northeast.lng - bounds.southwest.lng)
+          );
+
+          //adjusted zoom level based on bounding box area
+          const adjustedZoom = calculateAdjustedZoom(boundingBoxArea);
+
+          // Set the adjusted zoom level if it's different from the default zoom
+          if (adjustedZoom !== defaultZoom) {
+            map.setView([lat, lng], adjustedZoom);
+          }
+        }
+
+        setMapLocation(
+          lat,
+          lng,
+          generatePopupContent(travelCountryCode),
+          bounds
+        );
+      }
     }
   } catch (error) {
     console.error("Error updating map with geocoding:", error);
   }
+}
+
+// Logic to determine the adjusted zoom level
+function calculateAdjustedZoom(boundingBoxArea) {
+  console.log("Bounding Box Area:", boundingBoxArea);
+  if (boundingBoxArea > 1000) {
+    console.log("Reducing zoom level due to larger area");
+    return 3;
+  }
+  // If the bounding box area is larger, reduce the zoom level
+  if (boundingBoxArea > 200) {
+    console.log("Reducing zoom level due to larger area");
+    return 5;
+  }
+
+  // If the bounding box area is smaller, increase the zoom level
+  if (boundingBoxArea < 1) {
+    console.log("Increasing zoom level due to smaller area");
+    return 8;
+  }
+
+  // Default case: no adjustment needed
+  console.log("Using default zoom level");
+  return 6;
 }
 
 // Helper function to alphabetize country options
