@@ -4,11 +4,15 @@ const search = document.getElementById("countrySearchInput");
 let countryArray = []; // To store the list of all country options
 let allTravelData = null; // To cache fetched country data
 let windyAPI; // Windy API object for map interaction
+let extraSmallCountries = [];
+let smallCountries = [];
+let mediumCountries = [];
+let largeCountries = [];
 
 // Initialization
 const initWindyOptions = {
-  key: "dIc1mbmTjkv4PqyrVeIIsWHy3EZbU5Nl",
-  verbose: true,
+  key: "9N1YXUo4GoPgLBOjB85IYsz5CwIUgzce",
+  verbose: false,
   lat: 50.4,
   lng: 14.3,
   zoom: 5,
@@ -133,22 +137,19 @@ async function getAllTravelData(travelCountryCode) {
 
 // Function to set map location and add a marker with popup
 
-function setMapLocation(lat, lng, popupContent) {
-  // Check if the Windy API is initialized
-  if (!windyAPI) {
-    console.error("Windy API not initialized!");
-    return;
-  }
+function setMapLocation(lat, lon, popupContent) {
+  windyInit(initWindyOptions, (windyAPI) => {
+    const map = windyAPI.map;
+    const zoomLevel = getZoomLevel(travelCountryCode);
 
-  // Get the Windy map instance
-  const map = windyAPI.map;
+    map.setView([lat, lon], zoomLevel);
 
-  // Call the addMarker function to add a marker with popup
-  addMarker(map, lat, lng, popupContent);
+    // Call the addMarker function to add a marker with popup
+    addMarker(map, lat, lng, popupContent);
 
-  console.log("Map location set:", lat, lng);
+    console.log("Map location set:", lat, lng);
+  });
 }
-
 // Helper function to add a marker with a popup, removing existing marker if it exists
 function addMarker(map, lat, lng, popupContent) {
   if (!map) {
@@ -230,7 +231,7 @@ function generatePopupContent(travelCountryCode) {
   }
 }
 
-async function getBounds(travelCountryCode, map) {
+async function getBounds(travelCountryCode) {
   try {
     const OPEN_CAGE_API_KEY = "0c9aade54fba4c8abfae724859a72795";
     const selectedTravelOption = countryArray.find(
@@ -247,63 +248,40 @@ async function getBounds(travelCountryCode, map) {
 
     if (results && results.length > 0) {
       const { lat, lng } = results[0].geometry;
-      const bounds = results[0].bounds;
 
       console.log("Geocoding results:", results);
       console.log("Marker coordinates:", lat, lng);
-      console.log("Bounding box:", bounds);
-
-      const defaultZoom = 4;
 
       if (results && results.length > 0) {
         const { lat, lng } = results[0].geometry;
 
         console.log("Geocoding results:", results);
         console.log("Marker coordinates:", lat, lng);
-
-        // Center the map on the marker's coordinates and set a default zoom level
-        map.setView([lat, lng], defaultZoom);
-
-        const bounds = results[0].bounds;
-
-        //adjusted zoom level based on bounding box area
-        const adjustedZoom = calculateAdjustedZoom(bounds);
-
-        // Set the adjusted zoom level if it's different from the default zoom
-        if (adjustedZoom !== defaultZoom) {
-          map.setView([lat, lng], adjustedZoom);
-        }
       }
 
-      setMapLocation(lat, lng, generatePopupContent(travelCountryCode), bounds);
+      setMapLocation(lat, lng, generatePopupContent(travelCountryCode));
     }
   } catch (error) {
     console.error("Error updating map with geocoding:", error);
   }
 }
 
-// Logic to determine the adjusted zoom level
-function calculateAdjustedZoom(boundingBoxArea) {
-  console.log("Bounding Box Area:", boundingBoxArea);
-  if (boundingBoxArea > 10000) {
-    console.log("boundingBoxArea > 10000");
-    return 3;
+const getZoomLevel = (travelCountryCode) => {
+  if (extraSmallCountries.includes(travelCountryCode)) {
+    return 11;
   }
-
-  if (boundingBoxArea > 200) {
-    console.log("boundingBoxArea > 7000");
+  if (smallCountries.includes(travelCountryCode)) {
+    return 7;
+  }
+  if (mediumCountries.includes(travelCountryCode)) {
     return 5;
   }
-
-  if (boundingBoxArea < 1) {
-    console.log("boundingBoxArea < 1");
-    return 8;
+  if (largeCountries.includes(travelCountryCode)) {
+    return 3;
+  } else {
+    console.log("you didnt set a zoom level for this country");
   }
-
-  // Default case: no adjustment needed
-  console.log("Using default zoom level");
-  return 4;
-}
+};
 
 // Helper function to alphabetize country options
 function alphabetizeCountries(travelData) {
@@ -318,17 +296,16 @@ function alphabetizeCountries(travelData) {
 }
 
 // Function to initialize the Windy API
-function initWindy() {
-  windyInit(initWindyOptions, (api) => {
-    windyAPI = api; // Store the initialized API object in the global variable
-    console.log("Windy API initialized:", windyAPI);
-  });
-}
+const windy = windyInit(initWindyOptions, (api) => {
+  windyAPI = api; // Store the initialized API object in the global variable
+  console.log("Windy API initialized:", windyAPI);
+  return windyAPI;
+});
 
 // Initial population of the country dropdown and Windy API initialization
 console.log("Initializing Windy API and populating country dropdown...");
 populateCountryDropdown();
-initWindy();
+// initWindy();
 
 // Add event listener to the country dropdown options
 console.log("Adding event listeners to country dropdown options...");
