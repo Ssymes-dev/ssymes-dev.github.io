@@ -4,10 +4,246 @@ const search = document.getElementById("countrySearchInput");
 let countryArray = []; // To store the list of all country options
 let allTravelData = null; // To cache fetched country data
 let windyAPI; // Windy API object for map interaction
-let extraSmallCountries = [];
-let smallCountries = [];
-let mediumCountries = [];
-let largeCountries = [];
+let xxsCountries = [
+  "VA",
+  "TV",
+  "SG",
+  "SC",
+  "SM",
+  "PM",
+  "MF",
+  "KN",
+  "SH",
+  "BL",
+  "PN",
+  "PW",
+  "NF",
+  "NU",
+  "MS",
+  "MC",
+  "MO",
+  "AI",
+  "AW",
+  "BB",
+  "BM",
+  "CX",
+  "GI",
+  "HK",
+  "JE",
+  "LI",
+  "YT",
+];
+let xsCountries = [
+  "KY",
+  "VI",
+  "TC",
+  "WS",
+  "VC",
+  "LC",
+  "RE",
+  "PR",
+  "MU",
+  "MQ",
+  "MT",
+  "AD",
+  "AG",
+  "BH",
+  "VG",
+  "BN",
+  "BI",
+  "CC",
+  "KM",
+  "CK",
+  "DM",
+  "GP",
+  "GU",
+  "GG",
+  "IM",
+  "JM",
+  "LU",
+];
+let smCountries = [
+  "KW",
+  "XK",
+  "GM",
+  "GQ",
+  "SV",
+  "TL",
+  "WF",
+  "AE",
+  "UG",
+  "TT",
+  "TO",
+  "TW",
+  "CH",
+  "SZ",
+  "SR",
+  "LK",
+  "GS",
+  "SI",
+  "SK",
+  "SL",
+  "SN",
+  "ST",
+  "RW",
+  "QA",
+  "PA",
+  "PS",
+  "MP",
+  "NI",
+  "NC",
+  "NL",
+  "NP",
+  "ME",
+  "MD",
+  "MK",
+  "LT",
+  "LR",
+  "LS",
+  "LB",
+  "LV",
+  "KG",
+  "KI",
+  "JO",
+  "IL",
+  "IE",
+  "HU",
+  "HN",
+  "HT",
+  "GW",
+  "GT",
+  "GD",
+  "GE",
+  "GA",
+  "PF",
+  "GF",
+  "FJ",
+  "FO",
+  "FK",
+  "EE",
+  "ER",
+  "DO",
+  "DJ",
+  "DK",
+  "CZ",
+  "AL",
+  "AS",
+  "AM",
+  "AT",
+  "AZ",
+  "BD",
+  "BE",
+  "BZ",
+  "BA",
+  "BF",
+  "KH",
+  "CV",
+  "CR",
+  "HR",
+  "CU",
+  "CY",
+];
+let medCountries = [
+  "ZW",
+  "ZM",
+  "YE",
+  "EH",
+  "VU",
+  "UY",
+  "TN",
+  "TG",
+  "TJ",
+  "SY",
+  "ES",
+  "SS",
+  "KR",
+  "SB",
+  "RO",
+  "CG",
+  "PT",
+  "PL",
+  "PY",
+  "PG",
+  "OM",
+  "KP",
+  "NG",
+  "MV",
+  "MW",
+  "LA",
+  "KE",
+  "IS",
+  "GY",
+  "GN",
+  "GR",
+  "GH",
+  "BY",
+  "BJ",
+  "BT",
+  "BW",
+  "BG",
+  "CM",
+  "CF",
+  "EC",
+  "IQ",
+  "IT",
+  "CI",
+];
+let lgCountries = [
+  "VN",
+  "VE",
+  "UZ",
+  "GB",
+  "UA",
+  "TM",
+  "TR",
+  "TH",
+  "TZ",
+  "SJ",
+  "SD",
+  "ZA",
+  "SO",
+  "RS",
+  "SA",
+  "PH",
+  "PE",
+  "PK",
+  "NO",
+  "NE",
+  "NZ",
+  "NA",
+  "MM",
+  "MZ",
+  "MA",
+  "MN",
+  "FM",
+  "MX",
+  "MR",
+  "MH",
+  "ML",
+  "MY",
+  "MG",
+  "LY",
+  "KZ",
+  "JP",
+  "DE",
+  "FR",
+  "FI",
+  "ET",
+  "AF",
+  "DZ",
+  "AO",
+  "BS",
+  "BO",
+  "TD",
+  "CO",
+  "CD",
+  "EG",
+  "IN",
+  "ID",
+  "IR",
+];
+let xlCountries = ["AR", "AU", "BR", "CL", "CN", "SZ", "SE"];
+let xxlCountries = ["CA", "GL", "RU", "US"];
 
 // Initialization
 const initWindyOptions = {
@@ -17,6 +253,31 @@ const initWindyOptions = {
   lng: 14.3,
   zoom: 5,
 };
+
+// Initialize the Leaflet map
+function leafletMap(travelCountryCode) {
+  const zoomLevel = getZoomLevel(travelCountryCode);
+  L.map("windy").setView(
+    [initWindyOptions.lat, initWindyOptions.lng],
+    zoomLevel
+  );
+
+  // Add a tile layer (for example, OpenStreetMap tiles)
+  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png").addTo(
+    leafletMap
+  );
+}
+function initializeWindyAPI() {
+  const map = windyInit(initWindyOptions, (map) => {
+    map.setView([lat, lng], zoomLevel);
+  });
+  console.log("Windy API initialized:", map);
+  return map;
+}
+// Function to set the map location
+function setMapLocation(lat, lng) {
+  leafletMap.setView([lat, lng], initWindyOptions.zoom);
+}
 
 $(document).ready(function () {
   // Show the 'About' modal when the link is clicked
@@ -47,7 +308,7 @@ countryDropdown.parentElement.addEventListener("click", async (event) => {
         countryDropdown.value = selectedOption.code;
         await getAllTravelData(selectedOption.code);
         // Pass windyAPI.map as the second argument to getBounds
-        await getBounds(selectedOption.code, windyAPI.map);
+        await getBounds(selectedOption.code);
       }
     }
   }
@@ -137,19 +398,13 @@ async function getAllTravelData(travelCountryCode) {
 
 // Function to set map location and add a marker with popup
 
-function setMapLocation(lat, lon, popupContent) {
-  windyInit(initWindyOptions, (windyAPI) => {
-    const map = windyAPI.map;
-    const zoomLevel = getZoomLevel(travelCountryCode);
+function setMapLocation(lat, lng, popupContent) {
+  // Call the addMarker function to add a marker with popup
+  addMarker(map, lat, lng, popupContent);
 
-    map.setView([lat, lon], zoomLevel);
-
-    // Call the addMarker function to add a marker with popup
-    addMarker(map, lat, lng, popupContent);
-
-    console.log("Map location set:", lat, lng);
-  });
+  console.log("Map location set:", lat, lng);
 }
+
 // Helper function to add a marker with a popup, removing existing marker if it exists
 function addMarker(map, lat, lng, popupContent) {
   if (!map) {
@@ -267,16 +522,32 @@ async function getBounds(travelCountryCode) {
 }
 
 const getZoomLevel = (travelCountryCode) => {
-  if (extraSmallCountries.includes(travelCountryCode)) {
+  if (xxsCountries.includes(travelCountryCode)) {
+    console.log("zoom level is 11");
     return 11;
   }
-  if (smallCountries.includes(travelCountryCode)) {
+  if (xsCountries.includes(travelCountryCode)) {
+    console.log("zoom level is 9");
+    return 9;
+  }
+  if (smCountries.includes(travelCountryCode)) {
+    console.log("zoom level is 7");
     return 7;
   }
-  if (mediumCountries.includes(travelCountryCode)) {
+  if (medCountries.includes(travelCountryCode)) {
+    console.log("zoom level is 6");
+    return 6;
+  }
+  if (lgCountries.includes(travelCountryCode)) {
+    console.log("zoom level is 5");
     return 5;
   }
-  if (largeCountries.includes(travelCountryCode)) {
+  if (xlCountries.includes(travelCountryCode)) {
+    console.log("zoom level is 4");
+    return 4;
+  }
+  if (xxlCountries.includes(travelCountryCode)) {
+    console.log("zoom level is 3");
     return 3;
   } else {
     console.log("you didnt set a zoom level for this country");
@@ -295,18 +566,11 @@ function alphabetizeCountries(travelData) {
   return countryOptions.sort((a, b) => a.name.localeCompare(b.name));
 }
 
-// Function to initialize the Windy API
-const windy = windyInit(initWindyOptions, (api) => {
-  windyAPI = api; // Store the initialized API object in the global variable
-  console.log("Windy API initialized:", windyAPI);
-  return windyAPI;
-});
-
 // Initial population of the country dropdown and Windy API initialization
 console.log("Initializing Windy API and populating country dropdown...");
 populateCountryDropdown();
 // initWindy();
-
+initializeWindyAPI();
 // Add event listener to the country dropdown options
 console.log("Adding event listeners to country dropdown options...");
 addEventListenersToOptions();

@@ -1,0 +1,192 @@
+let extraSmallCountries zoom 11 = ["MS", "MC", "MO", "AI", "AW", "BB", "BM", "CX", "GI", "HK", "JE", "LI", "YT"];
+let smallCountries zoom 9 = ["MU", "MQ", "MT", "AD", "AG", "BH", "VG", "BN", "BI", "CC", "KM", "CK", "DM", "GP", "GU", "GG", "IM", "JM", "LU",  ]; 
+let rejectCountries zoom 8 = ["TL", "KY", "SV", "GQ", "GM", "XK", "KW",  ]
+let mediumCountries zoom 7 = ["NP", "ME", "MD", "MK", "LT", "LR", "LS", "LB", "LV", "KG", "KI", "JO", "IL", "IE", "HU", "HN", "HT", "GW", "GT", "GD", "GE", "GA", "PF", "GF", "FJ", "FO", "FK", "EE", "ER", "DO", "DJ", "DK", "CZ", "AL", "AS", "AM", "AT", "AZ", "BD", "BE", "BZ", "BA", "BF", "KH", "CV", "CR", "HR", "CU", "CY",  ];
+let inbetweenCountries zoom 6 = ["MV", "MW", "LA", "KE", "IS", "GY", "GN", "GR", "GH", "BY", "BJ", "BT", "BW", "BG", "CM", "CF", "EC", "IQ", "IT", "CI",  ]
+let largeCountries zoom 5 = ["NA", "MM", "MZ", "MA", "MN", "FM", "MX", "MR", "MH", "ML", "MY", "MG", "LY", "KZ", "JP", "DE", "FR", "FI", "ET", "AF","DZ", "AO", "BS", "BO", "TD", "CO", "CD", "EG", "IN", "ID", "IR" ];
+let specialCountries zoom 4 = ["AR", "AU", "BR", "CL", "CN", ]
+let extraLargeCountries zoom 3 = ["CA", "GL", ];
+​​
+146: Object { code: "NL", name: "Netherlands" }
+​​
+147: Object { code: "NC", name: "New Caledonia" }
+​​
+148: Object { code: "NZ", name: "New Zealand" }
+​​
+149: Object { code: "NI", name: "Nicaragua" }
+​​
+150: Object { code: "NE", name: "Niger" }
+​​
+151: Object { code: "NG", name: "Nigeria" }
+​​
+152: Object { code: "NU", name: "Niue" }
+​​
+153: Object { code: "NF", name: "Norfolk Island" }
+​​
+154: Object { code: "KP", name: "North Korea" }
+​​
+155: Object { code: "MP", name: "Northern Mariana Islands" }
+​​
+156: Object { code: "NO", name: "Norway" }
+​​
+157: Object { code: "OM", name: "Oman" }
+​​
+158: Object { code: "PK", name: "Pakistan" }
+​​
+159: Object { code: "PW", name: "Palau" }
+​​
+160: Object { code: "PS", name: "Palestinian Territory" }
+​​
+161: Object { code: "PA", name: "Panama" }
+​​
+162: Object { code: "PG", name: "Papua New Guinea" }
+​​
+163: Object { code: "PY", name: "Paraguay" }
+​​
+164: Object { code: "PE", name: "Peru" }
+​​
+165: Object { code: "PH", name: "Philippines" }
+​​
+166: Object { code: "PN", name: "Pitcairn" }
+​​
+167: Object { code: "PL", name: "Poland" }
+​​
+168: Object { code: "PT", name: "Portugal" }
+​​
+169: Object { code: "PR", name: "Puerto Rico" }
+​​
+170: Object { code: "QA", name: "Qatar" }
+​​
+171: Object { code: "CG", name: "Republic of the Congo" }
+​​
+172: Object { code: "RE", name: "Reunion" }
+​​
+173: Object { code: "RO", name: "Romania" }
+​​
+174: Object { code: "RU", name: "Russia" }
+​​
+175: Object { code: "RW", name: "Rwanda" }
+​​
+176: Object { code: "BL", name: "Saint Barthélemy" }
+​​
+177: Object { code: "SH", name: "Saint Helena" }
+​​
+178: Object { code: "KN", name: "Saint Kitts and Nevis" }
+​​
+179: Object { code: "LC", name: "Saint Lucia" }
+​​
+180: Object { code: "MF", name: "Saint Martin" }
+​​
+181: Object { code: "PM", name: "Saint Pierre and Miquelon" }
+​​
+182: Object { code: "VC", name: "Saint Vincent and the Grenadines" }
+​​
+183: Object { code: "WS", name: "Samoa" }
+​​
+184: Object { code: "SM", name: "San Marino" }
+​​
+185: Object { code: "ST", name: "Sao Tome and Principe" }
+​​
+186: Object { code: "SA", name: "Saudi Arabia" }
+​​
+187: Object { code: "SN", name: "Senegal" }
+​​
+188: Object { code: "RS", name: "Serbia" }
+​​
+189: Object { code: "SC", name: "Seychelles" }
+​​
+190: Object { code: "SL", name: "Sierra Leone" }
+​​
+191: Object { code: "SG", name: "Singapore" }
+​​
+192: Object { code: "SK", name: "Slovakia" }
+​​
+193: Object { code: "SI", name: "Slovenia" }
+​​
+194: Object { code: "SB", name: "Solomon Islands" }
+​​
+195: Object { code: "SO", name: "Somalia" }
+​​
+196: Object { code: "ZA", name: "South Africa" }
+​​
+197: Object { code: "GS", name: "South Georgia and the South Sandwich Islands" }
+​​
+198: Object { code: "KR", name: "South Korea" }
+​​
+199: Object { code: "SS", name: "South Sudan" }
+
+200: Object { code: "ES", name: "Spain" }
+​​​
+201: Object { code: "LK", name: "Sri Lanka" }
+​​
+202: Object { code: "SD", name: "Sudan" }
+​​
+203: Object { code: "SR", name: "Suriname" }
+​​
+204: Object { code: "SJ", name: "Svalbard and Jan Mayen" }
+​​
+205: Object { code: "SZ", name: "Swaziland" }
+​​
+206: Object { code: "SE", name: "Sweden" }
+​​
+207: Object { code: "CH", name: "Switzerland" }
+​​
+208: Object { code: "SY", name: "Syria" }
+​​
+209: Object { code: "TW", name: "Taiwan" }
+​​
+210: Object { code: "TJ", name: "Tajikistan" }
+​​
+211: Object { code: "TZ", name: "Tanzania" }
+​​
+212: Object { code: "TH", name: "Thailand" }
+​​
+213: Object { code: "TG", name: "Togo" }
+​​
+214: Object { code: "TO", name: "Tonga" }
+​​
+215: Object { code: "TT", name: "Trinidad and Tobago" }
+​​
+216: Object { code: "TN", name: "Tunisia" }
+​​
+217: Object { code: "TR", name: "Turkey" }
+​​
+218: Object { code: "TM", name: "Turkmenistan" }
+​​
+219: Object { code: "TC", name: "Turks and Caicos Islands" }
+​​
+220: Object { code: "TV", name: "Tuvalu" }
+​​
+221: Object { code: "VI", name: "U.S. Virgin Islands" }
+​​
+222: Object { code: "UG", name: "Uganda" }
+​​
+223: Object { code: "UA", name: "Ukraine" }
+​​
+224: Object { code: "AE", name: "United Arab Emirates" }
+​​
+225: Object { code: "GB", name: "United Kingdom" }
+​​
+226: Object { code: "US", name: "United States" }
+​​
+227: Object { code: "UY", name: "Uruguay" }
+​​
+228: Object { code: "UZ", name: "Uzbekistan" }
+​​
+229: Object { code: "VU", name: "Vanuatu" }
+​​
+230: Object { code: "VA", name: "Vatican" }
+​​
+231: Object { code: "VE", name: "Venezuela" }
+​​
+232: Object { code: "VN", name: "Vietnam" }
+​​
+233: Object { code: "WF", name: "Wallis and Futuna" }
+​​
+234: Object { code: "EH", name: "Western Sahara" }
+​​
+235: Object { code: "YE", name: "Yemen" }
+​​
+236: Object { code: "ZM", name: "Zambia" }
+​​
+237: Object { code: "ZW", name: "Zimbabwe" }
