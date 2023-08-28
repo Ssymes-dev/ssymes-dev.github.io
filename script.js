@@ -1,9 +1,10 @@
 // Global variables
 const countryDropdown = document.getElementById("allCountries");
 const search = document.getElementById("countrySearchInput");
+let selectedTravelCountryCode = null; // To store the selected country code
 let countryArray = []; // To store the list of all country options
 let allTravelData = null; // To cache fetched country data
-let windyAPI; // Windy API object for map interaction
+let windyAPI = null; // Windy API object for map interaction
 let xxsCountries = [
   "VA",
   "TV",
@@ -254,31 +255,6 @@ const initWindyOptions = {
   zoom: 5,
 };
 
-// Initialize the Leaflet map
-function leafletMap(travelCountryCode) {
-  const zoomLevel = getZoomLevel(travelCountryCode);
-  L.map("windy").setView(
-    [initWindyOptions.lat, initWindyOptions.lng],
-    zoomLevel
-  );
-
-  // Add a tile layer (for example, OpenStreetMap tiles)
-  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png").addTo(
-    leafletMap
-  );
-}
-function initializeWindyAPI() {
-  const map = windyInit(initWindyOptions, (map) => {
-    map.setView([lat, lng], zoomLevel);
-  });
-  console.log("Windy API initialized:", map);
-  return map;
-}
-// Function to set the map location
-function setMapLocation(lat, lng) {
-  leafletMap.setView([lat, lng], initWindyOptions.zoom);
-}
-
 $(document).ready(function () {
   // Show the 'About' modal when the link is clicked
   $("#aboutLink").click(function () {
@@ -289,8 +265,7 @@ $(document).ready(function () {
 // Event listener for the country dropdown options
 countryDropdown.parentElement.addEventListener("click", async (event) => {
   if (event.target.classList.contains("dropdown-item")) {
-    const selectedTravelCountryCode =
-      event.target.getAttribute("dropdown-options");
+    selectedTravelCountryCode = event.target.getAttribute("dropdown-options");
     if (selectedTravelCountryCode) {
       // Set the search input value and selected code attribute
       search.value = event.target.textContent;
@@ -300,15 +275,24 @@ countryDropdown.parentElement.addEventListener("click", async (event) => {
 
       // Find the selected option based on the country code
       const selectedOption = countryArray.find(
-        ({ code }) => code === selectedTravelCountryCode
+        (option) => option.code === selectedTravelCountryCode
       );
 
       if (selectedOption) {
         // Update dropdown value, fetch and display country details, update map
         countryDropdown.value = selectedOption.code;
         await getAllTravelData(selectedOption.code);
-        // Pass windyAPI.map as the second argument to getBounds
-        await getBounds(selectedOption.code);
+        // Call getBounds to get lat and lng
+        const { lat, lng } = await getBounds(selectedTravelCountryCode);
+        // Get the zoom level for the selected country
+        const zoomLevel = getZoomLevel(selectedTravelCountryCode);
+        // Pass lat, lng, and zoom level to setMapLocation
+        setMapLocation(
+          lat,
+          lng,
+          generatePopupContent(selectedTravelCountryCode),
+          zoomLevel
+        );
       }
     }
   }
@@ -380,16 +364,17 @@ function appendDropdownOptions(travelData) {
 }
 
 // Function to get country data from the cache
-async function getAllTravelData(travelCountryCode) {
+async function getAllTravelData() {
   if (allTravelData !== null) {
-    return allTravelData[travelCountryCode];
+    console.log("Cached country data in allTravelData:", allTravelData);
+    return allTravelData;
   }
 
   try {
     const travelData = await fetchCountryData();
     allTravelData = travelData;
     console.log("Cached country data in allTravelData:", allTravelData);
-    return allTravelData[travelCountryCode];
+    return allTravelData[selectedTravelCountryCode];
   } catch (error) {
     console.error("Error fetching country data:", error);
     throw error;
@@ -397,8 +382,15 @@ async function getAllTravelData(travelCountryCode) {
 }
 
 // Function to set map location and add a marker with popup
+function setMapLocation(lat, lng, popupContent, zoomLevel) {
+  if (!windyAPI) {
+    console.error("Windy API not initialized!");
+    return;
+  }
+  const map = windyAPI.map;
 
-function setMapLocation(lat, lng, popupContent) {
+  map.setView([lat, lng], zoomLevel); // Set the provided zoom level
+
   // Call the addMarker function to add a marker with popup
   addMarker(map, lat, lng, popupContent);
 
@@ -429,43 +421,10 @@ function addMarker(map, lat, lng, popupContent) {
   marker.bindPopup(popup).openPopup();
 }
 
-// Function to add event listeners to dropdown options
-function addEventListenersToOptions() {
-  const dropdownOptions = document.querySelectorAll(".dropdown-item");
-
-  dropdownOptions.forEach((option) => {
-    option.addEventListener("click", async () => {
-      try {
-        const selectedDropdownOption = option.getAttribute("data-country-code");
-
-        if (selectedDropdownOption) {
-          countrySearchInput.value = option.textContent;
-          countrySearchInput.setAttribute(
-            "menu-selected-option",
-            selectedDropdownOption
-          );
-
-          const selectedOption = countryArray.find(
-            ({ code }) => code === selectedDropdownOption
-          );
-
-          if (selectedOption) {
-            countryDropdown.value = selectedOption.code;
-            // Display country details and update the map
-            await displayCountryDetails(selectedOption.code);
-          }
-        }
-      } catch (error) {
-        console.error("Error handling dropdown option click:", error);
-      }
-    });
-  });
-}
-
 // Helper function to generate popup content
-function generatePopupContent(travelCountryCode) {
+function generatePopupContent(selectedTravelCountryCode) {
   // Retrieve selected country's data from cache
-  const selectedCountryData = allTravelData[travelCountryCode];
+  const selectedCountryData = allTravelData[selectedTravelCountryCode];
 
   if (selectedCountryData) {
     const advisory = selectedCountryData.advisory;
@@ -486,11 +445,11 @@ function generatePopupContent(travelCountryCode) {
   }
 }
 
-async function getBounds(travelCountryCode) {
+async function getBounds(selectedTravelCountryCode) {
   try {
     const OPEN_CAGE_API_KEY = "0c9aade54fba4c8abfae724859a72795";
     const selectedTravelOption = countryArray.find(
-      (option) => option.code === travelCountryCode
+      (option) => option.code === selectedTravelCountryCode
     );
     const geocodingApiUrl = `https://api.opencagedata.com/geocode/v1/json?q=${encodeURIComponent(
       selectedTravelOption.name
@@ -507,47 +466,34 @@ async function getBounds(travelCountryCode) {
       console.log("Geocoding results:", results);
       console.log("Marker coordinates:", lat, lng);
 
-      if (results && results.length > 0) {
-        const { lat, lng } = results[0].geometry;
-
-        console.log("Geocoding results:", results);
-        console.log("Marker coordinates:", lat, lng);
-      }
-
-      setMapLocation(lat, lng, generatePopupContent(travelCountryCode));
+      // Return the lat and lng values
+      return { lat, lng };
     }
   } catch (error) {
     console.error("Error updating map with geocoding:", error);
   }
 }
 
-const getZoomLevel = (travelCountryCode) => {
-  if (xxsCountries.includes(travelCountryCode)) {
-    console.log("zoom level is 11");
+const getZoomLevel = (selectedTravelCountryCode) => {
+  if (xxsCountries.includes(selectedTravelCountryCode)) {
     return 11;
   }
-  if (xsCountries.includes(travelCountryCode)) {
-    console.log("zoom level is 9");
+  if (xsCountries.includes(selectedTravelCountryCode)) {
     return 9;
   }
-  if (smCountries.includes(travelCountryCode)) {
-    console.log("zoom level is 7");
+  if (smCountries.includes(selectedTravelCountryCode)) {
     return 7;
   }
-  if (medCountries.includes(travelCountryCode)) {
-    console.log("zoom level is 6");
+  if (medCountries.includes(selectedTravelCountryCode)) {
     return 6;
   }
-  if (lgCountries.includes(travelCountryCode)) {
-    console.log("zoom level is 5");
+  if (lgCountries.includes(selectedTravelCountryCode)) {
     return 5;
   }
-  if (xlCountries.includes(travelCountryCode)) {
-    console.log("zoom level is 4");
+  if (xlCountries.includes(selectedTravelCountryCode)) {
     return 4;
   }
-  if (xxlCountries.includes(travelCountryCode)) {
-    console.log("zoom level is 3");
+  if (xxlCountries.includes(selectedTravelCountryCode)) {
     return 3;
   } else {
     console.log("you didnt set a zoom level for this country");
@@ -557,20 +503,25 @@ const getZoomLevel = (travelCountryCode) => {
 // Helper function to alphabetize country options
 function alphabetizeCountries(travelData) {
   // Create an array of country options with code and name properties
-  const countryOptions = Object.keys(travelData).map((travelCountryCode) => ({
-    code: travelCountryCode,
-    name: travelData[travelCountryCode].name,
-  }));
+  const countryOptions = Object.keys(travelData).map(
+    (selectedTravelCountryCode) => ({
+      code: selectedTravelCountryCode,
+      name: travelData[selectedTravelCountryCode].name,
+    })
+  );
 
   // Sort country options alphabetically by name
   return countryOptions.sort((a, b) => a.name.localeCompare(b.name));
 }
 
+// Function to initialize the Windy API
+const windy = windyInit(initWindyOptions, (api) => {
+  windyAPI = api; // Store the initialized API object in the global variable
+  console.log("Windy API initialized:", windyAPI);
+  return windyAPI;
+});
+
 // Initial population of the country dropdown and Windy API initialization
 console.log("Initializing Windy API and populating country dropdown...");
 populateCountryDropdown();
 // initWindy();
-initializeWindyAPI();
-// Add event listener to the country dropdown options
-console.log("Adding event listeners to country dropdown options...");
-addEventListenersToOptions();
