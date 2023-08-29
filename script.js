@@ -292,8 +292,8 @@ countryDropdown.parentElement.addEventListener("click", async (event) => {
         // Update dropdown value, fetch and display country details, update map
         countryDropdown.value = selectedOption.code;
         await getAllTravelData(selectedOption.code);
-        // Call getBounds to get lat and lng
-        const { lat, lng } = await getBounds(selectedTravelCountryCode);
+        // Call getLatLng to get lat and lng
+        const { lat, lng } = await getLatLng(selectedTravelCountryCode);
         // Get the zoom level for the selected country
         const zoomLevel = getZoomLevel(selectedTravelCountryCode);
         // Pass lat, lng, and zoom level to setMapLocation
@@ -456,28 +456,27 @@ function generatePopupContent(selectedTravelCountryCode) {
   }
 }
 
-async function getBounds(selectedTravelCountryCode) {
+async function getLatLng(selectedTravelCountryCode) {
   try {
     const OPEN_CAGE_API_KEY = "0c9aade54fba4c8abfae724859a72795";
     const selectedTravelOption = countryArray.find(
       (option) => option.code === selectedTravelCountryCode
     );
-    const geocodingApiUrl = `https://api.opencagedata.com/geocode/v1/json?q=${encodeURIComponent(
-      selectedTravelOption.name
-    )}&key=${OPEN_CAGE_API_KEY}`;
+    const geocodingApiUrl = `https://api.opencagedata.com/geocode/v1/json?q=${selectedTravelOption.name}&key=${OPEN_CAGE_API_KEY}`;
 
     console.log("Fetching geocoding data from API...");
+
     // Fetch geocoding data from the API
     const response = await fetch(geocodingApiUrl);
     const { results } = await response.json();
 
     if (results && results.length > 0) {
-      const { lat, lng } = results[0].geometry;
+      const { geometry } = results[0];
+      const { lat, lng } = geometry;
 
       console.log("Geocoding results:", results);
       console.log("Marker coordinates:", lat, lng);
 
-      // Return the lat and lng values
       return { lat, lng };
     }
   } catch (error) {
