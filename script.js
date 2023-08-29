@@ -246,10 +246,11 @@ let lgCountries = [
 let xlCountries = ["AR", "AU", "BR", "CL", "CN", "SZ", "SE"];
 let xxlCountries = ["CA", "GL", "RU", "US"];
 
-var map = L.map("map").setView([51.505, -0.09], 13);
+var map = L.map("map").setView([51.505, -0.09], 2);
 
 L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
-  maxZoom: 19,
+  maxZoom: 11,
+  minZoom: 2,
   attribution: "© OpenStreetMap",
 }).addTo(map);
 
