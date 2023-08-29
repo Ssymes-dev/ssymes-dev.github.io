@@ -246,14 +246,23 @@ let lgCountries = [
 let xlCountries = ["AR", "AU", "BR", "CL", "CN", "SZ", "SE"];
 let xxlCountries = ["CA", "GL", "RU", "US"];
 
-// Initialization
-const initWindyOptions = {
-  key: "9N1YXUo4GoPgLBOjB85IYsz5CwIUgzce",
-  verbose: false,
-  lat: 50.4,
-  lng: 14.3,
-  zoom: 5,
-};
+var map = L.map("map").setView([51.505, -0.09], 13);
+
+L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+  maxZoom: 19,
+  attribution: "© OpenStreetMap",
+}).addTo(map);
+
+var popup = L.popup();
+
+function onMapClick(e) {
+  popup
+    .setLatLng(e.latlng)
+    .setContent("You clicked the map at " + e.latlng.toString())
+    .openOn(map);
+}
+
+map.on("click", onMapClick);
 
 $(document).ready(function () {
   // Show the 'About' modal when the link is clicked
@@ -383,11 +392,12 @@ async function getAllTravelData() {
 
 // Function to set map location and add a marker with popup
 function setMapLocation(lat, lng, popupContent, zoomLevel) {
-  if (!windyAPI) {
-    console.error("Windy API not initialized!");
+  if (!map) {
+    console.error("Map not provided!");
     return;
   }
-  const map = windyAPI.map;
+
+  map;
 
   map.setView([lat, lng], zoomLevel); // Set the provided zoom level
 
@@ -513,13 +523,6 @@ function alphabetizeCountries(travelData) {
   // Sort country options alphabetically by name
   return countryOptions.sort((a, b) => a.name.localeCompare(b.name));
 }
-
-// Function to initialize the Windy API
-const windy = windyInit(initWindyOptions, (api) => {
-  windyAPI = api; // Store the initialized API object in the global variable
-  console.log("Windy API initialized:", windyAPI);
-  return windyAPI;
-});
 
 // Initial population of the country dropdown and Windy API initialization
 console.log("Initializing Windy API and populating country dropdown...");
