@@ -442,7 +442,7 @@ function generatePopupContent(selectedTravelCountryCode) {
 
     // Construct popup content
     const popupContent = `
-      <h5>${selectedCountryData.name}</h5>
+      <h5>${selectedCountryData.name}</5>
       <p class="advisory-message">Advisory: ${advisory.message}</p>
       <a href="${advisory.source}" target="_blank" rel="noopener noreferrer">Source: ${advisory.sources_active}</a>
     `;
