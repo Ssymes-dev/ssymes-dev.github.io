@@ -256,29 +256,57 @@ L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
 
 const popup = L.popup();
 
-function onMapClick(e) {
-  popup
-    .setLatLng(e.latlng)
-    .setContent("You clicked the map at " + e.latlng.toString())
-    .openOn(map);
+async function onMapClick(e) {
   const clickLat = e.latlng.lat;
   const clickLng = e.latlng.lng;
-  console.log("click lat", clickLat);
-  console.log("click lng", clickLng);
+  const locationName = await getLocationData(clickLat, clickLng);
+  const weatherData = await getWeather(clickLat, clickLng);
 
-  getLocationData(clickLat, clickLng);
+  const popupContent = `
+  
+    Location: ${locationName}<br>
+    Weather: ${weatherData.weather}<br>
+    Temperature: ${weatherData.temp}°C<br>
+    Humidity: ${weatherData.humidity}%<br>
+    Wind Speed: ${weatherData.wind} m/s
+  `;
+
+  popup.setLatLng(e.latlng).setContent(popupContent).openOn(map);
 }
 
 map.on("click", onMapClick);
 
+async function getWeather(clickLat, clickLng) {
+  const OPEN_WEATHER_API_KEY = "efa153cb7f3aabbfc22da92129ec3413";
+  const weatherApiUrl = `https://api.openweathermap.org/data/2.5/onecall?lat=${clickLat}&lon=${clickLng}&appid=${OPEN_WEATHER_API_KEY}&units=metric`;
+  const response = await fetch(weatherApiUrl);
+  const result = await response.json();
+
+  const weather = result.current.weather[0].description;
+  const temp = result.current.temp;
+  const humidity = result.current.humidity;
+  const wind = result.current.wind_speed;
+
+  return { weather, temp, humidity, wind };
+}
+
 async function getLocationData(clickLat, clickLng) {
   const OPEN_CAGE_API_KEY = "0c9aade54fba4c8abfae724859a72795";
   const reverseGeocodingApiUrl = `https://api.opencagedata.com/geocode/v1/json?q=${clickLat},${clickLng}&key=${OPEN_CAGE_API_KEY}`;
+
   const response = await fetch(reverseGeocodingApiUrl);
   const { results } = await response.json();
-  console.log("reverse geocoding results", results);
-}
 
+  console.log("reverse geocoding results", results);
+  // **TODO: add logic to handle when there is no city name
+  // const locationCity = results[0].components.city;
+  // const locationState = results[0].components.state;
+  // const locationCountry = results[0].components.country;
+  // const locationName = `${locationCity}, ${locationState}, ${locationCountry}`;
+  const locationName = results[0].formatted;
+  console.log("location name", locationName);
+  return locationName;
+}
 $(document).ready(function () {
   // Show the 'About' modal when the link is clicked
   $("#aboutLink").click(function () {
