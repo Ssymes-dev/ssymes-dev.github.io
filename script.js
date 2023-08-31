@@ -334,17 +334,33 @@ countryDropdown.parentElement.addEventListener("click", async (event) => {
         // Update dropdown value, fetch and display country details, update map
         countryDropdown.value = selectedOption.code;
         await getAllTravelData(selectedOption.code);
-        // Call getLatLng to get lat and lng
-        const { lat, lng } = await getLatLng(selectedTravelCountryCode);
-        // Get the zoom level for the selected country
-        const zoomLevel = getZoomLevel(selectedTravelCountryCode);
-        // Pass lat, lng, and zoom level to setMapLocation
-        setMapLocation(
-          lat,
-          lng,
-          generatePopupContent(selectedTravelCountryCode),
-          zoomLevel
-        );
+
+        // Check for the special case of "Georgia"
+        if (selectedTravelCountryCode === "GE") {
+          // Hard-code the lat and lng for Georgia (the country)
+          const georgiaLat = 42.3154;
+          const georgiaLng = 43.3569;
+          const zoomLevel = getZoomLevel(selectedTravelCountryCode);
+
+          setMapLocation(
+            georgiaLat,
+            georgiaLng,
+            generatePopupContent(selectedTravelCountryCode),
+            zoomLevel
+          );
+        } else {
+          // Call getLatLng to get lat and lng
+          const { lat, lng } = await getLatLng(selectedTravelCountryCode);
+          // Get the zoom level for the selected country
+          const zoomLevel = getZoomLevel(selectedTravelCountryCode);
+          // Pass lat, lng, and zoom level to setMapLocation
+          setMapLocation(
+            lat,
+            lng,
+            generatePopupContent(selectedTravelCountryCode),
+            zoomLevel
+          );
+        }
       }
     }
   }
