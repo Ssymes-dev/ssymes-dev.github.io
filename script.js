@@ -4,7 +4,7 @@ const search = document.getElementById("countrySearchInput");
 let selectedTravelCountryCode = null; // To store the selected country code
 let countryArray = []; // To store the list of all country options
 let allTravelData = null; // To cache fetched country data
-let windyAPI = null; // Windy API object for map interaction
+
 let xxsCountries = [
   "VA",
   "TV",
@@ -246,7 +246,7 @@ let lgCountries = [
 let xlCountries = ["AR", "AU", "BR", "CL", "CN", "SZ", "SE"];
 let xxlCountries = ["CA", "GL", "RU", "US"];
 
-var map = L.map("map").setView([51.505, -0.09], 2);
+const map = L.map("map").setView([51.505, -0.09], 2);
 
 L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
   maxZoom: 11,
@@ -254,16 +254,30 @@ L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
   attribution: "© OpenStreetMap",
 }).addTo(map);
 
-var popup = L.popup();
+const popup = L.popup();
 
 function onMapClick(e) {
   popup
     .setLatLng(e.latlng)
     .setContent("You clicked the map at " + e.latlng.toString())
     .openOn(map);
+  const clickLat = e.latlng.lat;
+  const clickLng = e.latlng.lng;
+  console.log("click lat", clickLat);
+  console.log("click lng", clickLng);
+
+  getLocationData(clickLat, clickLng);
 }
 
 map.on("click", onMapClick);
+
+async function getLocationData(clickLat, clickLng) {
+  const OPEN_CAGE_API_KEY = "0c9aade54fba4c8abfae724859a72795";
+  const reverseGeocodingApiUrl = `https://api.opencagedata.com/geocode/v1/json?q=${clickLat},${clickLng}&key=${OPEN_CAGE_API_KEY}`;
+  const response = await fetch(reverseGeocodingApiUrl);
+  const { results } = await response.json();
+  console.log("reverse geocoding results", results);
+}
 
 $(document).ready(function () {
   // Show the 'About' modal when the link is clicked
