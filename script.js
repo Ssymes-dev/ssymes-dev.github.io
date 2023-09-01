@@ -1,4 +1,5 @@
 // Global variables
+const updateWeatherText = document.querySelector("#text-box");
 const countryDropdown = document.getElementById("allCountries");
 const search = document.getElementById("countrySearchInput");
 let selectedTravelCountryCode = null; // To store the selected country code
@@ -262,18 +263,20 @@ async function onMapClick(e) {
   const locationName = await getLocationData(clickLat, clickLng);
   const weatherData = await getWeather(clickLat, clickLng);
 
-  const popupContent = `
-  
-    Location: ${locationName}<br>
-    Weather: ${weatherData.weather}<br>
-    Temperature: ${weatherData.temp}°C<br>
-    Humidity: ${weatherData.humidity}%<br>
-    Wind Speed: ${weatherData.wind} m/s
-  `;
+  const weatherText = `
+  <p><h6>Location: ${locationName}</h6><br>
+ <ul>
+  Weather: ${weatherData.weather}<br><br>
+  Temperature: ${weatherData.temp}°C<br><br>
+  Humidity: ${weatherData.humidity}% <br><br>
+  Wind Speed: ${weatherData.wind} m/s 
+  </ul>
+  </p>
+`;
 
-  popup.setLatLng(e.latlng).setContent(popupContent).openOn(map);
+  popup.setLatLng(e.latlng);
+  updateWeatherText.innerHTML = weatherText;
 }
-
 map.on("click", onMapClick);
 
 async function getWeather(clickLat, clickLng) {
@@ -385,7 +388,7 @@ search.addEventListener("click", async () => {
   if (search.value.trim() === "") {
     //.trim ignores spaces
     console.log("Populating country dropdown...");
-    appendDropdownOptions(countryArray); //await populateCountryDropdown(); was causing the menu to load previous search after second click
+    appendDropdownOptions(countryArray);
   }
   console.log("Populated country dropdown");
 });
@@ -497,10 +500,10 @@ function generatePopupContent(selectedTravelCountryCode) {
 
   if (selectedCountryData) {
     const advisory = selectedCountryData.advisory;
-
+    updateWeatherText.innerHTML = "Click the map for local weather!";
     // Construct popup content
     const popupContent = `
-      <h5>${selectedCountryData.name}</5>
+      <h5>${selectedCountryData.name}</h5>
       <p class="advisory-message">Advisory: ${advisory.message}</p>
       <a href="${advisory.source}" target="_blank" rel="noopener noreferrer">Source: ${advisory.sources_active}</a>
     `;
