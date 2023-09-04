@@ -290,6 +290,12 @@ async function getWeather(clickLat, clickLng) {
   const humidity = result.current.humidity;
   const wind = result.current.wind_speed;
 
+  const iconCode = result.current.weather[0].icon;
+  const weatherIconURL = `https://openweathermap.org/img/wn/${iconCode}@2x.png`;
+
+  const weatherIcon = document.getElementById("weather-icon");
+  weatherIcon.src = weatherIconURL;
+
   return { weather, temp, humidity, wind };
 }
 
