@@ -247,14 +247,29 @@ let lgCountries = [
 let xlCountries = ["AR", "AU", "BR", "CL", "CN", "SZ", "SE"];
 let xxlCountries = ["CA", "GL", "RU", "US"];
 
+// create and initialize leaflet map object
 const map = L.map("map").setView([51.505, -0.09], 2);
 
+// load map tiles
 L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
-  maxZoom: 11,
-  minZoom: 2,
-  attribution: "© OpenStreetMap",
+  attribution:
+    'Data <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> contributors, Map tiles &copy;',
+  minZoom: 4,
+  maxZoom: 18,
 }).addTo(map);
 
+// geosearch options
+
+const options = {
+  key: "0c9aade54fba4c8abfae724859a72795",
+  position: "topright",
+  // see possible values: https://leafletjs.com/reference.html#control-position
+};
+const control = L.Control.openCageGeocoding(options).addTo(map);
+// remove existing zoom from map
+map.removeControl(map.zoomControl);
+// add zoom to bottom right of map
+L.control.zoom({ position: "bottomright" }).addTo(map);
 const popup = L.popup();
 
 async function onMapClick(e) {
@@ -300,8 +315,6 @@ async function onMapClick(e) {
   updateWeatherText.innerHTML = weatherText;
 }
 
-map.on("click", onMapClick);
-
 async function getWeather(clickLat, clickLng) {
   const OPEN_WEATHER_API_KEY = "efa153cb7f3aabbfc22da92129ec3413";
   const weatherApiUrl = `https://api.openweathermap.org/data/2.5/onecall?lat=${clickLat}&lon=${clickLng}&appid=${OPEN_WEATHER_API_KEY}&units=metric`;
@@ -339,7 +352,7 @@ async function getWeather(clickLat, clickLng) {
 }
 
 async function getLocationData(clickLat, clickLng) {
-  const OPEN_CAGE_API_KEY = "0c9aade54fba4c8abfae724859a72795";
+  const OPEN_CAGE_API_KEY = "";
   const reverseGeocodingApiUrl = `https://api.opencagedata.com/geocode/v1/json?q=${clickLat},${clickLng}&key=${OPEN_CAGE_API_KEY}`;
 
   const response = await fetch(reverseGeocodingApiUrl);
@@ -506,20 +519,7 @@ function setMapLocation(lat, lng, popupContent, zoomLevel) {
 
   map;
 
-  map.setView([lat, lng], zoomLevel); // Set the provided zoom level
-
-  // Call the addMarker function to add a marker with popup
-  addMarker(map, lat, lng, popupContent);
-
-  console.log("Map location set:", lat, lng);
-}
-
-// Helper function to add a marker with a popup, removing existing marker if it exists
-function addMarker(map, lat, lng, popupContent) {
-  if (!map) {
-    console.error("Map not provided!");
-    return;
-  }
+  map.setView([lat, lng], zoomLevel);
 
   // Remove existing markers from the map
   map.eachLayer((layer) => {
@@ -536,6 +536,8 @@ function addMarker(map, lat, lng, popupContent) {
 
   // Bind the popup to the marker and open it
   marker.bindPopup(popup).openPopup();
+
+  console.log("Map location set:", lat, lng);
 }
 
 // Helper function to generate popup content
@@ -631,6 +633,6 @@ function alphabetizeCountries(travelData) {
 }
 
 // Initial population of the country dropdown and Windy API initialization
-console.log("Initializing Windy API and populating country dropdown...");
+console.log("Initializing map and populating country dropdown...");
 populateCountryDropdown();
 // initWindy();

@@ -21,6 +21,11 @@
     max-height: 38rem
 }
 
+.leaflet-top,
+.leaflet-bottom {
+    position: absolute;
+}
+
 #menu {
     max-height: fit-content;
 }

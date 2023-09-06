@@ -15,7 +15,15 @@
         integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
         integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-
+    <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/opencagedata/leaflet-opencage-geocoding@v2.0.0/dist/css/L.Control.OpenCageGeocoding.min.css" />
+    <script
+        src="https://cdn.jsdelivr.net/gh/opencagedata/leaflet-opencage-geocoding@v2.0.0/dist/js/L.Control.OpenCageGeocoding.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ol@7.4.0/ol.css">
+    <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/@opencage/ol-opencage-geosearch/ol-opencage-geosearch.css" />
+    <script src="https://cdn.jsdelivr.net/npm/@opencage/geosearch-bundle"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@opencage/leaflet-opencage-geosearch"></script>
 
     <title>TravelSage</title>
 </head>
@@ -49,8 +57,8 @@
 
 
     <main>
-
-        <div class="p-3 ">
+        <div class="col-2"></div>
+        <div class="p-3 col-8">
             <label><b>Choose a Country:</b></label>
             <div class="dropdown">
                 <input type="text" class="w-auto m-1" autocomplete="off" placeholder="Type to Search..."
