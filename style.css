@@ -35,6 +35,7 @@
 
 }
 
+
 .topnav {
     overflow: hidden;
     background-color: #333;
@@ -42,22 +43,17 @@
 
 .topnav a {
     float: left;
-    border-radius: 10%;
     color: #f2f2f2;
-    text-align: center;
+    border-radius: 5px;
     text-decoration: none;
     font-size: 1rem;
-
+    padding: 5px 5px;
 }
 
 .topnav a:hover {
-    background-color: #ddd;
-    border-radius: 10%;
+    background-color: #165eec;
     color: black;
-}
 
-.topnav-right {
-    float: right;
 }
 
 .headernav {
@@ -81,4 +77,9 @@
 .headernav p {
     float: right;
     color: #165eec;
+}
+
+.headernav p:hover {
+    color: black;
+
 }
