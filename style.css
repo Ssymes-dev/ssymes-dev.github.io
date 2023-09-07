@@ -64,28 +64,21 @@
     overflow: hidden;
 }
 
-.headernav-right {
-    float: right;
-}
-
-.headernav img {
-    float: right;
-    border-radius: 10%;
-    color: #f2f2f2;
+#icons {
+    border-radius: 5%;
     text-decoration: none;
-    font-size: 1rem;
     padding: .5rem;
-    margin: 2rem;
-    height: 2rem;
-    padding: 5px
+    text-decoration: none;
+
 }
 
-.headernav img:hover {
-    background-color: #ddd;
+#icons:hover {
+    background-color: #165eec;
     border-radius: 10%;
     color: black;
 }
 
 .headernav p {
-    float: left;
+    float: right;
+    color: #165eec;
 }
