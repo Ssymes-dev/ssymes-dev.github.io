@@ -1,6 +1,8 @@
 {
   "dependencies": {
-    "grunt": "^1.6.1",
     "leaflet-geojson-selector": "^0.5.5"
+  },
+  "devDependencies": {
+    "grunt": "^1.6.1"
   }
 }
