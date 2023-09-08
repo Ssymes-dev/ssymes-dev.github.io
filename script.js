@@ -246,51 +246,26 @@
 // let xlCountries = ["AR", "AU", "BR", "CL", "CN", "SZ", "SE"];
 // let xxlCountries = ["CA", "GL", "RU", "US"];
 
-// var map = new L.Map("map", {
-//   layers: L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"),
-//   attributionControl: false,
-//   zoomControl: false,
-// });
+// // create and initialize leaflet map object
+// const map = L.map("map").setView([51.505, -0.09], 2);
 
-// map.addControl(L.control.zoom({ position: "topleft" }));
+// // load map tiles
+// L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+//   attribution:
+//     'Data <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> contributors, Map tiles &copy;',
+//   minZoom: 4,
+//   maxZoom: 18,
+// }).addTo(map);
 
-// $.getJSON("world-countries.json", function (json) {
-//   var geoLayer = L.geoJson(json).addTo(map);
+// // geosearch options
 
-//   var geoList = new L.Control.GeoJSONSelector(geoLayer, {
-//     zoomToLayer: true,
-//     listItemBuild: function (layer) {
-//       return L.Util.template(
-//         "<small><b>{name}</b><br>Length: {length} <br>Area: {area} </small>",
-//         layer.feature.properties
-//       );
-//     },
-//   }).addTo(map);
+// const options = {
+//   key: "0c9aade54fba4c8abfae724859a72795",
+//   position: "topright",
+//   // see possible values: https://leafletjs.com/reference.html#control-position
+// };
 
-//   geoList.on("selector:change", function (e) {
-//     var jsonObj = $.parseJSON(JSON.stringify(e.layers[0].feature.properties));
-//     var html = 'Selection:<br /><table border="1">';
-//     $.each(jsonObj, function (key, value) {
-//       html += "<tr>";
-//       html += "<td>" + key.replace(":", " ") + "</td>";
-//       html += "<td>" + value + "</td>";
-//       html += "</tr>";
-//     });
-//     html += "</table>";
-
-//     $(".selection").html(html);
-//   });
-
-//   map.addControl(
-//     (function () {
-//       var c = new L.Control({ position: "bottomright" });
-//       c.onAdd = function (map) {
-//         return L.DomUtil.create("pre", "selection");
-//       };
-//       return c;
-//     })()
-//   );
-// });
+// const popup = L.popup();
 
 // // Event listener for the country dropdown options
 // countryDropdown.parentElement.addEventListener("click", async (event) => {
