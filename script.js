@@ -1,4 +1,5 @@
 // Global variables
+const searchInput = document.querySelector(".leaflet-control-container");
 const countryDropdown = document.getElementById("allCountries");
 const search = document.getElementById("countrySearchInput");
 let selectedTravelCountryCode = null; // To store the selected country code
@@ -272,8 +273,9 @@ async function onMapClick(e) {
   const clickLng = e.latlng.lng;
   console.log("click lat", clickLat);
   console.log("click lng", clickLng);
-  // Set the popup content with the weather text
+
   popup.setLatLng(e.latlng);
+  // store input as variable
 }
 function getGeojson() {
   const getGeojsonURL =
@@ -300,42 +302,6 @@ getGeojson();
 
 // display popup on map click
 map.on("click", onMapClick);
-
-async function getWeather(clickLat, clickLng) {
-  const OPEN_WEATHER_API_KEY = "efa153cb7f3aabbfc22da92129ec3413";
-  const weatherApiUrl = `https://api.openweathermap.org/data/2.5/onecall?lat=${clickLat}&lon=${clickLng}&appid=${OPEN_WEATHER_API_KEY}&units=metric`;
-  const response = await fetch(weatherApiUrl);
-  const result = await response.json();
-  console.log("weather result", result);
-  const weather = result.current.weather[0].description;
-  const temp = result.current.temp;
-  const temp_min = result.daily[0].temp.min;
-  const temp_max = result.daily[0].temp.max;
-  const temp_day = result.daily[0].temp.day;
-  const temp_eve = result.daily[0].temp.eve;
-  const rain = result.daily[0].rain;
-  const humidity = result.current.humidity;
-  const wind = result.current.wind_speed;
-  const wind_deg = result.current.wind_deg;
-  const wind_gust = result.current.wind_gust;
-
-  const iconCode = result.current.weather[0].icon;
-  console.log("weather", weather);
-  return {
-    weather,
-    temp,
-    rain,
-    temp_min,
-    temp_max,
-    temp_day,
-    temp_eve,
-    humidity,
-    wind,
-    iconCode,
-    wind_deg,
-    wind_gust,
-  };
-}
 
 async function getLocationData(clickLat, clickLng) {
   const OPEN_CAGE_API_KEY = "";
