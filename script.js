@@ -1,530 +1,638 @@
-// // Global variables
-// const countryDropdown = document.getElementById("allCountries");
-// const search = document.getElementById("countrySearchInput");
-// let selectedTravelCountryCode = null; // To store the selected country code
-// let countryArray = []; // To store the list of all country options
-// let allTravelData = null; // To cache fetched country data
+// Global variables
+const updateWeatherText = document.querySelector("#text-box");
+const countryDropdown = document.getElementById("allCountries");
+const search = document.getElementById("countrySearchInput");
+let selectedTravelCountryCode = null; // To store the selected country code
+let countryArray = []; // To store the list of all country options
+let allTravelData = null; // To cache fetched country data
 
-// let xxsCountries = [
-//   "VA",
-//   "TV",
-//   "SG",
-//   "SC",
-//   "SM",
-//   "PM",
-//   "MF",
-//   "KN",
-//   "SH",
-//   "BL",
-//   "PN",
-//   "PW",
-//   "NF",
-//   "NU",
-//   "MS",
-//   "MC",
-//   "MO",
-//   "AI",
-//   "AW",
-//   "BB",
-//   "BM",
-//   "CX",
-//   "GI",
-//   "HK",
-//   "JE",
-//   "LI",
-//   "YT",
-// ];
-// let xsCountries = [
-//   "KY",
-//   "VI",
-//   "TC",
-//   "WS",
-//   "VC",
-//   "LC",
-//   "RE",
-//   "PR",
-//   "MU",
-//   "MQ",
-//   "MT",
-//   "AD",
-//   "AG",
-//   "BH",
-//   "VG",
-//   "BN",
-//   "BI",
-//   "CC",
-//   "KM",
-//   "CK",
-//   "DM",
-//   "GP",
-//   "GU",
-//   "GG",
-//   "IM",
-//   "JM",
-//   "LU",
-// ];
-// let smCountries = [
-//   "KW",
-//   "XK",
-//   "GM",
-//   "GQ",
-//   "SV",
-//   "TL",
-//   "WF",
-//   "AE",
-//   "UG",
-//   "TT",
-//   "TO",
-//   "TW",
-//   "CH",
-//   "SZ",
-//   "SR",
-//   "LK",
-//   "GS",
-//   "SI",
-//   "SK",
-//   "SL",
-//   "SN",
-//   "ST",
-//   "RW",
-//   "QA",
-//   "PA",
-//   "PS",
-//   "MP",
-//   "NI",
-//   "NC",
-//   "NL",
-//   "NP",
-//   "ME",
-//   "MD",
-//   "MK",
-//   "LT",
-//   "LR",
-//   "LS",
-//   "LB",
-//   "LV",
-//   "KG",
-//   "KI",
-//   "JO",
-//   "IL",
-//   "IE",
-//   "HU",
-//   "HN",
-//   "HT",
-//   "GW",
-//   "GT",
-//   "GD",
-//   "GE",
-//   "GA",
-//   "PF",
-//   "GF",
-//   "FJ",
-//   "FO",
-//   "FK",
-//   "EE",
-//   "ER",
-//   "DO",
-//   "DJ",
-//   "DK",
-//   "CZ",
-//   "AL",
-//   "AS",
-//   "AM",
-//   "AT",
-//   "AZ",
-//   "BD",
-//   "BE",
-//   "BZ",
-//   "BA",
-//   "BF",
-//   "KH",
-//   "CV",
-//   "CR",
-//   "HR",
-//   "CU",
-//   "CY",
-// ];
-// let medCountries = [
-//   "ZW",
-//   "ZM",
-//   "YE",
-//   "EH",
-//   "VU",
-//   "UY",
-//   "TN",
-//   "TG",
-//   "TJ",
-//   "SY",
-//   "ES",
-//   "SS",
-//   "KR",
-//   "SB",
-//   "RO",
-//   "CG",
-//   "PT",
-//   "PL",
-//   "PY",
-//   "PG",
-//   "OM",
-//   "KP",
-//   "NG",
-//   "MV",
-//   "MW",
-//   "LA",
-//   "KE",
-//   "IS",
-//   "GY",
-//   "GN",
-//   "GR",
-//   "GH",
-//   "BY",
-//   "BJ",
-//   "BT",
-//   "BW",
-//   "BG",
-//   "CM",
-//   "CF",
-//   "EC",
-//   "IQ",
-//   "IT",
-//   "CI",
-// ];
-// let lgCountries = [
-//   "VN",
-//   "VE",
-//   "UZ",
-//   "GB",
-//   "UA",
-//   "TM",
-//   "TR",
-//   "TH",
-//   "TZ",
-//   "SJ",
-//   "SD",
-//   "ZA",
-//   "SO",
-//   "RS",
-//   "SA",
-//   "PH",
-//   "PE",
-//   "PK",
-//   "NO",
-//   "NE",
-//   "NZ",
-//   "NA",
-//   "MM",
-//   "MZ",
-//   "MA",
-//   "MN",
-//   "FM",
-//   "MX",
-//   "MR",
-//   "MH",
-//   "ML",
-//   "MY",
-//   "MG",
-//   "LY",
-//   "KZ",
-//   "JP",
-//   "DE",
-//   "FR",
-//   "FI",
-//   "ET",
-//   "AF",
-//   "DZ",
-//   "AO",
-//   "BS",
-//   "BO",
-//   "TD",
-//   "CO",
-//   "CD",
-//   "EG",
-//   "IN",
-//   "ID",
-//   "IR",
-// ];
-// let xlCountries = ["AR", "AU", "BR", "CL", "CN", "SZ", "SE"];
-// let xxlCountries = ["CA", "GL", "RU", "US"];
+let xxsCountries = [
+  "VA",
+  "TV",
+  "SG",
+  "SC",
+  "SM",
+  "PM",
+  "MF",
+  "KN",
+  "SH",
+  "BL",
+  "PN",
+  "PW",
+  "NF",
+  "NU",
+  "MS",
+  "MC",
+  "MO",
+  "AI",
+  "AW",
+  "BB",
+  "BM",
+  "CX",
+  "GI",
+  "HK",
+  "JE",
+  "LI",
+  "YT",
+];
+let xsCountries = [
+  "KY",
+  "VI",
+  "TC",
+  "WS",
+  "VC",
+  "LC",
+  "RE",
+  "PR",
+  "MU",
+  "MQ",
+  "MT",
+  "AD",
+  "AG",
+  "BH",
+  "VG",
+  "BN",
+  "BI",
+  "CC",
+  "KM",
+  "CK",
+  "DM",
+  "GP",
+  "GU",
+  "GG",
+  "IM",
+  "JM",
+  "LU",
+];
+let smCountries = [
+  "KW",
+  "XK",
+  "GM",
+  "GQ",
+  "SV",
+  "TL",
+  "WF",
+  "AE",
+  "UG",
+  "TT",
+  "TO",
+  "TW",
+  "CH",
+  "SZ",
+  "SR",
+  "LK",
+  "GS",
+  "SI",
+  "SK",
+  "SL",
+  "SN",
+  "ST",
+  "RW",
+  "QA",
+  "PA",
+  "PS",
+  "MP",
+  "NI",
+  "NC",
+  "NL",
+  "NP",
+  "ME",
+  "MD",
+  "MK",
+  "LT",
+  "LR",
+  "LS",
+  "LB",
+  "LV",
+  "KG",
+  "KI",
+  "JO",
+  "IL",
+  "IE",
+  "HU",
+  "HN",
+  "HT",
+  "GW",
+  "GT",
+  "GD",
+  "GE",
+  "GA",
+  "PF",
+  "GF",
+  "FJ",
+  "FO",
+  "FK",
+  "EE",
+  "ER",
+  "DO",
+  "DJ",
+  "DK",
+  "CZ",
+  "AL",
+  "AS",
+  "AM",
+  "AT",
+  "AZ",
+  "BD",
+  "BE",
+  "BZ",
+  "BA",
+  "BF",
+  "KH",
+  "CV",
+  "CR",
+  "HR",
+  "CU",
+  "CY",
+];
+let medCountries = [
+  "ZW",
+  "ZM",
+  "YE",
+  "EH",
+  "VU",
+  "UY",
+  "TN",
+  "TG",
+  "TJ",
+  "SY",
+  "ES",
+  "SS",
+  "KR",
+  "SB",
+  "RO",
+  "CG",
+  "PT",
+  "PL",
+  "PY",
+  "PG",
+  "OM",
+  "KP",
+  "NG",
+  "MV",
+  "MW",
+  "LA",
+  "KE",
+  "IS",
+  "GY",
+  "GN",
+  "GR",
+  "GH",
+  "BY",
+  "BJ",
+  "BT",
+  "BW",
+  "BG",
+  "CM",
+  "CF",
+  "EC",
+  "IQ",
+  "IT",
+  "CI",
+];
+let lgCountries = [
+  "VN",
+  "VE",
+  "UZ",
+  "GB",
+  "UA",
+  "TM",
+  "TR",
+  "TH",
+  "TZ",
+  "SJ",
+  "SD",
+  "ZA",
+  "SO",
+  "RS",
+  "SA",
+  "PH",
+  "PE",
+  "PK",
+  "NO",
+  "NE",
+  "NZ",
+  "NA",
+  "MM",
+  "MZ",
+  "MA",
+  "MN",
+  "FM",
+  "MX",
+  "MR",
+  "MH",
+  "ML",
+  "MY",
+  "MG",
+  "LY",
+  "KZ",
+  "JP",
+  "DE",
+  "FR",
+  "FI",
+  "ET",
+  "AF",
+  "DZ",
+  "AO",
+  "BS",
+  "BO",
+  "TD",
+  "CO",
+  "CD",
+  "EG",
+  "IN",
+  "ID",
+  "IR",
+];
+let xlCountries = ["AR", "AU", "BR", "CL", "CN", "SZ", "SE"];
+let xxlCountries = ["CA", "GL", "RU", "US"];
 
-// // create and initialize leaflet map object
-// const map = L.map("map").setView([51.505, -0.09], 2);
+// create and initialize leaflet map object
+const map = L.map("map").setView([51.505, -0.09], 2);
 
-// // load map tiles
-// L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
-//   attribution:
-//     'Data <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> contributors, Map tiles &copy;',
-//   minZoom: 4,
-//   maxZoom: 18,
-// }).addTo(map);
+// load map tiles
+L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+  attribution:
+    'Data <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> contributors, Map tiles &copy;',
+  minZoom: 4,
+  maxZoom: 18,
+}).addTo(map);
 
-// // geosearch options
+// geosearch options
 
-// const options = {
-//   key: "0c9aade54fba4c8abfae724859a72795",
-//   position: "topright",
-//   // see possible values: https://leafletjs.com/reference.html#control-position
-// };
+const options = {
+  key: "0c9aade54fba4c8abfae724859a72795",
+  position: "topright",
+  // see possible values: https://leafletjs.com/reference.html#control-position
+};
+const control = L.Control.openCageGeocoding(options).addTo(map);
+// remove existing zoom from map
+map.removeControl(map.zoomControl);
+// add zoom to bottom right of map
+L.control.zoom({ position: "bottomright" }).addTo(map);
+const popup = L.popup();
 
-// const popup = L.popup();
+async function onMapClick(e) {
+  const clickLat = e.latlng.lat;
+  const clickLng = e.latlng.lng;
+  const locationName = await getLocationData(clickLat, clickLng);
+  const weatherData = await getWeather(clickLat, clickLng);
 
-// // Event listener for the country dropdown options
-// countryDropdown.parentElement.addEventListener("click", async (event) => {
-//   if (event.target.classList.contains("dropdown-item")) {
-//     selectedTravelCountryCode = event.target.getAttribute("dropdown-options");
-//     if (selectedTravelCountryCode) {
-//       // Set the search input value and selected code attribute
-//       search.value = event.target.textContent;
-//       console.log("Set search input value:", search.value);
-//       search.setAttribute("menu-selected-option", selectedTravelCountryCode);
-//       search.value = ""; // Reset search input value
+  // Create a new image element for the weather icon
+  const weatherIcon = document.createElement("img");
+  weatherIcon.id = "weather-icon";
+  weatherIcon.src = "";
+  weatherIcon.alt = "weather icon";
+  // if rain is undefined, set it to 0
+  if (weatherData.rain === undefined) {
+    weatherData.rain = 0;
+  }
 
-//       // Find the selected option based on the country code
-//       const selectedOption = countryArray.find(
-//         (option) => option.code === selectedTravelCountryCode
-//       );
+  // Create the weather text with the image element
+  const weatherText = `
+  <h3> Current Weather: </h3><br>
+    <p><h5>${locationName}</h5><br>
+    <img id="weather-icon" src="https://openweathermap.org/img/wn/${weatherData.iconCode}.png" alt="weather icon"><br> ${weatherData.weather}<br>
+    <br><ul>
+      <li><strong>Temperatures:</strong>
+      <br>Current: ${weatherData.temp}°C 
+      <br>Daytime High: ${weatherData.temp_day}°C  
+      <br>Evening High: ${weatherData.temp_eve}°C  
+      <br>High of: ${weatherData.temp_max}°C  
+      <br>Low of: ${weatherData.temp_min}°C </li>
+      <li><strong>Rain:</strong> ${weatherData.rain} mm</li>
+      <li><strong>Wind Speed:</strong> ${weatherData.wind} m/s at ${weatherData.wind_deg}° 
+      <br>gusting: ${weatherData.wind_gust} m/s</li>
+      <li><strong>Humidity:</strong> ${weatherData.humidity} %</li>
+      
+      </li>
+    </ul>
+    </p>
+  `;
 
-//       if (selectedOption) {
-//         // Update dropdown value, fetch and display country details, update map
-//         countryDropdown.value = selectedOption.code;
-//         await getAllTravelData(selectedOption.code);
+  // Set the popup content with the weather text
+  popup.setLatLng(e.latlng);
+  updateWeatherText.innerHTML = weatherText;
+}
 
-//         // Check for the special case of "Georgia"
-//         if (selectedTravelCountryCode === "GE") {
-//           // Hard-code the lat and lng for Georgia (the country)
-//           const georgiaLat = 42.3154;
-//           const georgiaLng = 43.3569;
-//           const zoomLevel = getZoomLevel(selectedTravelCountryCode);
+async function getWeather(clickLat, clickLng) {
+  const OPEN_WEATHER_API_KEY = "efa153cb7f3aabbfc22da92129ec3413";
+  const weatherApiUrl = `https://api.openweathermap.org/data/2.5/onecall?lat=${clickLat}&lon=${clickLng}&appid=${OPEN_WEATHER_API_KEY}&units=metric`;
+  const response = await fetch(weatherApiUrl);
+  const result = await response.json();
+  console.log("weather result", result);
+  const weather = result.current.weather[0].description;
+  const temp = result.current.temp;
+  const temp_min = result.daily[0].temp.min;
+  const temp_max = result.daily[0].temp.max;
+  const temp_day = result.daily[0].temp.day;
+  const temp_eve = result.daily[0].temp.eve;
+  const rain = result.daily[0].rain;
+  const humidity = result.current.humidity;
+  const wind = result.current.wind_speed;
+  const wind_deg = result.current.wind_deg;
+  const wind_gust = result.current.wind_gust;
 
-//           setMapLocation(
-//             georgiaLat,
-//             georgiaLng,
-//             generatePopupContent(selectedTravelCountryCode),
-//             zoomLevel
-//           );
-//         } else {
-//           // Call getLatLng to get lat and lng
-//           const { lat, lng } = await getLatLng(selectedTravelCountryCode);
-//           // Get the zoom level for the selected country
-//           const zoomLevel = getZoomLevel(selectedTravelCountryCode);
-//           // Pass lat, lng, and zoom level to setMapLocation
-//           setMapLocation(
-//             lat,
-//             lng,
-//             generatePopupContent(selectedTravelCountryCode),
-//             zoomLevel
-//           );
-//         }
-//       }
-//     }
-//   }
-// });
+  const iconCode = result.current.weather[0].icon;
+  console.log("weather", weather);
+  return {
+    weather,
+    temp,
+    rain,
+    temp_min,
+    temp_max,
+    temp_day,
+    temp_eve,
+    humidity,
+    wind,
+    iconCode,
+    wind_deg,
+    wind_gust,
+  };
+}
 
-// // Event listener for the search input (typing)
-// search.addEventListener("input", async () => {
-//   const searchTerm = search.value.trim().toLowerCase();
-//   // Filter options based on the search term
-//   const filteredOptions = countryArray.filter(
-//     (option) =>
-//       option.name.toLowerCase().includes(searchTerm) ||
-//       option.code.toLowerCase().includes(searchTerm)
-//   );
-//   appendDropdownOptions(filteredOptions);
-//   console.log("Filtered options based on search:", filteredOptions);
-// });
+async function getLocationData(clickLat, clickLng) {
+  const OPEN_CAGE_API_KEY = "";
+  const reverseGeocodingApiUrl = `https://api.opencagedata.com/geocode/v1/json?q=${clickLat},${clickLng}&key=${OPEN_CAGE_API_KEY}`;
 
-// // Event listener for clicking the the search input
-// search.addEventListener("click", async () => {
-//   // If the search input is empty, populate the country dropdown
-//   if (search.value.trim() === "") {
-//     //.trim ignores spaces
-//     console.log("Populating country dropdown...");
-//     appendDropdownOptions(countryArray);
-//   }
-//   console.log("Populated country dropdown");
-// });
+  const response = await fetch(reverseGeocodingApiUrl);
+  const { results } = await response.json();
 
-// // Function to fetch country data from travel advisory api and store it locally
-// async function fetchCountryData() {
-//   const apiUrl = "https://www.travel-advisory.info/api";
-//   try {
-//     const response = await fetch(apiUrl);
-//     const { data: travelData } = await response.json();
-//     return travelData;
-//   } catch (error) {
-//     console.error("Error fetching country data:", error);
-//     return null;
-//   }
-// }
+  console.log("reverse geocoding results", results);
+  // **TODO: add logic to handle when there is no city name
+  // const locationCity = results[0].components.city;
+  // const locationState = results[0].components.state;
+  // const locationCountry = results[0].components.country;
+  // const locationName = `${locationCity}, ${locationState}, ${locationCountry}`;
+  const locationName = results[0].formatted;
+  console.log("location name", locationName);
+  return locationName;
+}
+$(document).ready(function () {
+  // Show the 'About' modal when the link is clicked
+  $("#aboutLink").click(function () {
+    $("#aboutProjectModal").modal("show");
+  });
+});
 
-// // Function to populate the country dropdown
-// async function populateCountryDropdown() {
-//   try {
-//     const travelData = await fetchCountryData();
-//     countryArray = alphabetizeCountries(travelData);
-//     console.log("Populated countryArray with travel data:", countryArray);
-//   } catch (error) {
-//     console.error("Error fetching country data:", error);
-//   }
-// }
+// Event listener for the country dropdown options
+countryDropdown.parentElement.addEventListener("click", async (event) => {
+  if (event.target.classList.contains("dropdown-item")) {
+    selectedTravelCountryCode = event.target.getAttribute("dropdown-options");
+    if (selectedTravelCountryCode) {
+      // Set the search input value and selected code attribute
+      search.value = event.target.textContent;
+      console.log("Set search input value:", search.value);
+      search.setAttribute("menu-selected-option", selectedTravelCountryCode);
+      search.value = ""; // Reset search input value
 
-// // Function to append dropdown options
-// function appendDropdownOptions(travelData) {
-//   countryDropdown.innerHTML = "";
-//   const placeholderOption = document.createElement("li");
-//   placeholderOption.innerHTML =
-//     '<a class="dropdown-item disabled" href="#" dropdown-options="">Select a Country...</a>';
-//   countryDropdown.appendChild(placeholderOption);
+      // Find the selected option based on the country code
+      const selectedOption = countryArray.find(
+        (option) => option.code === selectedTravelCountryCode
+      );
 
-//   for (const option of travelData) {
-//     const optionElement = document.createElement("li");
-//     optionElement.innerHTML = `<a class="dropdown-item" href="#" dropdown-options="${option.code}">${option.name}</a>`;
-//     countryDropdown.appendChild(optionElement);
-//   }
-//   // Log the updated countryArray array
-//   console.log("Updated countryArray:", countryArray);
-// }
+      if (selectedOption) {
+        // Update dropdown value, fetch and display country details, update map
+        countryDropdown.value = selectedOption.code;
+        await getAllTravelData(selectedOption.code);
 
-// // Function to get country data from the cache
-// async function getAllTravelData() {
-//   if (allTravelData !== null) {
-//     console.log("Cached country data in allTravelData:", allTravelData);
-//     return allTravelData;
-//   }
+        // Check for the special case of "Georgia"
+        if (selectedTravelCountryCode === "GE") {
+          // Hard-code the lat and lng for Georgia (the country)
+          const georgiaLat = 42.3154;
+          const georgiaLng = 43.3569;
+          const zoomLevel = getZoomLevel(selectedTravelCountryCode);
 
-//   try {
-//     const travelData = await fetchCountryData();
-//     allTravelData = travelData;
-//     console.log("Cached country data in allTravelData:", allTravelData);
-//     return allTravelData[selectedTravelCountryCode];
-//   } catch (error) {
-//     console.error("Error fetching country data:", error);
-//     throw error;
-//   }
-// }
+          setMapLocation(
+            georgiaLat,
+            georgiaLng,
+            generatePopupContent(selectedTravelCountryCode),
+            zoomLevel
+          );
+        } else {
+          // Call getLatLng to get lat and lng
+          const { lat, lng } = await getLatLng(selectedTravelCountryCode);
+          // Get the zoom level for the selected country
+          const zoomLevel = getZoomLevel(selectedTravelCountryCode);
+          // Pass lat, lng, and zoom level to setMapLocation
+          setMapLocation(
+            lat,
+            lng,
+            generatePopupContent(selectedTravelCountryCode),
+            zoomLevel
+          );
+        }
+      }
+    }
+  }
+});
 
-// // Function to set map location and add a marker with popup
-// function setMapLocation(lat, lng, popupContent, zoomLevel) {
-//   if (!map) {
-//     console.error("Map not provided!");
-//     return;
-//   }
+// Event listener for the search input (typing)
+search.addEventListener("input", async () => {
+  const searchTerm = search.value.trim().toLowerCase();
+  // Filter options based on the search term
+  const filteredOptions = countryArray.filter(
+    (option) =>
+      option.name.toLowerCase().includes(searchTerm) ||
+      option.code.toLowerCase().includes(searchTerm)
+  );
+  appendDropdownOptions(filteredOptions);
+  console.log("Filtered options based on search:", filteredOptions);
+});
 
-//   map;
+// Event listener for clicking the the search input
+search.addEventListener("click", async () => {
+  // If the search input is empty, populate the country dropdown
+  if (search.value.trim() === "") {
+    //.trim ignores spaces
+    console.log("Populating country dropdown...");
+    appendDropdownOptions(countryArray);
+  }
+  console.log("Populated country dropdown");
+});
 
-//   map.setView([lat, lng], zoomLevel);
+// Function to fetch country data from travel advisory api and store it locally
+async function fetchCountryData() {
+  const apiUrl = "https://www.travel-advisory.info/api";
+  try {
+    const response = await fetch(apiUrl);
+    const { data: travelData } = await response.json();
+    return travelData;
+  } catch (error) {
+    console.error("Error fetching country data:", error);
+    return null;
+  }
+}
 
-//   // Remove existing markers from the map
-//   map.eachLayer((layer) => {
-//     if (layer instanceof L.Marker) {
-//       layer.remove();
-//     }
-//   });
+// Function to populate the country dropdown
+async function populateCountryDropdown() {
+  try {
+    const travelData = await fetchCountryData();
+    countryArray = alphabetizeCountries(travelData);
+    console.log("Populated countryArray with travel data:", countryArray);
+  } catch (error) {
+    console.error("Error fetching country data:", error);
+  }
+}
 
-//   // Add a new marker to the map
-//   const marker = L.marker([lat, lng]).addTo(map);
+// Function to append dropdown options
+function appendDropdownOptions(travelData) {
+  countryDropdown.innerHTML = "";
+  const placeholderOption = document.createElement("li");
+  placeholderOption.innerHTML =
+    '<a class="dropdown-item disabled" href="#" dropdown-options="">Select a Country...</a>';
+  countryDropdown.appendChild(placeholderOption);
 
-//   // Create a popup for the marker
-//   const popup = L.popup().setContent(popupContent);
+  for (const option of travelData) {
+    const optionElement = document.createElement("li");
+    optionElement.innerHTML = `<a class="dropdown-item" href="#" dropdown-options="${option.code}">${option.name}</a>`;
+    countryDropdown.appendChild(optionElement);
+  }
+  // Log the updated countryArray array
+  console.log("Updated countryArray:", countryArray);
+}
 
-//   // Bind the popup to the marker and open it
-//   marker.bindPopup(popup).openPopup();
+// Function to get country data from the cache
+async function getAllTravelData() {
+  if (allTravelData !== null) {
+    console.log("Cached country data in allTravelData:", allTravelData);
+    return allTravelData;
+  }
 
-//   console.log("Map location set:", lat, lng);
-// }
+  try {
+    const travelData = await fetchCountryData();
+    allTravelData = travelData;
+    console.log("Cached country data in allTravelData:", allTravelData);
+    return allTravelData[selectedTravelCountryCode];
+  } catch (error) {
+    console.error("Error fetching country data:", error);
+    throw error;
+  }
+}
 
-// // Helper function to generate popup content
-// function generatePopupContent(selectedTravelCountryCode) {
-//   // Retrieve selected country's data from cache
-//   const selectedCountryData = allTravelData[selectedTravelCountryCode];
+// Function to set map location and add a marker with popup
+function setMapLocation(lat, lng, popupContent, zoomLevel) {
+  if (!map) {
+    console.error("Map not provided!");
+    return;
+  }
 
-//   if (selectedCountryData) {
-//     const advisory = selectedCountryData.advisory;
-//     updateWeatherText.innerHTML = "Click the map for local weather!";
-//     // Construct popup content
-//     const popupContent = `
-//       <h5>${selectedCountryData.name}</h5>
-//       <p class="advisory-message">Advisory: ${advisory.message}</p>
-//       <a href="${advisory.source}" target="_blank" rel="noopener noreferrer">Source: ${advisory.sources_active}</a>
-//     `;
+  map;
 
-//     // Log the generated popup content
-//     console.log("Popup Content:", popupContent);
+  map.setView([lat, lng], zoomLevel);
 
-//     return popupContent;
-//   } else {
-//     return "";
-//   }
-// }
+  // Remove existing markers from the map
+  map.eachLayer((layer) => {
+    if (layer instanceof L.Marker) {
+      layer.remove();
+    }
+  });
 
-// async function getLatLng(selectedTravelCountryCode) {
-//   try {
-//     const OPEN_CAGE_API_KEY = "0c9aade54fba4c8abfae724859a72795";
-//     const selectedTravelOption = countryArray.find(
-//       (option) => option.code === selectedTravelCountryCode
-//     );
-//     const geocodingApiUrl = `https://api.opencagedata.com/geocode/v1/json?q=${selectedTravelOption.name}&key=${OPEN_CAGE_API_KEY}`;
+  // Add a new marker to the map
+  const marker = L.marker([lat, lng]).addTo(map);
 
-//     console.log("Fetching geocoding data from API...");
+  // Create a popup for the marker
+  const popup = L.popup().setContent(popupContent);
 
-//     // Fetch geocoding data from the API
-//     const response = await fetch(geocodingApiUrl);
-//     const { results } = await response.json();
+  // Bind the popup to the marker and open it
+  marker.bindPopup(popup).openPopup();
 
-//     if (results && results.length > 0) {
-//       const { geometry } = results[0];
-//       const { lat, lng } = geometry;
+  console.log("Map location set:", lat, lng);
+}
 
-//       console.log("Geocoding results:", results);
-//       console.log("Marker coordinates:", lat, lng);
+// Helper function to generate popup content
+function generatePopupContent(selectedTravelCountryCode) {
+  // Retrieve selected country's data from cache
+  const selectedCountryData = allTravelData[selectedTravelCountryCode];
 
-//       return { lat, lng };
-//     }
-//   } catch (error) {
-//     console.error("Error updating map with geocoding:", error);
-//   }
-// }
+  if (selectedCountryData) {
+    const advisory = selectedCountryData.advisory;
+    updateWeatherText.innerHTML = "Click the map for local weather!";
+    // Construct popup content
+    const popupContent = `
+      <h5>${selectedCountryData.name}</h5>
+      <p class="advisory-message">Advisory: ${advisory.message}</p>
+      <a href="${advisory.source}" target="_blank" rel="noopener noreferrer">Source: ${advisory.sources_active}</a>
+    `;
 
-// const getZoomLevel = (selectedTravelCountryCode) => {
-//   if (xxsCountries.includes(selectedTravelCountryCode)) {
-//     return 11;
-//   }
-//   if (xsCountries.includes(selectedTravelCountryCode)) {
-//     return 9;
-//   }
-//   if (smCountries.includes(selectedTravelCountryCode)) {
-//     return 7;
-//   }
-//   if (medCountries.includes(selectedTravelCountryCode)) {
-//     return 6;
-//   }
-//   if (lgCountries.includes(selectedTravelCountryCode)) {
-//     return 5;
-//   }
-//   if (xlCountries.includes(selectedTravelCountryCode)) {
-//     return 4;
-//   }
-//   if (xxlCountries.includes(selectedTravelCountryCode)) {
-//     return 3;
-//   } else {
-//     console.log("you didnt set a zoom level for this country");
-//   }
-// };
+    // Log the generated popup content
+    console.log("Popup Content:", popupContent);
 
-// // Helper function to alphabetize country options
-// function alphabetizeCountries(travelData) {
-//   // Create an array of country options with code and name properties
-//   const countryOptions = Object.keys(travelData).map(
-//     (selectedTravelCountryCode) => ({
-//       code: selectedTravelCountryCode,
-//       name: travelData[selectedTravelCountryCode].name,
-//     })
-//   );
+    return popupContent;
+  } else {
+    return "";
+  }
+}
 
-//   // Sort country options alphabetically by name
-//   return countryOptions.sort((a, b) => a.name.localeCompare(b.name));
-// }
+async function getLatLng(selectedTravelCountryCode) {
+  try {
+    const OPEN_CAGE_API_KEY = "0c9aade54fba4c8abfae724859a72795";
+    const selectedTravelOption = countryArray.find(
+      (option) => option.code === selectedTravelCountryCode
+    );
+    const geocodingApiUrl = `https://api.opencagedata.com/geocode/v1/json?q=${selectedTravelOption.name}&key=${OPEN_CAGE_API_KEY}`;
 
-// // Initial population of the country dropdown and Windy API initialization
-// console.log("Initializing map and populating country dropdown...");
-// populateCountryDropdown();
-// // initWindy();
+    console.log("Fetching geocoding data from API...");
+
+    // Fetch geocoding data from the API
+    const response = await fetch(geocodingApiUrl);
+    const { results } = await response.json();
+
+    if (results && results.length > 0) {
+      const { geometry } = results[0];
+      const { lat, lng } = geometry;
+
+      console.log("Geocoding results:", results);
+      console.log("Marker coordinates:", lat, lng);
+
+      return { lat, lng };
+    }
+  } catch (error) {
+    console.error("Error updating map with geocoding:", error);
+  }
+}
+
+const getZoomLevel = (selectedTravelCountryCode) => {
+  if (xxsCountries.includes(selectedTravelCountryCode)) {
+    return 11;
+  }
+  if (xsCountries.includes(selectedTravelCountryCode)) {
+    return 9;
+  }
+  if (smCountries.includes(selectedTravelCountryCode)) {
+    return 7;
+  }
+  if (medCountries.includes(selectedTravelCountryCode)) {
+    return 6;
+  }
+  if (lgCountries.includes(selectedTravelCountryCode)) {
+    return 5;
+  }
+  if (xlCountries.includes(selectedTravelCountryCode)) {
+    return 4;
+  }
+  if (xxlCountries.includes(selectedTravelCountryCode)) {
+    return 3;
+  } else {
+    console.log("you didnt set a zoom level for this country");
+  }
+};
+
+// Helper function to alphabetize country options
+function alphabetizeCountries(travelData) {
+  // Create an array of country options with code and name properties
+  const countryOptions = Object.keys(travelData).map(
+    (selectedTravelCountryCode) => ({
+      code: selectedTravelCountryCode,
+      name: travelData[selectedTravelCountryCode].name,
+    })
+  );
+
+  // Sort country options alphabetically by name
+  return countryOptions.sort((a, b) => a.name.localeCompare(b.name));
+}
+
+// Initial population of the country dropdown and Windy API initialization
+console.log("Initializing map and populating country dropdown...");
+populateCountryDropdown();
+// initWindy();

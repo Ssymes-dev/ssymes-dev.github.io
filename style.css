@@ -1,4 +1,4 @@
-/* ::-webkit-scrollbar {
+::-webkit-scrollbar {
     width: 12px;
 }
 
@@ -82,4 +82,4 @@
 .headernav p:hover {
     color: black;
 
-} */
+}
