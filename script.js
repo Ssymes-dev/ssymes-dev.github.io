@@ -1,5 +1,5 @@
 // Global variables
-const searchInput = document.querySelector(".leaflet-control-container");
+// const searchInput = document.querySelector("."); search input
 const countryDropdown = document.getElementById("allCountries");
 const search = document.getElementById("countrySearchInput");
 let selectedTravelCountryCode = null; // To store the selected country code
