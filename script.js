@@ -66,8 +66,7 @@ select.on("change", async function (e) {
 async function onMapClick(e) {
   const clickLat = e.latlng.lat;
   const clickLng = e.latlng.lng;
-  console.log("click lat", clickLat);
-  console.log("click lng", clickLng);
+  console.log([clickLng, clickLat]);
 }
 map.on("click", onMapClick);
 
