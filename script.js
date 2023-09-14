@@ -72,21 +72,34 @@ map.on("click", onMapClick);
 
 async function generateAdvisoryContent(countryData, selectedCountry) {
   if (countryData) {
-    const { name, advisory, source, sources_active } = countryData;
+    const { name, advisory, source } = countryData;
 
     if (name === selectedCountry) {
-      // Construct popup content
-      const popupContent = `
-        <h5>${name}</h5>
-        <p class="advisory-message">Advisory: ${advisory.message}</p>
-        <a href="${source}" target="_blank" rel="noopener noreferrer">Source: ${sources_active}</a>
+      // Construct modal content
+      const modalContent = `
+        <div class="modal fade" id="advisoryModal" tabindex="-1" role="dialog" aria-labelledby="advisoryModalLabel" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="advisoryModalLabel">${name}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <p class="advisory-message">Advisory: ${advisory.message}</p>
+                <a href="${source}" target="_blank" rel="noopener noreferrer">Source: ${advisory.sources_active}</a>
+              </div>
+            </div>
+          </div>
+        </div>
       `;
 
-      // Log the generated popup content
-      console.log("Popup Content:", popupContent);
+      // Append the modal content to the body
+      document.body.insertAdjacentHTML("beforeend", modalContent);
 
-      return popupContent;
+      // Trigger the modal to open
+      $("#advisoryModal").modal("show");
     }
   }
-  return "";
 }
