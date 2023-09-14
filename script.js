@@ -6,7 +6,6 @@ L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
   attribution:
     'Data <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> contributors, Map tiles &copy;',
   minZoom: 2,
-  maxZoom: 18,
 }).addTo(map);
 
 // eventlistener for menu

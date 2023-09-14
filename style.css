@@ -1,63 +1,5 @@
-::-webkit-scrollbar {
-    width: 12px;
-}
-
-::-webkit-scrollbar-track {
-    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-    border-radius: 10px;
-}
-
-::-webkit-scrollbar-thumb {
-    border-radius: 10px;
-    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.5);
-}
-
-.advisory-message {
-    font-size: medium;
-}
-
-#allCountries {
-    width: max-content;
-    max-height: 38rem
-}
-
-.leaflet-top,
-.leaflet-bottom {
-    position: absolute;
-}
-
-#menu {
-    max-height: fit-content;
-}
-
 #map {
     height: 30rem;
-
-}
-
-
-.topnav {
-    overflow: hidden;
-    background-color: #333;
-}
-
-.topnav a {
-    float: left;
-    color: #f2f2f2;
-    border-radius: 5px;
-    text-decoration: none;
-    font-size: 1rem;
-    padding: 5px 5px;
-}
-
-.topnav a:hover {
-    background-color: #165eec;
-    color: black;
-
-}
-
-.headernav {
-    overflow: hidden;
 }
 
 #icons {
@@ -77,9 +19,4 @@
 .headernav p {
     float: right;
     color: #165eec;
-}
-
-.headernav p:hover {
-    color: black;
-
 }
