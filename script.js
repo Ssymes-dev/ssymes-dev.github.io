@@ -59,7 +59,6 @@ select.on("change", async function (e) {
   // Call compareCountryName function and await the result
   await compareCountryName(selectedCountry, await fetchCountryData());
 
-  // Log the selected and matched country
   console.log("Selected country", selectedCountry);
 });
 
@@ -75,14 +74,13 @@ async function generateAdvisoryContent(countryData, selectedCountry) {
     const { name, advisory, source } = countryData;
 
     if (name === selectedCountry) {
-      // Construct modal content
       const modalContent = `
         <div class="modal fade" id="advisoryModal" tabindex="-1" role="dialog" aria-labelledby="advisoryModalLabel" aria-hidden="true">
           <div class="modal-dialog" role="document">
             <div class="modal-content">
               <div class="modal-header">
                 <h5 class="modal-title" id="advisoryModalLabel">${name}</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>
@@ -95,10 +93,7 @@ async function generateAdvisoryContent(countryData, selectedCountry) {
         </div>
       `;
 
-      // Append the modal content to the body
       document.body.insertAdjacentHTML("beforeend", modalContent);
-
-      // Trigger the modal to open
       $("#advisoryModal").modal("show");
     }
   }
