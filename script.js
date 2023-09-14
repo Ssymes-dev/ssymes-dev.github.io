@@ -1,7 +1,5 @@
-// create and initialize leaflet map object
 const map = L.map("map").setView([51.505, -0.09], 2);
-// Function to fetch country data from travel advisory api and store it locally\
-// Function to fetch country data from travel advisory api and store it locally
+const select = L.countrySelect().addTo(map);
 
 // load map tiles
 L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
@@ -11,36 +9,7 @@ L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
   maxZoom: 18,
 }).addTo(map);
 
-async function fetchCountryData() {
-  const apiUrl = "https://www.travel-advisory.info/api";
-  try {
-    const response = await fetch(apiUrl);
-    const { data: travelData } = await response.json();
-    console.log("Travel Data:", travelData);
-    return travelData;
-  } catch (error) {
-    console.error("Error fetching country data:", error);
-    return null;
-  }
-}
-
-const select = L.countrySelect().addTo(map);
-
-async function compareCountryName(selectedCountry, travelData) {
-  for (const [name, value] of Object.entries(travelData)) {
-    const advisoryContent = await generateAdvisoryContent(
-      value,
-      selectedCountry
-    );
-
-    if (advisoryContent) {
-      return advisoryContent; // Return the matched country name
-    }
-  }
-  console.log("no match");
-  return null; // Return null when no match is found
-}
-
+// eventlistener for menu
 select.on("change", async function (e) {
   if (e.feature === undefined) {
     // No action when the first item ("Country") is selected
@@ -62,16 +31,36 @@ select.on("change", async function (e) {
   console.log("Selected country", selectedCountry);
 });
 
-async function onMapClick(e) {
-  const clickLat = e.latlng.lat;
-  const clickLng = e.latlng.lng;
-  console.log([clickLng, clickLat]);
+async function fetchCountryData() {
+  const apiUrl = "https://www.travel-advisory.info/api";
+  try {
+    const response = await fetch(apiUrl);
+    const { data: travelData } = await response.json();
+    console.log("Travel Data:", travelData);
+    return travelData;
+  } catch (error) {
+    console.error("Error fetching country data:", error);
+    return null;
+  }
 }
-map.on("click", onMapClick);
+
+async function compareCountryName(selectedCountry, travelData) {
+  for (const [name, value] of Object.entries(travelData)) {
+    const advisoryContent = await generateAdvisoryContent(
+      value,
+      selectedCountry
+    );
+
+    if (advisoryContent) {
+      return advisoryContent; // Return the matched country name
+    }
+  }
+  return null; // Return null when no match is found
+}
 
 async function generateAdvisoryContent(countryData, selectedCountry) {
   if (countryData) {
-    const { name, advisory, source } = countryData;
+    const { name, advisory } = countryData;
 
     if (name === selectedCountry) {
       const modalContent = `
@@ -86,7 +75,7 @@ async function generateAdvisoryContent(countryData, selectedCountry) {
               </div>
               <div class="modal-body">
                 <p class="advisory-message">Advisory: ${advisory.message}</p>
-                <a href="${source}" target="_blank" rel="noopener noreferrer">Source: ${advisory.sources_active}</a>
+                <a href="${advisory.source}" target="_blank" rel="noopener noreferrer">Source: ${advisory.sources_active}</a>
               </div>
             </div>
           </div>
@@ -98,3 +87,10 @@ async function generateAdvisoryContent(countryData, selectedCountry) {
     }
   }
 }
+
+async function onMapClick(e) {
+  const clickLat = e.latlng.lat;
+  const clickLng = e.latlng.lng;
+  console.log([clickLng, clickLat]);
+}
+map.on("click", onMapClick);
