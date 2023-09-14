@@ -28,9 +28,13 @@ const select = L.countrySelect().addTo(map);
 
 async function compareCountryName(selectedCountry, travelData) {
   for (const [name, value] of Object.entries(travelData)) {
-    if (value.name === selectedCountry) {
-      console.log("match", value.name);
-      return value.name; // Return the matched country name
+    const advisoryContent = await generateAdvisoryContent(
+      value,
+      selectedCountry
+    );
+
+    if (advisoryContent) {
+      return advisoryContent; // Return the matched country name
     }
   }
   console.log("no match");
@@ -53,14 +57,10 @@ select.on("change", async function (e) {
   const selectedCountry = e.feature.properties.name;
 
   // Call compareCountryName function and await the result
-  const matchedCountry = await compareCountryName(
-    selectedCountry,
-    await fetchCountryData()
-  );
+  await compareCountryName(selectedCountry, await fetchCountryData());
 
   // Log the selected and matched country
   console.log("Selected country", selectedCountry);
-  console.log("Matched country", matchedCountry);
 });
 
 async function onMapClick(e) {
@@ -70,26 +70,23 @@ async function onMapClick(e) {
 }
 map.on("click", onMapClick);
 
-// Helper function to generate popup content
-function generateAdvisoryContent(selectedTravelCountryCode) {
-  // Retrieve selected country's data from cache
-  const selectedCountryData = allTravelData[selectedTravelCountryCode];
+async function generateAdvisoryContent(countryData, selectedCountry) {
+  if (countryData) {
+    const { name, advisory, source, sources_active } = countryData;
 
-  if (selectedCountryData) {
-    const advisory = selectedCountryData.advisory;
-    updateWeatherText.innerHTML = "Click the map for local weather!";
-    // Construct popup content
-    const popupContent = `
-      <h5>${selectedCountryData.name}</h5>
-      <p class="advisory-message">Advisory: ${advisory.message}</p>
-      <a href="${advisory.source}" target="_blank" rel="noopener noreferrer">Source: ${advisory.sources_active}</a>
-    `;
+    if (name === selectedCountry) {
+      // Construct popup content
+      const popupContent = `
+        <h5>${name}</h5>
+        <p class="advisory-message">Advisory: ${advisory.message}</p>
+        <a href="${source}" target="_blank" rel="noopener noreferrer">Source: ${sources_active}</a>
+      `;
 
-    // Log the generated popup content
-    console.log("Popup Content:", popupContent);
+      // Log the generated popup content
+      console.log("Popup Content:", popupContent);
 
-    return popupContent;
-  } else {
-    return "";
+      return popupContent;
+    }
   }
+  return "";
 }
