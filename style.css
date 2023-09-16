@@ -1,5 +1,10 @@
 #map {
     height: 30rem;
+    width: 650px;
+    top: 55%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    position: absolute;
 }
 
 #icons {
