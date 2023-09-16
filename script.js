@@ -1,6 +1,8 @@
 const map = L.map("map").setView([51.505, -0.09], 2);
 const select = L.countrySelect().addTo(map);
 
+let currentCountryLayer = null;
+
 // load map tiles
 L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
   attribution:
@@ -8,21 +10,24 @@ L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
   minZoom: 2,
 }).addTo(map);
 
-// eventlistener for menu
+/// eventlistener for menu
 select.on("change", async function (e) {
   if (e.feature === undefined) {
     // No action when the first item ("Country") is selected
     return;
   }
-  const country = L.geoJson(e.feature);
-  if (this.previousCountry != null) {
-    map.removeLayer(this);
+  const selectedCountry = e.feature.properties.name;
+
+  // Remove the current country layer if it exists
+  if (currentCountryLayer) {
+    map.removeLayer(currentCountryLayer);
     console.log("removing previous country...");
   }
-  this.previousCountry = country;
+  // Create a new country layer for the selected country
+  const country = L.geoJson(e.feature);
+  currentCountryLayer = country;
   map.addLayer(country);
   map.fitBounds(country.getBounds());
-  const selectedCountry = e.feature.properties.name;
 
   // Call compareCountryName function and await the result
   await compareCountryName(selectedCountry, await fetchCountryData());
@@ -62,6 +67,12 @@ async function generateAdvisoryContent(countryData, selectedCountry) {
     const { name, advisory } = countryData;
 
     if (name === selectedCountry) {
+      // Remove the previous modal content if it exists
+      const previousModal = document.getElementById("advisoryModal");
+      if (previousModal) {
+        previousModal.remove();
+      }
+
       const modalContent = `
         <div class="modal fade" id="advisoryModal" tabindex="-1" role="dialog" aria-labelledby="advisoryModalLabel" aria-hidden="true">
           <div class="modal-dialog" role="document">
