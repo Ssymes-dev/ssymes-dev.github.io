@@ -1,39 +1,41 @@
 const map = L.map("map").setView([51.505, -0.09], 2);
-const select = L.countrySelect().addTo(map);
-
-let currentCountryLayer = null;
+const selectMenu = L.countrySelect().addTo(map);
+let currentCountryPolygon = null;
 
 // load map tiles
-L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+const tileLayerUrl = "https://tile.openstreetmap.org/{z}/{x}/{y}.png";
+const tileLayerOptions = {
   attribution:
     'Data <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> contributors, Map tiles &copy;',
   minZoom: 1,
   worldCopyJump: true,
-}).addTo(map);
+};
+L.tileLayer(tileLayerUrl, tileLayerOptions).addTo(map);
 
-/// eventlistener for menu
-select.on("change", async function (e) {
-  if (e.feature === undefined) {
+// event listener for menu
+selectMenu.on("change", async function ({ feature }) {
+  if (feature === undefined) {
     // No action when the first item ("Country") is selected
     return;
   }
-  const selectedCountry = e.feature.properties.name;
+  const {
+    properties: { name },
+  } = feature;
 
-  // Remove the current country layer if it exists
-  if (currentCountryLayer) {
-    map.removeLayer(currentCountryLayer);
+  // Remove the current country polygon if it exists
+  if (currentCountryPolygon) {
+    map.removeLayer(currentCountryPolygon);
     console.log("removing previous country...");
   }
-  // Create a new country layer for the selected country
-  const country = L.geoJson(e.feature);
-  currentCountryLayer = country;
+  // Create a new country polygon for the selected country
+  const country = L.geoJson(feature);
+  currentCountryPolygon = country;
   map.addLayer(country);
   map.fitBounds(country.getBounds());
 
   // Call compareCountryName function and await the result
-  await compareCountryName(selectedCountry, await fetchCountryData());
-
-  console.log("Selected country", selectedCountry);
+  await compareCountryName(name, await fetchCountryData());
+  console.log("Selected country", name);
 });
 
 async function fetchCountryData() {
@@ -99,10 +101,8 @@ async function generateAdvisoryContent(countryData, selectedCountry) {
   }
 }
 
-async function onMapClick(e) {
-  const clickLat = e.latlng.lat;
-  const clickLng = e.latlng.lng;
-  console.log([clickLng, clickLat]);
+async function onMapClick({ latlng: { lat, lng } }) {
+  console.log([lng, lat]);
 }
 map.on("click", onMapClick);
 
