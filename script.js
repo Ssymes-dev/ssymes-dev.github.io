@@ -1,6 +1,7 @@
 const bounds = new L.LatLngBounds([-90, -180], [90, 180]);
 const map = L.map("map").setView([51.505, -0.09], 2).setMaxBounds(bounds);
 const selectMenu = L.countrySelect().addTo(map);
+
 let currentCountryPolygon = null;
 
 // load map tiles
@@ -53,7 +54,6 @@ async function fetchCountryData() {
 }
 async function onMapClick({ latlng: { lat, lng } }) {
   getLocationData(lng, lat);
-  console.log([lng, lat]);
   return lng, lat;
 }
 
@@ -65,14 +65,11 @@ async function getLocationData(lng, lat) {
 
   const response = await fetch(reverseGeocodingApiUrl);
   const { results } = await response.json();
-
-  console.log("reverse geocoding results", results);
-
-  const locationName = results[0].formatted;
-  console.log("location name", locationName);
-  return locationName;
+  const locationCode = results[0].components["ISO_3166-1_alpha-3"];
+  console.log("location code", locationCode);
+  return locationCode;
 }
-
+// search for iso code in leaflet.countrySelect.js
 async function compareCountryName(selectedCountry, travelData) {
   for (const [name, value] of Object.entries(travelData)) {
     const advisoryContent = await generateAdvisoryContent(
@@ -81,10 +78,11 @@ async function compareCountryName(selectedCountry, travelData) {
     );
 
     if (advisoryContent) {
-      return advisoryContent; // Return the matched country name
+      return advisoryContent;
     }
   }
-  return null; // Return null when no match is found
+
+  return null;
 }
 
 async function generateAdvisoryContent(countryData, selectedCountry) {
