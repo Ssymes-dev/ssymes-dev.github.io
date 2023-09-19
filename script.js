@@ -1,4 +1,5 @@
-const map = L.map("map").setView([51.505, -0.09], 2);
+const bounds = new L.LatLngBounds([-90, -180], [90, 180]);
+const map = L.map("map").setView([51.505, -0.09], 2).setMaxBounds(bounds);
 const selectMenu = L.countrySelect().addTo(map);
 let currentCountryPolygon = null;
 
@@ -8,7 +9,7 @@ const tileLayerOptions = {
   attribution:
     'Data <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> contributors, Map tiles &copy;',
   minZoom: 1,
-  worldCopyJump: true,
+  noWrap: true,
 };
 L.tileLayer(tileLayerUrl, tileLayerOptions).addTo(map);
 
