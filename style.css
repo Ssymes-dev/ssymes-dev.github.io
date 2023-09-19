@@ -11,8 +11,13 @@
 
 }
 
+a.nav-link:hover {
+    background-color: #4b84f5;
+    border-radius: 5px;
+}
+
 #icons:hover {
-    background-color: #165eec;
+    background-color: #4b84f5;
     border-radius: 10%;
     color: black;
 }
@@ -20,6 +25,10 @@
 .headernav p {
     float: right;
     color: #165eec;
+}
+
+.headernav p:hover {
+    color: #4b84f5;
 }
 
 /* on load modal */
