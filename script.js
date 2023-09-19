@@ -8,7 +8,7 @@ const tileLayerUrl = "https://tile.openstreetmap.org/{z}/{x}/{y}.png";
 const tileLayerOptions = {
   attribution:
     'Data <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> contributors, Map tiles &copy;',
-  minZoom: 1,
+  minZoom: 2,
   noWrap: true,
 };
 L.tileLayer(tileLayerUrl, tileLayerOptions).addTo(map);
@@ -50,6 +50,27 @@ async function fetchCountryData() {
     console.error("Error fetching country data:", error);
     return null;
   }
+}
+async function onMapClick({ latlng: { lat, lng } }) {
+  getLocationData(lng, lat);
+  console.log([lng, lat]);
+  return lng, lat;
+}
+
+map.on("click", onMapClick);
+
+async function getLocationData(lng, lat) {
+  const OPEN_CAGE_API_KEY = "0c9aade54fba4c8abfae724859a72795";
+  const reverseGeocodingApiUrl = `https://api.opencagedata.com/geocode/v1/json?q=${lat},${lng}&key=${OPEN_CAGE_API_KEY}`;
+
+  const response = await fetch(reverseGeocodingApiUrl);
+  const { results } = await response.json();
+
+  console.log("reverse geocoding results", results);
+
+  const locationName = results[0].formatted;
+  console.log("location name", locationName);
+  return locationName;
 }
 
 async function compareCountryName(selectedCountry, travelData) {
@@ -102,22 +123,17 @@ async function generateAdvisoryContent(countryData, selectedCountry) {
   }
 }
 
-async function onMapClick({ latlng: { lat, lng } }) {
-  console.log([lng, lat]);
-}
-map.on("click", onMapClick);
-
 // modal
 // Get references to the modal and close button
-const modal = document.getElementById("myModal");
-const closeModalBtn = document.getElementById("closeModal");
+// const modal = document.getElementById("myModal");
+// const closeModalBtn = document.getElementById("closeModal");
 
-// Show the modal when the page is loaded
-window.onload = function () {
-  modal.style.display = "block";
-};
+// // Show the modal when the page is loaded
+// window.onload = function () {
+//   modal.style.display = "block";
+// };
 
-// Close the modal when the close button is clicked
-closeModalBtn.onclick = function () {
-  modal.style.display = "none";
-};
+// // Close the modal when the close button is clicked
+// closeModalBtn.onclick = function () {
+//   modal.style.display = "none";
+// };
