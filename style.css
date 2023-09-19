@@ -1,6 +1,5 @@
 #map {
     height: 30rem;
-
 }
 
 #icons {
@@ -50,4 +49,12 @@
     right: 10px;
     font-size: 20px;
     cursor: pointer;
+}
+
+select.leaflet-countryselect {
+    font-size: 1rem;
+    z-index: 10;
+    background-color: #165eec;
+    max-height: 25%;
+    size: 10;
 }
