@@ -62,9 +62,6 @@ a.nav-link:hover {
 }
 
 select.leaflet-countryselect {
-    font-size: 1rem;
-    z-index: 10;
-    background-color: #165eec;
-    max-height: 25%;
-    size: 10;
+    max-height: 72px;
+    max-width: 125px;
 }
