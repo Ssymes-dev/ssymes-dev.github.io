@@ -52,8 +52,9 @@ async function fetchCountryData() {
     return null;
   }
 }
-async function onMapClick({ latlng: { lat, lng } }) {
+async function onMapClick({ latlng: { lat, lng } }, locationCode) {
   getLocationData(lng, lat);
+  retrievePolygon(locationCode);
   return lng, lat;
 }
 
@@ -69,6 +70,21 @@ async function getLocationData(lng, lat) {
   console.log("location code", locationCode);
   return locationCode;
 }
+
+// WIP --- NOT WORKING
+// match location code in L.countrySelect.countries object
+// async function retrievePolygon(locationCode) {
+//   const { countries } = L.countrySelect;
+
+//   for (const { id } of Object.entries(countries)) {
+//     if (id === locationCode) {
+//       console.log("location code", locationCode);
+//       console.log("name", id);
+//       return id;
+//     }
+//   }
+// }
+
 // search for iso code in leaflet.countrySelect.js
 async function compareCountryName(selectedCountry, travelData) {
   for (const [name, value] of Object.entries(travelData)) {
