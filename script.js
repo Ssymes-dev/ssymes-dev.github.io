@@ -40,6 +40,43 @@ selectMenu.on("change", async function ({ feature }) {
   console.log("Selected country", name);
 });
 
+const dropdownOptions = document.getElementsByClassName(
+  "leaflet-countryselect"
+)[0].options;
+console.log("dropdownOptions", dropdownOptions);
+
+async function onMapClick({ latlng: { lat, lng } }) {
+  const locationName = await getLocationData(lng, lat);
+  setDropdownOptions(locationName, dropdownOptions);
+  return lng, lat;
+}
+
+map.on("click", onMapClick);
+
+function setDropdownOptions(locationName, dropdownOptions) {
+  for (let i = 0; i < dropdownOptions.length; i++) {
+    const option = dropdownOptions[i];
+    if (option.innerText === locationName) {
+      // Set the selectedIndex to the index of the matching option
+      dropdownOptions.selectedIndex = i;
+      return; // Exit the loop once a match is found
+    }
+  }
+}
+
+// get location data
+async function getLocationData(lng, lat) {
+  const OPEN_CAGE_API_KEY = "0c9aade54fba4c8abfae724859a72795";
+  const reverseGeocodingApiUrl = `https://api.opencagedata.com/geocode/v1/json?q=${lat},${lng}&key=${OPEN_CAGE_API_KEY}`;
+
+  const response = await fetch(reverseGeocodingApiUrl);
+  const { results } = await response.json();
+  console.log("results", results);
+  const locationName = results[0].components.country;
+  console.log("location Name", locationName);
+  return locationName;
+}
+
 async function fetchCountryData() {
   const apiUrl = "https://www.travel-advisory.info/api";
   try {
@@ -52,38 +89,6 @@ async function fetchCountryData() {
     return null;
   }
 }
-async function onMapClick({ latlng: { lat, lng } }, locationCode) {
-  getLocationData(lng, lat);
-  retrievePolygon(locationCode);
-  return lng, lat;
-}
-
-map.on("click", onMapClick);
-
-async function getLocationData(lng, lat) {
-  const OPEN_CAGE_API_KEY = "0c9aade54fba4c8abfae724859a72795";
-  const reverseGeocodingApiUrl = `https://api.opencagedata.com/geocode/v1/json?q=${lat},${lng}&key=${OPEN_CAGE_API_KEY}`;
-
-  const response = await fetch(reverseGeocodingApiUrl);
-  const { results } = await response.json();
-  const locationCode = results[0].components["ISO_3166-1_alpha-3"];
-  console.log("location code", locationCode);
-  return locationCode;
-}
-
-// WIP --- NOT WORKING
-// match location code in L.countrySelect.countries object
-// async function retrievePolygon(locationCode) {
-//   const { countries } = L.countrySelect;
-
-//   for (const { id } of Object.entries(countries)) {
-//     if (id === locationCode) {
-//       console.log("location code", locationCode);
-//       console.log("name", id);
-//       return id;
-//     }
-//   }
-// }
 
 // search for iso code in leaflet.countrySelect.js
 async function compareCountryName(selectedCountry, travelData) {
