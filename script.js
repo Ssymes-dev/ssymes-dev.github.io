@@ -75,13 +75,14 @@ async function getLocationData(lng, lat) {
   const response = await fetch(reverseGeocodingApiUrl);
   const { results } = await response.json();
   console.log("results", results);
+  if (results.length === 0) {
+    console.error("No Geographic data avaliable for this location");
+    return null;
+  }
   let locationName = results[0].components.country;
-
-  // Handle cases where locationName is undefined
   if (locationName === undefined) {
     locationName = results[0].formatted;
   }
-
   console.log("location Name", locationName);
   return locationName;
 }
