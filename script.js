@@ -24,11 +24,6 @@ selectMenu.on("change", async function ({ feature }) {
     properties: { name },
   } = feature;
 
-  // Remove the current country polygon if it exists
-  if (currentCountryPolygon) {
-    map.removeLayer(currentCountryPolygon);
-    console.log("removing previous country...");
-  }
   // Create a new country polygon for the selected country
   const country = L.geoJson(feature);
   currentCountryPolygon = country;
@@ -44,7 +39,6 @@ selectMenu.on("change", async function ({ feature }) {
 const dropdownOptions = document.getElementsByClassName(
   "leaflet-countryselect"
 )[0].options;
-console.log("dropdownOptions", dropdownOptions);
 
 async function onMapClick({ latlng: { lat, lng } }) {
   const locationName = await getLocationData(lng, lat);
@@ -54,16 +48,13 @@ async function onMapClick({ latlng: { lat, lng } }) {
 map.on("click", onMapClick);
 
 async function setDropdownOptions(locationName, dropdownOptions) {
-  for (let i = 0; i < dropdownOptions.length; i++) {
-    const option = dropdownOptions[i];
-    if (option.innerText === locationName) {
-      dropdownOptions[i].selected = true;
+  const selectedOption = [...dropdownOptions].find(
+    (option) => option.innerText === locationName
+  );
 
-      const event = new Event("change", { bubbles: true });
-      dropdownOptions[i].dispatchEvent(event);
-
-      return;
-    }
+  if (selectedOption) {
+    selectedOption.selected = true;
+    selectedOption.dispatchEvent(new Event("change", { bubbles: true }));
   }
 }
 
@@ -153,16 +144,14 @@ async function generateAdvisoryContent(countryData, selectedCountry) {
 }
 
 // modal
-// Get references to the modal and close button
-// const modal = document.getElementById("myModal");
-// const closeModalBtn = document.getElementById("closeModal");
+const modal = document.getElementById("myModal");
+const closeModalBtn = document.getElementById("closeModal");
 
-// // Show the modal when the page is loaded
-// window.onload = function () {
-//   modal.style.display = "block";
-// };
+window.onload = function () {
+  modal.style.display = "block";
+};
 
-// // Close the modal when the close button is clicked
-// closeModalBtn.onclick = function () {
-//   modal.style.display = "none";
-// };
+// Close the modal when the close button is clicked
+closeModalBtn.onclick = function () {
+  modal.style.display = "none";
+};

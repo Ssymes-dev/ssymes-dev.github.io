@@ -1,6 +1,7 @@
 #map {
     height: 30rem;
     max-width: 45rem;
+    z-index: 1;
 }
 
 #icons {
@@ -70,4 +71,10 @@ select.leaflet-countryselect {
     width: auto;
     border-radius: .25rem;
     box-shadow: 0 0 0 0.1rem rgba(0, 0, 0, 0.150);
+
+}
+
+.leaflet-countryselect-container {
+    z-index: 800;
+    position: relative;
 }
