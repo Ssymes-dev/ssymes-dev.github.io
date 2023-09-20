@@ -37,6 +37,7 @@ selectMenu.on("change", async function ({ feature }) {
 
   // Call compareCountryName function and await the result
   await compareCountryName(name, await fetchCountryData());
+
   console.log("Selected country", name);
 });
 
@@ -48,18 +49,20 @@ console.log("dropdownOptions", dropdownOptions);
 async function onMapClick({ latlng: { lat, lng } }) {
   const locationName = await getLocationData(lng, lat);
   setDropdownOptions(locationName, dropdownOptions);
-  return lng, lat;
 }
 
 map.on("click", onMapClick);
 
-function setDropdownOptions(locationName, dropdownOptions) {
+async function setDropdownOptions(locationName, dropdownOptions) {
   for (let i = 0; i < dropdownOptions.length; i++) {
     const option = dropdownOptions[i];
     if (option.innerText === locationName) {
-      // Set the selectedIndex to the index of the matching option
-      dropdownOptions.selectedIndex = i;
-      return; // Exit the loop once a match is found
+      dropdownOptions[i].selected = true;
+
+      const event = new Event("change", { bubbles: true });
+      dropdownOptions[i].dispatchEvent(event);
+
+      return;
     }
   }
 }
