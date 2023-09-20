@@ -67,6 +67,7 @@ async function setDropdownOptions(locationName, dropdownOptions) {
   }
 }
 
+// get location data
 async function getLocationData(lng, lat) {
   const OPEN_CAGE_API_KEY = "0c9aade54fba4c8abfae724859a72795";
   const reverseGeocodingApiUrl = `https://api.opencagedata.com/geocode/v1/json?q=${lat},${lng}&key=${OPEN_CAGE_API_KEY}`;
@@ -125,7 +126,7 @@ async function generateAdvisoryContent(countryData, selectedCountry) {
         previousModal.remove();
       }
 
-      let modalContent = `
+      const modalContent = `
         <div class="modal fade" id="advisoryModal" tabindex="-1" role="dialog" aria-labelledby="advisoryModalLabel" aria-hidden="true">
           <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -138,27 +139,6 @@ async function generateAdvisoryContent(countryData, selectedCountry) {
               <div class="modal-body">
                 <p class="advisory-message">Advisory: ${advisory.message}</p>
                 <a href="${advisory.source}" target="_blank" rel="noopener noreferrer">Source: ${advisory.sources_active}</a>
-              </div>
-            </div>
-          </div>
-        </div>
-      `;
-
-      document.body.insertAdjacentHTML("beforeend", modalContent);
-      $("#advisoryModal").modal("show");
-    } else if (name !== selectedCountry) {
-      modalContent = `
-        <div class="modal fade" id="advisoryModal" tabindex="-1" role="dialog" aria-labelledby="advisoryModalLabel" aria-hidden="true">
-          <div class="modal-dialog" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="advisoryModalLabel">${selectedCountry}</h5>
-                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              <div class="modal-body">
-                <p class="advisory-message">There are currently no advisories available for ${selectedCountry}</p>
               </div>
             </div>
           </div>
