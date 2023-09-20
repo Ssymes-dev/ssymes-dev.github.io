@@ -17,6 +17,7 @@
 
 a.nav-link:hover {
     text-shadow: #3c5485;
+    font-size: 1.2rem;
 }
 
 #icons:hover {
