@@ -6,31 +6,32 @@
 #icons {
     border-radius: 5%;
     text-decoration: none;
-    padding: .5rem;
+    padding: 1rem;
     text-decoration: none;
 
 }
 
-
+#logo {
+    width: 2.5rem;
+}
 
 a.nav-link:hover {
-    background-color: #4b84f5;
-    border-radius: 5px;
+    text-shadow: #3c5485;
 }
 
 #icons:hover {
-    background-color: #4b84f5;
+    background-color: #3c5485;
     border-radius: 10%;
-    color: black;
 }
 
 .headernav p {
     float: right;
-    color: #165eec;
+    color: #041638;
+    text-shadow: 1px 1px 1px #05245c;
 }
 
 .headernav p:hover {
-    color: #4b84f5;
+    color: #3c5485;
 }
 
 /* on load modal */
@@ -64,6 +65,8 @@ a.nav-link:hover {
 }
 
 select.leaflet-countryselect {
-    max-height: 72px;
-    max-width: 125px;
+    height: 2rem;
+    width: auto;
+    border-radius: .25rem;
+    box-shadow: 0 0 0 0.1rem rgba(0, 0, 0, 0.150);
 }
