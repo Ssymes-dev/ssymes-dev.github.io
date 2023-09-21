@@ -27,7 +27,6 @@ selectMenu.on("change", async function ({ feature }) {
   // Remove the current country polygon if it exists
   if (currentCountryPolygon) {
     map.removeLayer(currentCountryPolygon);
-    console.log("removing previous country...");
   }
   // Create a new country polygon for the selected country
   const country = L.geoJson(feature);
@@ -37,15 +36,11 @@ selectMenu.on("change", async function ({ feature }) {
 
   // Call compareCountryName function and await the result
   await compareCountryName(name, await fetchCountryData());
-
-  console.log("Selected country", name);
 });
 
 const dropdownOptions = document.getElementsByClassName(
   "leaflet-countryselect"
 )[0].options;
-console.log("dropdownOptions", dropdownOptions);
-
 async function onMapClick({ latlng: { lat, lng } }) {
   const locationName = await getLocationData(lng, lat);
   setDropdownOptions(locationName, dropdownOptions);
@@ -74,7 +69,6 @@ async function getLocationData(lng, lat) {
 
   const response = await fetch(reverseGeocodingApiUrl);
   const { results } = await response.json();
-  console.log("results", results);
   let locationName = results[0].components.country;
   if (!locationName) {
     locationName = results[0].formatted;
@@ -88,7 +82,6 @@ async function fetchCountryData() {
   try {
     const response = await fetch(apiUrl);
     const { data: travelData } = await response.json();
-    console.log("Travel Data:", travelData);
     return travelData;
   } catch (error) {
     console.error("Error fetching country data:", error);
@@ -139,81 +132,8 @@ async function generateAdvisoryContent(countryData, selectedCountry) {
           </div>
         </div>
       `;
-
       document.body.insertAdjacentHTML("beforeend", modalContent);
       $("#advisoryModal").modal("show");
-    } else if (name !== selectedCountry) {
-      modalContent = `
-        <div class="modal fade" id="advisoryModal" tabindex="-1" role="dialog" aria-labelledby="advisoryModalLabel" aria-hidden="true">
-          <div class="modal-dialog" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="advisoryModalLabel">${selectedCountry}</h5>
-                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              <div class="modal-body">
-                <p class="advisory-message">There are currently no advisories available for ${selectedCountry}</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      `;
-      async function generateAdvisoryContent(countryData, selectedCountry) {
-        if (countryData) {
-          const { name, advisory } = countryData;
-          if (name === selectedCountry) {
-            // Remove the previous modal content if it exists
-            const previousModal = document.getElementById("advisoryModal");
-            if (previousModal) {
-              previousModal.remove();
-            }
-
-            let modalContent = `
-              <div class="modal fade" id="advisoryModal" tabindex="-1" role="dialog" aria-labelledby="advisoryModalLabel" aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <h5 class="modal-title" id="advisoryModalLabel">${name}</h5>
-                      <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                      </button>
-                    </div>
-                    <div class="modal-body">
-                      <p class="advisory-message">Advisory: ${advisory.message}</p>
-                      <a href="${advisory.source}" target="_blank" rel="noopener noreferrer">Source: ${advisory.sources_active}</a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            `;
-
-            document.body.insertAdjacentHTML("beforeend", modalContent);
-            $("#advisoryModal").modal("show");
-          } else if (name !== selectedCountry) {
-            modalContent = `
-              <div class="modal fade" id="advisoryModal" tabindex="-1" role="dialog" aria-labelledby="advisoryModalLabel" aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <h5 class="modal-title" id="advisoryModalLabel">${selectedCountry}</h5>
-                      <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                      </button>
-                    </div>
-                    <div class="modal-body">
-                      <p class="advisory-message">There are currently no advisories available for ${selectedCountry}</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            `;
-            document.body.insertAdjacentHTML("beforeend", modalContent);
-            $("#advisoryModal").modal("show");
-          }
-        }
-      }
     }
   }
 }
