@@ -24,6 +24,11 @@ selectMenu.on("change", async function ({ feature }) {
     properties: { name },
   } = feature;
 
+  // Remove the current country polygon if it exists
+  if (currentCountryPolygon) {
+    map.removeLayer(currentCountryPolygon);
+    console.log("removing previous country...");
+  }
   // Create a new country polygon for the selected country
   const country = L.geoJson(feature);
   currentCountryPolygon = country;
@@ -39,6 +44,7 @@ selectMenu.on("change", async function ({ feature }) {
 const dropdownOptions = document.getElementsByClassName(
   "leaflet-countryselect"
 )[0].options;
+console.log("dropdownOptions", dropdownOptions);
 
 async function onMapClick({ latlng: { lat, lng } }) {
   const locationName = await getLocationData(lng, lat);
@@ -48,13 +54,16 @@ async function onMapClick({ latlng: { lat, lng } }) {
 map.on("click", onMapClick);
 
 async function setDropdownOptions(locationName, dropdownOptions) {
-  const selectedOption = [...dropdownOptions].find(
-    (option) => option.innerText === locationName
-  );
+  for (let i = 0; i < dropdownOptions.length; i++) {
+    const option = dropdownOptions[i];
+    if (option.innerText === locationName) {
+      dropdownOptions[i].selected = true;
 
-  if (selectedOption) {
-    selectedOption.selected = true;
-    selectedOption.dispatchEvent(new Event("change", { bubbles: true }));
+      const event = new Event("change", { bubbles: true });
+      dropdownOptions[i].dispatchEvent(event);
+
+      return;
+    }
   }
 }
 
@@ -66,14 +75,7 @@ async function getLocationData(lng, lat) {
   const response = await fetch(reverseGeocodingApiUrl);
   const { results } = await response.json();
   console.log("results", results);
-  if (results.length === 0) {
-    console.error("No Geographic data avaliable for this location");
-    return null;
-  }
-  let locationName = results[0].components.country;
-  if (locationName === undefined) {
-    locationName = results[0].formatted;
-  }
+  const locationName = results[0].components.country;
   console.log("location Name", locationName);
   return locationName;
 }
@@ -118,7 +120,7 @@ async function generateAdvisoryContent(countryData, selectedCountry) {
         previousModal.remove();
       }
 
-      let modalContent = `
+      const modalContent = `
         <div class="modal fade" id="advisoryModal" tabindex="-1" role="dialog" aria-labelledby="advisoryModalLabel" aria-hidden="true">
           <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -139,40 +141,21 @@ async function generateAdvisoryContent(countryData, selectedCountry) {
 
       document.body.insertAdjacentHTML("beforeend", modalContent);
       $("#advisoryModal").modal("show");
-    } else if (name !== selectedCountry) {
-      modalContent = `
-        <div class="modal fade" id="advisoryModal" tabindex="-1" role="dialog" aria-labelledby="advisoryModalLabel" aria-hidden="true">
-          <div class="modal-dialog" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="advisoryModalLabel">${selectedCountry}</h5>
-                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              <div class="modal-body">
-                <p class="advisory-message">There are currently no advisories available for ${selectedCountry}</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      `;
-
-      document.body.insertAdjacentHTML("beforeend", modalContent);
-      $("#advisoryModal").modal("show");
     }
   }
 }
 
 // modal
-const modal = document.getElementById("myModal");
-const closeModalBtn = document.getElementById("closeModal");
+// Get references to the modal and close button
+// const modal = document.getElementById("myModal");
+// const closeModalBtn = document.getElementById("closeModal");
 
-window.onload = function () {
-  modal.style.display = "block";
-};
+// // Show the modal when the page is loaded
+// window.onload = function () {
+//   modal.style.display = "block";
+// };
 
-// Close the modal when the close button is clicked
-closeModalBtn.onclick = function () {
-  modal.style.display = "none";
-};
+// // Close the modal when the close button is clicked
+// closeModalBtn.onclick = function () {
+//   modal.style.display = "none";
+// };
