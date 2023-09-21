@@ -31,23 +31,28 @@ async function initMap() {
   geojson.addTo(map);
   L.tileLayer(tileLayerUrl, tileLayerOptions).addTo(map);
 
-  selectMenu.on("change", function (e) {
-    if (e.feature === undefined) {
-      //No action when the first item ("Country") is selected
+  selectMenu.on("change", async function ({ feature }) {
+    if (feature === undefined) {
+      // No action when the first item ("Country") is selected
       return;
     }
-    var country = L.geoJson(e.feature);
-    if (this.previousCountry != null) {
-      map.removeLayer(this.previousCountry);
-    }
-    this.previousCountry = country;
+    const {
+      properties: { name },
+    } = feature;
 
+    // Remove the current country polygon if it exists
+    if (currentCountryPolygon) {
+      map.removeLayer(currentCountryPolygon);
+    }
+    // Create a new country polygon for the selected country
+    const country = L.geoJson(feature);
+    currentCountryPolygon = country;
     map.addLayer(country);
     map.fitBounds(country.getBounds());
-  });
 
-  // Call compareCountryName function and await the result
-  await compareCountryName(name, await fetchCountryData());
+    // Call compareCountryName function and await the result
+    await compareCountryName(name, await fetchCountryData());
+  });
 }
 
 // Call the initMap function to initialize the map
