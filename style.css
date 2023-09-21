@@ -59,6 +59,10 @@
     cursor: pointer;
 }
 
+.close:hover {
+    transform: scale(1.1);
+}
+
 select.leaflet-countryselect {
     height: 2rem;
     width: 10rem;
@@ -104,4 +108,12 @@ select.leaflet-countryselect::-webkit-scrollbar {
     height: 100%;
     background-color: #05235cce;
     z-index: 2000;
+}
+
+.leaflet-grab {
+    cursor: auto;
+}
+
+.leaflet-dragging .leaflet-grab {
+    cursor: grab;
 }

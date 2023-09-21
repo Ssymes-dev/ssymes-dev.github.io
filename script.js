@@ -4,40 +4,54 @@ const selectMenu = L.countrySelect().addTo(map);
 
 let currentCountryPolygon = null;
 
-// load map tiles
-const tileLayerUrl = "https://tile.openstreetmap.org/{z}/{x}/{y}.png";
-const tileLayerOptions = {
-  attribution:
-    'Data <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> contributors, Map tiles &copy;',
-  minZoom: 2,
-  noWrap: true,
-};
-L.tileLayer(tileLayerUrl, tileLayerOptions).addTo(map);
+async function initMap() {
+  const tileLayerUrl = "https://tile.openstreetmap.org/{z}/{x}/{y}.png";
+  const tileLayerOptions = {
+    attribution:
+      'Data <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> contributors, Map tiles &copy;',
+    minZoom: 2,
+    noWrap: true,
+  };
 
-// event listener for menu
-selectMenu.on("change", async function ({ feature }) {
-  if (feature === undefined) {
-    // No action when the first item ("Country") is selected
-    return;
-  }
-  const {
-    properties: { name },
-  } = feature;
+  // Create a GeoJSON layer from the countries.geo.json file
+  const geojson = await fetch("countries.geo.json")
+    .then((response) => response.json())
+    .then((data) =>
+      L.geoJSON(data, {
+        style: function (feature) {
+          return {
+            opacity: 0,
+            color: "white",
+          };
+        },
+      })
+    );
 
-  // Remove the current country polygon if it exists
-  if (currentCountryPolygon) {
-    map.removeLayer(currentCountryPolygon);
-  }
-  // Create a new country polygon for the selected country
-  const country = L.geoJson(feature);
-  currentCountryPolygon = country;
-  map.addLayer(country);
-  map.fitBounds(country.getBounds());
+  // Add the GeoJSON layer to the map
+  geojson.addTo(map);
+  L.tileLayer(tileLayerUrl, tileLayerOptions).addTo(map);
+
+  selectMenu.on("change", function (e) {
+    if (e.feature === undefined) {
+      //No action when the first item ("Country") is selected
+      return;
+    }
+    var country = L.geoJson(e.feature);
+    if (this.previousCountry != null) {
+      map.removeLayer(this.previousCountry);
+    }
+    this.previousCountry = country;
+
+    map.addLayer(country);
+    map.fitBounds(country.getBounds());
+  });
 
   // Call compareCountryName function and await the result
   await compareCountryName(name, await fetchCountryData());
-});
+}
 
+// Call the initMap function to initialize the map
+initMap();
 const dropdownOptions = document.getElementsByClassName(
   "leaflet-countryselect"
 )[0].options;
