@@ -21266,7 +21266,7 @@ L.CountrySelect.countries = {
       ],
     },
   },
-  "United States of America": {
+  "United States": {
     type: "Feature",
     id: "USA",
     properties: {
