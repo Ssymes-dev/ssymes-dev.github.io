@@ -137,3 +137,17 @@ async function generateAdvisoryContent(countryData, selectedCountry) {
     }
   }
 }
+// modal
+// Get references to the modal and close button
+const modal = document.getElementById("welcomeModal");
+const closeModalBtn = document.getElementById("closeModal");
+
+// Show the modal when the page is loaded
+window.onload = function () {
+  modal.style.display = "block";
+};
+
+// Close the modal when the close button is clicked
+closeModalBtn.onclick = function () {
+  modal.style.display = "none";
+};
