@@ -27,8 +27,8 @@ async function initMap() {
       })
     );
 
-  // Add the GeoJSON layer to the map
   geojson.addTo(map);
+
   L.tileLayer(tileLayerUrl, tileLayerOptions).addTo(map);
 
   selectMenu.on("change", async function ({ feature }) {
@@ -56,13 +56,14 @@ async function initMap() {
 }
 
 // Call the initMap function to initialize the map
-initMap();
+
 const dropdownOptions = document.getElementsByClassName(
   "leaflet-countryselect"
 )[0].options;
 async function onMapClick({ latlng: { lat, lng } }) {
   const locationName = await getLocationData(lng, lat);
   setDropdownOptions(locationName, dropdownOptions);
+  console.log([lng, lat]);
 }
 
 map.on("click", onMapClick);
@@ -81,7 +82,6 @@ async function setDropdownOptions(locationName, dropdownOptions) {
   }
 }
 
-// get location data
 async function getLocationData(lng, lat) {
   const OPEN_CAGE_API_KEY = "0c9aade54fba4c8abfae724859a72795";
   const reverseGeocodingApiUrl = `https://api.opencagedata.com/geocode/v1/json?q=${lat},${lng}&key=${OPEN_CAGE_API_KEY}`;
@@ -92,7 +92,7 @@ async function getLocationData(lng, lat) {
   if (!locationName) {
     locationName = results[0].formatted;
   }
-  console.log("location Name", locationName);
+  // console.log("location Name", locationName);
   return locationName;
 }
 
@@ -101,6 +101,7 @@ async function fetchCountryData() {
   try {
     const response = await fetch(apiUrl);
     const { data: travelData } = await response.json();
+    console.log("travelData", travelData);
     return travelData;
   } catch (error) {
     console.error("Error fetching country data:", error);
@@ -127,7 +128,6 @@ async function generateAdvisoryContent(countryData, selectedCountry) {
   if (countryData) {
     const { name, advisory } = countryData;
     if (name === selectedCountry) {
-      // Remove the previous modal content if it exists
       const previousModal = document.getElementById("advisoryModal");
       if (previousModal) {
         previousModal.remove();
@@ -156,17 +156,13 @@ async function generateAdvisoryContent(countryData, selectedCountry) {
     }
   }
 }
-// modal
-// Get references to the modal and close button
 const modal = document.getElementById("welcomeModal");
 const closeModalBtn = document.getElementById("closeModal");
-
-// Show the modal when the page is loaded
 window.onload = function () {
   modal.style.display = "block";
 };
 
-// Close the modal when the close button is clicked
 closeModalBtn.onclick = function () {
   modal.style.display = "none";
 };
+initMap();
