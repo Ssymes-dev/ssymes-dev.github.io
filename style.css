@@ -64,8 +64,9 @@
     transform: scale(1.1);
 }
 
-select.leaflet-countryselect {
-    position: unset;
+#dropdown {
+    position: fixed;
+    margin: .5rem;
     height: 2rem;
     width: 10rem;
     padding: 2px;
@@ -74,38 +75,20 @@ select.leaflet-countryselect {
     z-index: 1000;
 }
 
-/* select options */
-select.leaflet-countryselect option {
-    position: unset;
-    height: 5rem;
-    padding: .5rem;
-    font-size: small;
-    border-radius: 5px;
-    box-shadow: 0 0 0 0.1rem rgba(0, 0, 0, 0.150);
-    z-index: 1000;
-
-}
-
-/* selector in dropdown menu */
-select.leaflet-countryselect option:hover {
-    position: unset;
-    background-color: #9bb2e1;
-    border-radius: 10%;
+#dropdown:hover {
+    border-radius: .25rem;
     transform: scale(1.1);
-    z-index: 1000;
 }
 
-select.leaflet-countryselect::-webkit-scrollbar {
+#dropdown::-webkit-scrollbar {
     width: 0.5rem;
     height: 0.5rem;
 }
 
-.leaflet-countryselect {
-    z-index: 1000;
-    position: unset;
+.leaflet-control-container {
+    position: absolute;
+    right: 56px
 }
-
-
 
 #welcomeModal {
     height: fit-content;

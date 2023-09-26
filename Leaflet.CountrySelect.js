@@ -23037,7 +23037,7 @@ L.CountrySelect.countries = {
 L.CountrySelect = L.Control.extend({
   options: {
     position: "topright",
-    title: "Pick a Country!",
+    title: "Choose Country",
     exclude: [],
     include: [],
     countries: L.CountrySelect.countries,
@@ -23045,7 +23045,7 @@ L.CountrySelect = L.Control.extend({
   onAdd: function (map) {
     this.div = L.DomUtil.create("div", "leaflet-countryselect-container");
     this.select = document.getElementById("dropdown");
-
+    L.DomEvent.stopPropagation(this.select);
     var content = "";
 
     if (this.options.title.length > 0) {
@@ -23065,8 +23065,6 @@ L.CountrySelect = L.Control.extend({
     }
 
     this.select.innerHTML = content;
-
-    this.select.onmousedown = L.DomEvent.stopPropagation;
 
     return this.div;
   },
