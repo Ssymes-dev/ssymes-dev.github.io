@@ -57,13 +57,10 @@ async function initMap() {
 
 // Call the initMap function to initialize the map
 
-const dropdownOptions = document.getElementsByClassName(
-  "leaflet-countryselect"
-)[0].options;
+const dropdownOptions = document.getElementsByClassName("search")[0].options;
 async function onMapClick({ latlng: { lat, lng } }) {
   const locationName = await getLocationData(lng, lat);
   setDropdownOptions(locationName, dropdownOptions);
-  console.log([lng, lat]);
 }
 
 map.on("click", onMapClick);
@@ -92,7 +89,7 @@ async function getLocationData(lng, lat) {
   if (!locationName) {
     locationName = results[0].formatted;
   }
-  // console.log("location Name", locationName);
+  console.log("location Name", locationName);
   return locationName;
 }
 
