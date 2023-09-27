@@ -1,11 +1,10 @@
 #map {
     height: 45rem;
-
     z-index: 1;
 }
 
 .icons {
-    border-radius: 5%;
+    border-radius: 10%;
     text-decoration: none;
     padding: 1rem;
     text-decoration: none;
@@ -18,8 +17,9 @@ main {
 }
 
 .icons:hover {
-    background-color: #bfd3fc;
+    background-color: #e3f0fb;
     border-radius: 10%;
+    padding: 1rem;
 }
 
 #logo {
@@ -40,9 +40,6 @@ main {
 .headernav p:hover {
     color: #3c5485;
 }
-
-
-
 
 .modal-content {
     background-color: #ffffff;
@@ -74,10 +71,11 @@ main {
 
 .close:hover {
     transform: scale(1.1);
+
 }
 
 #dropdown {
-    position: fixed;
+    position: absolute;
     margin: .5rem;
     height: 2rem;
     width: 10rem;
@@ -88,8 +86,7 @@ main {
 }
 
 #dropdown:hover {
-    border-radius: .25rem;
-    transform: scale(1.1);
+    background-color: rgb(245, 244, 244);
 }
 
 #dropdown::-webkit-scrollbar {
@@ -100,16 +97,6 @@ main {
 .leaflet-control-container {
     position: absolute;
     right: 56px
-}
-
-#welcomeModal {
-    height: fit-content;
-    display: none;
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    background-color: #05235cce;
-    z-index: 2000;
 }
 
 .leaflet-grab {
