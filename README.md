@@ -1,11 +1,11 @@
 # TravelSage Web Application
-TravelSage helps you explore countries, stay informed about their current weather, and offers essential travel advisories. Whether you're planning a trip or just curious about the world, TravelSage provides the facts you need. It's your practical travel companion for hassle-free journeys.
+TravelSage offers essential travel advisories.
 
 ## API Integrations and Technologies
 ### APIs:
 Leaflet: Used for interactive maps to display location data.
 OpenCage API: Utilization of the OpenCage Data API for geocoding.
-OpenWeather API: Weather provided by www.OpenWeather.org.
+
 Source of travel advisory data.: www.travel-advisory.info API
 
 ### Libraries and Technologies:
