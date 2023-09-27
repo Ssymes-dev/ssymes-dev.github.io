@@ -32,45 +32,46 @@
     <title>TravelSage</title>
 
 </head>
+<header class="headernav ">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm p-3 rounded">
+        <a class="navbar-brand" href="index.html">
+            <div class="container">
+                <img id="logo" src="/images/travelsagelogo.png">
+                <p class="h1">
+                    TravelSage
+                </p>
+            </div>
+        </a>
+
+        <!-- Hamburger menu -->
+        <button class="navbar-toggler border" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav mr-auto text-end">
+                <li class="nav-item ">
+                    <a class="nav-link" href="about.html">About</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="https://www.travel-advisory.info" target="_blank">Source of
+                        Data</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</header>
 
 <body>
-    <header class="headernav ">
-        <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm p-3 mb-5 rounded">
-            <a class="navbar-brand" href="index.html">
-                <div class="container">
-                    <img id="logo" src="/images/travelsagelogo.png">
-                    <p class="h1">
-                        TravelSage
-                    </p>
-                </div>
-            </a>
 
-            <!-- Hamburger menu -->
-            <button class="navbar-toggler border" type="button" data-toggle="collapse" data-target="#navbarNav"
-                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
 
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav mr-auto text-end">
-                    <li class="nav-item ">
-                        <a class="nav-link" href="about.html">About</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="https://www.travel-advisory.info" target="_blank">Source of
-                            Data</a>
-                    </li>
-                </ul>
-            </div>
-        </nav>
-    </header>
+    <main id="map-containers">
 
-    <main>
-        <div class="container-fluid">
-            <select class="search" id="dropdown" placeholder="Search for a country"></select>
-            <div id="map"></div>
+        <select class="search" id="dropdown" placeholder="Search for a country"></select>
+        <div id="map"></div>
 
-        </div>
+
     </main>
     <footer>
         <div class="text-center ">

@@ -16,92 +16,119 @@
 
     <title>TravelSage</title>
 </head>
-<header class="headernav ">
-    <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm p-3 mb-5 rounded">
-        <a class="navbar-brand" href="index.html">
-            <div class="container">
-                <img id="logo" src="/images/travelsagelogo.png">
-                <p class="h1">
-                    TravelSage
-                </p>
-            </div>
-        </a>
-
-        <!-- Hamburger menu -->
-        <button class="navbar-toggler border" type="button" data-toggle="collapse" data-target="#navbarNav"
-            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav mr-auto text-end">
-                <li class="nav-item ">
-                    <a class="nav-link" href="about.html">About</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="https://www.travel-advisory.info" target="_blank">Source of
-                        Data</a>
-                </li>
-            </ul>
-        </div>
-    </nav>
-</header>
 
 <body>
-    <div class="container text-left">
-        <h3>TravelSage</h3>
-
-        <p>TravelSage offers essential travel advisories. Whether you're planning a trip or just curious about the
-            world, TravelSage provides the facts you need.
-
-        </p>
-    </div>
-    <div class="container text-left ">
-        <h4> API Integrations and Technologies</h4>
-
-        <h5>APIs:</h5>
-
-        <ul>
-            <li>
-                <strong>Leaflet</strong>: Used for interactive maps to display location data.
-            </li>
-            <li>
-                <strong>OpenCage API</strong>: Utilization of the OpenCage Data API for geocoding.
-            </li>
-            <li>
-                <strong>Source of travel advisory data.</strong>: www.travel-advisory.info API
-            </li>
-        </ul>
-    </div>
-    <div class="container  text-left ">
-        <h5>Libraries and Technologies:</h5>
-
-        <ul>
-            <li>Leaflet Library: Incorporation of the Leaflet JavaScript library for interactive maps.
-            </li>
-            <li>Web Fundamentals: Crafted using HTML, CSS, and JavaScript.</li>
-            <li>Responsive Design: Adapts elegantly with the assistance of the Bootstrap framework.</li>
-            <li>Live Data Integration: Data is incorporated through external APIs.</li>
-        </ul>
-    </div>
-    <div class="container text-left ">
-        <h4>Contact</h4>
-
-        <p>Your feedback is welcome! Feel free to share your thoughts and suggestions as they are greatly
-            appreciated.</p>
-    </div>
-    <footer>
-        <div class="text-center ">
-            <a href="https://github.com/Ssymes-dev" class="socials" target=”_blank” rel=noopener noreferrer”><img
-                    src="images/github.svg" class="icons" alt="github icon">
+    <header class="headernav ">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm p-3 rounded">
+            <a class="navbar-brand" href="index.html">
+                <div class="container">
+                    <img id="logo" src="/images/travelsagelogo.png">
+                    <p class="h1">
+                        TravelSage
+                    </p>
+                </div>
             </a>
-            <a href="mailto:samantha.symes@outlook.com" class="socials" target=”_blank” rel=noopener noreferrer”><img
-                    src="images/envelope-at-fill.svg" class="icons" alt="email icon">
-                <a href="https://www.linkedin.com/in/samanthasymes" class="socials" target=”_blank” rel=noopener
-                    noreferrer”><img src="images/linkedin.svg" class="icons" alt="linkedin icon">
-                </a>
-        </div>
-        <p class="text-center">Built by: Samantha Symes</p>
-    </footer>
 
+            <!-- Hamburger menu -->
+            <button class="navbar-toggler border" type="button" data-toggle="collapse" data-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mr-auto text-end">
+                    <li class="nav-item ">
+                        <a class="nav-link" href="about.html">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://www.travel-advisory.info" target="_blank">Source of
+                            Data</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+
+    <div class="about containter-fluid">
+        <div class="m-4 text-center">
+            <h3>About</h3>
+            <div>
+                <p>TravelSage offers essential travel advisories. Whether you're planning a trip
+                    or
+                    just
+                    curious about the
+                    world, TravelSage provides the facts you need.
+                </p>
+
+            </div>
+        </div>
+
+    </div>
+
+    <main id="about-container">
+
+
+        <div class="card-deck m-1" id="card-deck">
+            <div class="card">
+
+                <div class="card-body">
+                    <h5 class="card-title"> APIs:</h5>
+                    <ul class="card-text">
+                        <li>
+                            <strong>Leaflet</strong>: Used for interactive maps to display location data.
+                        </li>
+                        <li>
+                            <strong>OpenCage API</strong>: Utilization of the OpenCage Data API for geocoding.
+                        </li>
+                        <li>
+                            <strong>Source of travel advisory data.</strong>: www.travel-advisory.info API
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Libraries and Technologies:</h5>
+                    <ul class="card-text">
+                        <li>Leaflet Library: Incorporation of the Leaflet JavaScript library for interactive maps.
+                        </li>
+                        <li>Web Fundamentals: Crafted using HTML, CSS, and JavaScript.</li>
+                        <li>Responsive Design: Adapts elegantly with the assistance of the Bootstrap framework.</li>
+                        <li>Live Data Integration: Data is incorporated through external APIs.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Contact</h5>
+                    <p class="card-text">Your feedback is welcome! Feel free to share your thoughts and suggestions
+                        as
+                        they
+                        are
+                        greatly
+                        appreciated.</p>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <footer class="text-center">
+
+        <a href="https://github.com/Ssymes-dev" class="socials" target=”_blank” rel=noopener noreferrer”><img
+                src="images/github.svg" class="icons" alt="github icon">
+        </a>
+        <a href="mailto:samantha.symes@outlook.com" class="socials" target=”_blank” rel=noopener noreferrer”><img
+                src="images/envelope-at-fill.svg" class="icons" alt="email icon">
+            <a href="https://www.linkedin.com/in/samanthasymes" class="socials" target=”_blank” rel=noopener
+                noreferrer”><img src="images/linkedin.svg" class="icons" alt="linkedin icon">
+            </a>
+
+            <p class="text-center">Built by: Samantha Symes</p>
+    </footer>
 </body>
+
+</html>

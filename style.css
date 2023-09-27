@@ -12,14 +12,20 @@
     color: #3c5485;
 }
 
-main {
+#map-container {
     margin-right: 10%;
     margin-left: 10%;
+    margin-bottom: 50px;
 }
 
 #map {
     height: calc(89vh - 10rem);
     z-index: 1;
+}
+
+#card-deck {
+    background-color: #e3f0fb;
+    padding: 5%;
 }
 
 .modal-content {
@@ -94,4 +100,33 @@ main {
 
 .leaflet-dragging .leaflet-grab {
     cursor: grab;
+}
+
+.about {
+    margin: auto;
+    padding: 5%;
+    text-align: center;
+    width: 50%;
+}
+
+footer {
+    padding: 15px;
+}
+
+.socials {
+    display: inline-block;
+    margin-right: 10px;
+    text-decoration: none;
+}
+
+.socials:hover {
+    text-decoration: none;
+}
+
+.card-deck {
+    margin-top: 50px;
+}
+
+.card:last-child {
+    margin-bottom: 50px;
 }
