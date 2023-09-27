@@ -1,5 +1,5 @@
 #map {
-    height: 45rem;
+    height: calc(89vh - 10rem);
     z-index: 1;
 }
 
