@@ -153,68 +153,60 @@ async function generateAdvisoryContent(countryData, selectedCountry) {
     }
   }
 }
-const modal = document.getElementById("welcomeModal");
-const closeModalBtn = document.getElementById("closeModal");
-window.onload = function () {
-  modal.style.display = "block";
-};
 
-closeModalBtn.onclick = function () {
-  modal.style.display = "none";
-};
 initMap();
 
-// Event listener for the country dropdown options
-countryDropdown.parentElement.addEventListener("click", async (event) => {
-  if (event.target.classList.contains("dropdown-item")) {
-    selectedTravelCountryCode = event.target.getAttribute("dropdown-options");
-    if (selectedTravelCountryCode) {
-      // Set the search input value and selected code attribute
-      search.value = event.target.textContent;
-      console.log("Set search input value:", search.value);
-      search.setAttribute("menu-selected-option", selectedTravelCountryCode);
-      search.value = ""; // Reset search input value
+// // Event listener for the country dropdown options
+// countryDropdown.parentElement.addEventListener("click", async (event) => {
+//   if (event.target.classList.contains("dropdown-item")) {
+//     selectedTravelCountryCode = event.target.getAttribute("dropdown-options");
+//     if (selectedTravelCountryCode) {
+//       // Set the search input value and selected code attribute
+//       search.value = event.target.textContent;
+//       console.log("Set search input value:", search.value);
+//       search.setAttribute("menu-selected-option", selectedTravelCountryCode);
+//       search.value = ""; // Reset search input value
 
-      // Find the selected option based on the country code
-      const selectedOption = countryArray.find(
-        (option) => option.code === selectedTravelCountryCode
-      );
+//       // Find the selected option based on the country code
+//       const selectedOption = countryArray.find(
+//         (option) => option.code === selectedTravelCountryCode
+//       );
 
-      if (selectedOption) {
-        // Update dropdown value, fetch and display country details, update map
-        countryDropdown.value = selectedOption.code;
-        await getAllTravelData(selectedOption.code);
+//       if (selectedOption) {
+//         // Update dropdown value, fetch and display country details, update map
+//         countryDropdown.value = selectedOption.code;
+//         await getAllTravelData(selectedOption.code);
 
-        // Check for the special case of "Georgia"
-        if (selectedTravelCountryCode === "GE") {
-          // Hard-code the lat and lng for Georgia (the country)
-          const georgiaLat = 42.3154;
-          const georgiaLng = 43.3569;
-          const zoomLevel = getZoomLevel(selectedTravelCountryCode);
+//         // Check for the special case of "Georgia"
+//         if (selectedTravelCountryCode === "GE") {
+//           // Hard-code the lat and lng for Georgia (the country)
+//           const georgiaLat = 42.3154;
+//           const georgiaLng = 43.3569;
+//           const zoomLevel = getZoomLevel(selectedTravelCountryCode);
 
-          setMapLocation(
-            georgiaLat,
-            georgiaLng,
-            generatePopupContent(selectedTravelCountryCode),
-            zoomLevel
-          );
-        } else {
-          // Call getLatLng to get lat and lng
-          const { lat, lng } = await getLatLng(selectedTravelCountryCode);
-          // Get the zoom level for the selected country
-          const zoomLevel = getZoomLevel(selectedTravelCountryCode);
-          // Pass lat, lng, and zoom level to setMapLocation
-          setMapLocation(
-            lat,
-            lng,
-            generatePopupContent(selectedTravelCountryCode),
-            zoomLevel
-          );
-        }
-      }
-    }
-  }
-});
+//           setMapLocation(
+//             georgiaLat,
+//             georgiaLng,
+//             generatePopupContent(selectedTravelCountryCode),
+//             zoomLevel
+//           );
+//         } else {
+//           // Call getLatLng to get lat and lng
+//           const { lat, lng } = await getLatLng(selectedTravelCountryCode);
+//           // Get the zoom level for the selected country
+//           const zoomLevel = getZoomLevel(selectedTravelCountryCode);
+//           // Pass lat, lng, and zoom level to setMapLocation
+//           setMapLocation(
+//             lat,
+//             lng,
+//             generatePopupContent(selectedTravelCountryCode),
+//             zoomLevel
+//           );
+//         }
+//       }
+//     }
+//   }
+// });
 
 // search filter????
 // const search = document.getElementById("search");

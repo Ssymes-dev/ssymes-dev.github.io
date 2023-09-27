@@ -4,7 +4,7 @@
     z-index: 1;
 }
 
-#icons {
+.icons {
     border-radius: 5%;
     text-decoration: none;
     padding: 1rem;
@@ -12,10 +12,9 @@
 
 }
 
-#icons:hover {
-    background-color: #3c5485;
+.icons:hover {
+    background-color: #bfd3fc;
     border-radius: 10%;
-    transform: scale(1.1);
 }
 
 #logo {
@@ -50,6 +49,14 @@
     border-radius: 5px;
     text-align: left;
     justify-content: center;
+}
+
+.socials {
+    text-decoration: none;
+}
+
+.socials:hover {
+    text-decoration: none;
 }
 
 .close {
