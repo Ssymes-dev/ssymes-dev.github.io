@@ -2,10 +2,11 @@ const bounds = new L.LatLngBounds([-90, -180], [90, 180]);
 const map = L.map("map", { zoomControl: false })
   .setView([51.505, -0.09], 2)
   .setMaxBounds(bounds);
-const selectMenu = L.countrySelect().addTo(map);
-
-let currentCountryPolygon = null;
 L.control.zoom({ position: "topright" }).addTo(map);
+const selectMenu = L.countrySelect().addTo(map);
+const dropdownOptions = document.getElementsByClassName("search")[0].options;
+let currentCountryPolygon = null;
+
 async function initMap() {
   const tileLayerUrl = "https://tile.openstreetmap.org/{z}/{x}/{y}.png";
   const tileLayerOptions = {
@@ -14,51 +15,47 @@ async function initMap() {
     minZoom: 3,
     noWrap: true,
   };
-
-  const polygonLayer = await fetch("countries.geo.json")
-    .then((response) => response.json())
-    .then((data) =>
-      L.geoJSON(data, {
-        style: function (feature) {
-          return {
-            opacity: 0,
-            color: "white",
-          };
-        },
-      })
-    );
-
-  polygonLayer.addTo(map);
-
   L.tileLayer(tileLayerUrl, tileLayerOptions).addTo(map);
-
-  selectMenu.on("change", async function ({ feature }) {
-    if (feature === undefined) {
-      return;
-    }
-    const {
-      properties: { name },
-    } = feature;
-
-    if (currentCountryPolygon) {
-      map.removeLayer(currentCountryPolygon);
-    }
-
-    const countryPolygon = L.geoJson(feature);
-    currentCountryPolygon = countryPolygon;
-    map.addLayer(countryPolygon);
-    map.fitBounds(countryPolygon.getBounds());
-
-    await compareCountryName(name, await fetchCountryData());
-  });
 }
 
-const dropdownOptions = document.getElementsByClassName("search")[0].options;
+// polygon layer for dynamic cursor
+const polygonLayer = fetch("countries.geo.json")
+  .then((response) => response.json())
+  .then((data) =>
+    L.geoJSON(data, {
+      style: function (feature) {
+        return {
+          opacity: 0,
+          color: "white",
+        };
+      },
+    }).addTo(map)
+  );
+
+// eventlistener for dropdown menu
+selectMenu.on("change", async function ({ feature }) {
+  if (feature === undefined) {
+    return;
+  }
+  const {
+    properties: { name },
+  } = feature;
+
+  if (currentCountryPolygon) {
+    map.removeLayer(currentCountryPolygon);
+  }
+  const countryPolygon = L.geoJson(feature);
+  currentCountryPolygon = countryPolygon;
+  map.addLayer(countryPolygon);
+  map.fitBounds(countryPolygon.getBounds());
+
+  await compareCountryName(name, await fetchCountryData());
+});
+
 async function onMapClick({ latlng: { lat, lng } }) {
   const locationName = await getLocationData(lng, lat);
   setDropdownOptions(locationName, dropdownOptions);
 }
-
 map.on("click", onMapClick);
 
 async function setDropdownOptions(locationName, dropdownOptions) {
