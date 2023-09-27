@@ -9,7 +9,7 @@ async function initMap() {
   const tileLayerOptions = {
     attribution:
       'Data <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> contributors, Map tiles &copy;',
-    minZoom: 2,
+    minZoom: 3,
     noWrap: true,
   };
 

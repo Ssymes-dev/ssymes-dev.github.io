@@ -1,6 +1,6 @@
 #map {
-    height: 30rem;
-    max-width: 45rem;
+    height: 45rem;
+
     z-index: 1;
 }
 
@@ -10,6 +10,11 @@
     padding: 1rem;
     text-decoration: none;
 
+}
+
+main {
+    margin-right: 10%;
+    margin-left: 10%;
 }
 
 .icons:hover {
