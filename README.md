@@ -1,6 +1,8 @@
 # TravelSage Web Application
+
 TravelSage offers essential travel advisories.
 
+## [DEMO](http://ssymes-dev.github.io)
 ## API Integrations and Technologies
 ### APIs:
 Leaflet: Used for interactive maps to display location data.
