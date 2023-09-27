@@ -26,11 +26,6 @@ main {
     width: 2.5rem;
 }
 
-.navbar a:hover {
-    transform: scale(1.1);
-    /* Increase text size on hover */
-}
-
 .headernav p {
     float: right;
     color: #041638;
