@@ -71,10 +71,10 @@ main {
 
 #dropdown {
     position: absolute;
-    margin: .5rem;
+    margin: 1.5rem .5rem;
     height: 2rem;
     width: 10rem;
-    padding: 2px;
+    padding: 4px;
     border-radius: .25rem;
     box-shadow: 0 0 0 0.1rem rgba(0, 0, 0, 0.150);
     z-index: 1000;
@@ -89,10 +89,7 @@ main {
     height: 0.5rem;
 }
 
-.leaflet-control-container {
-    position: absolute;
-    right: 56px
-}
+
 
 .leaflet-grab {
     cursor: auto;

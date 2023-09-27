@@ -1,9 +1,11 @@
 const bounds = new L.LatLngBounds([-90, -180], [90, 180]);
-const map = L.map("map").setView([51.505, -0.09], 2).setMaxBounds(bounds);
+const map = L.map("map", { zoomControl: false })
+  .setView([51.505, -0.09], 2)
+  .setMaxBounds(bounds);
 const selectMenu = L.countrySelect().addTo(map);
 
 let currentCountryPolygon = null;
-
+L.control.zoom({ position: "topright" }).addTo(map);
 async function initMap() {
   const tileLayerUrl = "https://tile.openstreetmap.org/{z}/{x}/{y}.png";
   const tileLayerOptions = {
@@ -80,10 +82,7 @@ async function getLocationData(lng, lat) {
   const response = await fetch(reverseGeocodingApiUrl);
   const { results } = await response.json();
   let locationName = results[0].components.country;
-  if (!locationName) {
-    locationName = results[0].formatted;
-  }
-  console.log("location Name", locationName);
+
   return locationName;
 }
 
@@ -92,7 +91,6 @@ async function fetchCountryData() {
   try {
     const response = await fetch(apiUrl);
     const { data: travelData } = await response.json();
-    console.log("travelData", travelData);
     return travelData;
   } catch (error) {
     console.error("Error fetching country data:", error);
