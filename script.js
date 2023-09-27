@@ -52,10 +52,22 @@ selectMenu.on("change", async function ({ feature }) {
   await compareCountryName(name, await fetchCountryData());
 });
 
+let isMapClickEnabled = true;
+
 async function onMapClick({ latlng: { lat, lng } }) {
+  if (!isMapClickEnabled) {
+    return;
+  }
+
+  isMapClickEnabled = false;
+
   const locationName = await getLocationData(lng, lat);
+
   setDropdownOptions(locationName, dropdownOptions);
+
+  isMapClickEnabled = true;
 }
+
 map.on("click", onMapClick);
 
 async function setDropdownOptions(locationName, dropdownOptions) {
@@ -66,7 +78,6 @@ async function setDropdownOptions(locationName, dropdownOptions) {
 
       const event = new Event("change", { bubbles: true });
       dropdownOptions[i].dispatchEvent(event);
-
       return;
     }
   }
