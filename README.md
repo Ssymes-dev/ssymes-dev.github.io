@@ -3,6 +3,13 @@
 TravelSage offers essential travel advisories.
 
 ## [DEMO](http://ssymes-dev.github.io)
+
+
+##Motivation
+
+The motivation behind TravelSage was to provide users with a central 'hub' where they can find all their travel information without searching multiple websites.
+
+
 ## API Integrations and Technologies
 ### APIs:
 Leaflet: Used for interactive maps to display location data.
