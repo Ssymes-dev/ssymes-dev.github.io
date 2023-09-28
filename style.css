@@ -28,6 +28,10 @@
     padding: 5%;
 }
 
+#card-deck a {
+    color: black;
+}
+
 .modal-content {
     background-color: #ffffff;
     width: fit-content;
