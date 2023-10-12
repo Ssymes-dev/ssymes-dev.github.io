@@ -1,5 +1,8 @@
 ## [DEMO](http://ssymes-dev.github.io)
 
+## Description
+
+TravelSage is a web app that allows users to explore travel advisories through an interactive map interface. 
 
 ## Motivation
 
