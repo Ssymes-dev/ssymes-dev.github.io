@@ -1,4 +1,4 @@
-## [DEMO](https://ssymes-dev.github.io/travelsage/)
+## [DEMO](https://samsymes.github.io/travelsage/)
 
 ## Description
 
