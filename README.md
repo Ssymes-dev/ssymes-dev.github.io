@@ -1,4 +1,4 @@
-## [DEMO](http://ssymes-dev.github.io)
+## [DEMO](https://ssymes-dev.github.io/travelsage/)
 
 ## Description
 
